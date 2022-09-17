@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from typing import Any, Callable
 
 
@@ -17,9 +18,9 @@ def joiner(rules: dict) -> Callable[[Any], Any]:
     return _joiner
 
 
-rules = {
+rules = OrderedDict({
     modulo(3): 'fizz',
     modulo(5): 'buzz'
-}
+})
 
 fizzbuzzer = joiner(rules)
