@@ -33,3 +33,4 @@ def test_rules():
     assert EveryFizzBuzzIsMod15
     AllIntInPlace = all(
         (i+1) == r for i, r in enumerate(results) if isinstance(r, int))
+    assert AllIntInPlace
