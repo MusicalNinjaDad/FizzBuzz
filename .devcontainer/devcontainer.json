@@ -23,6 +23,7 @@
                 "python.testing.pytestArgs": [
                     "python"
                 ],
+                "testExplorer.useNativeTesting": true,
                 "terminal.integrated.defaultProfile.linux": "bash", 
                 "terminal.integrated.profiles.linux": {
                     "bash": {
