@@ -8,20 +8,12 @@
     "customizations": {
         "vscode": {
             "extensions": [
-                "ms-python.python",
-                "ms-python.vscode-pylance",
-                "charliermarsh.ruff",
                 "DavidAnson.vscode-markdownlint",
                 "tamasfe.even-better-toml",
                 "rust-lang.rust-analyzer",
                 "andrewbrey.rust-test-highlight"
             ],
             "settings": {
-                "python.defaultInterpreterPath": "/usr/bin/python3",
-                "python.testing.pytestEnabled": true,
-                "python.testing.pytestArgs": [
-                    "python"
-                ],
                 "terminal.integrated.defaultProfile.linux": "bash", 
                 "terminal.integrated.profiles.linux": {
                     "bash": {
