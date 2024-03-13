@@ -51,9 +51,17 @@ mod itertests {
 
     #[test]
     fn threes() {
-        for num in (3..=300).step_by(3) {
+        for num in (0..=300).step_by(3) {
             let result = fizzbuzz(num);
             assert!(result == "fizz" || result == "fizzbuzz");
+        }
+    }
+
+    #[test]
+    fn five_is_buzz_or_fizzbuzz() {
+        for num in (0..=300).step_by(5) {
+            let result = fizzbuzz(num);
+            assert!(result == "buzz" || result == "fizzbuzz");
         }
     }
 }
