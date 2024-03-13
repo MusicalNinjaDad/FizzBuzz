@@ -8,6 +8,9 @@
     "customizations": {
         "vscode": {
             "extensions": [
+                "ms-python.python",
+                "ms-python.vscode-pylance",
+                "charliermarsh.ruff",
                 "DavidAnson.vscode-markdownlint",
                 "tamasfe.even-better-toml",
                 "rust-lang.rust-analyzer",
@@ -17,6 +20,12 @@
                 // rust
                 "rust-analyzer.interpret.tests": true,
                 "rust-analyzer.testExplorer": true,
+                // python
+                "python.defaultInterpreterPath": "/usr/bin/python3",
+                "python.testing.pytestEnabled": true,
+                "python.testing.pytestArgs": [
+                    "python"
+                ],
                 // shell
                 "terminal.integrated.defaultProfile.linux": "bash", 
                 "terminal.integrated.profiles.linux": {
