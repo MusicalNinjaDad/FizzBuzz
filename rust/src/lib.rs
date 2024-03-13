@@ -2,7 +2,10 @@ pub fn fizzbuzz(number: usize) -> String {
     let response: String;
     if number % 3 == 0 {
         response = "fizz".to_string();
-    } else {
+    } else if number % 5 == 0 {
+        response = "buzz".to_string();
+    }
+    else {
         response = number.to_string();
     }
     response
@@ -27,5 +30,11 @@ mod tests {
     fn six() {
         let result = fizzbuzz(6);
         assert_eq!(result, "fizz");
+    }
+
+    #[test]
+    fn five() {
+        let result = fizzbuzz(5);
+        assert_eq!(result, "buzz");
     }
 }
