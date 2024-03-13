@@ -8,13 +8,16 @@
     "customizations": {
         "vscode": {
             "extensions": [
+                // rust
+                "rust-lang.rust-analyzer",
+                "andrewbrey.rust-test-highlight",
+                // python
                 "ms-python.python",
                 "ms-python.vscode-pylance",
                 "charliermarsh.ruff",
+                // configs, docs, etc.
                 "DavidAnson.vscode-markdownlint",
-                "tamasfe.even-better-toml",
-                "rust-lang.rust-analyzer",
-                "andrewbrey.rust-test-highlight"
+                "tamasfe.even-better-toml"
             ],
             "settings": {
                 // rust
