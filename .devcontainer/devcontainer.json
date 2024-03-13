@@ -20,15 +20,9 @@
                 // rust
                 "rust-analyzer.interpret.tests": true,
                 "rust-analyzer.testExplorer": true,
-                "rust-analyzer.linkedProjects": [
-                    "./rust/Cargo.toml"
-                ],
                 // python
                 "python.defaultInterpreterPath": "/usr/bin/python3",
                 "python.testing.pytestEnabled": true,
-                "python.testing.pytestArgs": [
-                    "python"
-                ],
                 // shell
                 "terminal.integrated.defaultProfile.linux": "bash", 
                 "terminal.integrated.profiles.linux": {
