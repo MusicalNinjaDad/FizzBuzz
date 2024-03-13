@@ -1,6 +1,6 @@
 pub fn fizzbuzz(number: usize) -> String {
     let response: String;
-    if number == 3 {
+    if number % 3 == 0 {
         response = "fizz".to_string();
     } else {
         response = number.to_string();
