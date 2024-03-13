@@ -14,6 +14,10 @@
                 "andrewbrey.rust-test-highlight"
             ],
             "settings": {
+                // rust
+                "rust-analyzer.interpret.tests": true,
+                "rust-analyzer.testExplorer": true,
+                // shell
                 "terminal.integrated.defaultProfile.linux": "bash", 
                 "terminal.integrated.profiles.linux": {
                     "bash": {
