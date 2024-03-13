@@ -1,5 +1,6 @@
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
+pub fn fizzbuzz(number: usize) -> String {
+    let response = number.to_string();
+    response
 }
 
 #[cfg(test)]
@@ -7,8 +8,8 @@ mod tests {
     use super::*;
 
     #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
+    fn one() {
+        let result = fizzbuzz(1);
+        assert_eq!(result, "1");
     }
 }
