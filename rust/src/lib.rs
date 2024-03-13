@@ -1,5 +1,10 @@
 pub fn fizzbuzz(number: usize) -> String {
-    let response = number.to_string();
+    let response: String;
+    if number == 3 {
+        response = "fizz".to_string();
+    } else {
+        response = number.to_string();
+    }
     response
 }
 
