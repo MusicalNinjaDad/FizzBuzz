@@ -14,7 +14,7 @@ pub fn fizzbuzz(number: usize) -> String {
 }
 
 #[cfg(test)]
-mod tests {
+mod dumbtests {
     use super::*;
 
     #[test]
@@ -43,5 +43,17 @@ mod tests {
     fn fifteen() {
         let result = fizzbuzz(15);
         assert_eq!(result, "fizzbuzz");
+    }
+}
+
+mod itertests {
+    use super::*;
+
+    #[test]
+    fn threes() {
+        for num in (3..=300).step_by(3) {
+            let result = fizzbuzz(num);
+            assert!(result.contains("fizz"));
+        }
     }
 }
