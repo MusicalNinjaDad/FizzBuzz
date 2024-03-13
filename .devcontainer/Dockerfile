@@ -18,6 +18,7 @@ RUN dnf -y --setopt=install_weak_deps=False install \
     python-pip \
     python-pytest \
     rust \
+    cargo \
 && dnf -y clean all
 
 USER ${USERNAME}
