@@ -12,4 +12,9 @@ mod tests {
         let result = fizzbuzz(1);
         assert_eq!(result, "1");
     }
+    #[test]
+    fn three() {
+        let result = fizzbuzz(3);
+        assert_eq!(result, "fizz");
+    }
 }
