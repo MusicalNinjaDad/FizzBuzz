@@ -22,4 +22,10 @@ mod tests {
         let result = fizzbuzz(3);
         assert_eq!(result, "fizz");
     }
+
+    #[test]
+    fn six() {
+        let result = fizzbuzz(6);
+        assert_eq!(result, "fizz");
+    }
 }
