@@ -53,7 +53,7 @@ mod itertests {
     fn threes() {
         for num in (3..=300).step_by(3) {
             let result = fizzbuzz(num);
-            assert!(result.contains("fizz"));
+            assert!(result == "fizz" || result == "fizzbuzz");
         }
     }
 }
