@@ -14,8 +14,7 @@
                 "DavidAnson.vscode-markdownlint",
                 "tamasfe.even-better-toml",
                 "rust-lang.rust-analyzer",
-                "andrewbrey.rust-test-highlight",
-                "Swellaby.vscode-rust-test-adapter"
+                "andrewbrey.rust-test-highlight"
             ],
             "settings": {
                 "python.defaultInterpreterPath": "/usr/bin/python3",
