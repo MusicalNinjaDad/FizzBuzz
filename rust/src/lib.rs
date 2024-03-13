@@ -45,7 +45,7 @@ mod dumbtests {
         assert_eq!(result, "fizzbuzz");
     }
 }
-
+#[cfg(test)]
 mod itertests {
     use super::*;
 
