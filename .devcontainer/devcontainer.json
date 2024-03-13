@@ -3,27 +3,36 @@
         "dockerfile": "Dockerfile"
     },
 
-    "forwardPorts": [8000],
+    // "forwardPorts": [8000],
 
     "customizations": {
         "vscode": {
             "extensions": [
+                // python
                 "ms-python.python",
                 "ms-python.vscode-pylance",
                 "charliermarsh.ruff",
-                "DavidAnson.vscode-markdownlint",
-                "tamasfe.even-better-toml",
+                // rust
                 "rust-lang.rust-analyzer",
                 "andrewbrey.rust-test-highlight",
-                "Swellaby.vscode-rust-test-adapter"
+                "Swellaby.vscode-rust-test-adapter",
+                // configs, docs etc.
+                "DavidAnson.vscode-markdownlint",
+                "tamasfe.even-better-toml"
             ],
             "settings": {
+                // python
                 "python.defaultInterpreterPath": "/usr/bin/python3",
                 "python.testing.pytestEnabled": true,
                 "python.testing.pytestArgs": [
                     "python"
                 ],
+                // rust
                 "testExplorer.useNativeTesting": true,
+                "rust-analyzer.linkedProjects": [
+                    "./rust/Cargo.toml"
+                ],
+                // shell
                 "terminal.integrated.defaultProfile.linux": "bash", 
                 "terminal.integrated.profiles.linux": {
                     "bash": {
