@@ -17,8 +17,18 @@ RUN dnf -y --setopt=install_weak_deps=False install \
     python \
     python-pip \
     python-pytest \
-    rust \
-    cargo \
-&& dnf -y clean all
+    clang
+
+ENV RUSTUP_HOME=/opt/rustup \
+    CARGO_HOME=/opt/cargo \
+    PATH=/opt/cargo/bin:$PATH
+RUN dnf -y install \
+    rustup \
+&& rustup-init -v -y \
+&& rustup component add rust-src
+
+# # Stuff to delete later
+# && dnf -y clean all
+# && ln -s /usr/lib/rustlib/x86_64-unknown-linux-gnu/lib /usr/lib/rustlib/src/rust/library
 
 USER ${USERNAME}

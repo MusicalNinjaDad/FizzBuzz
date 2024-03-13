@@ -12,7 +12,10 @@
                 "ms-python.vscode-pylance",
                 "charliermarsh.ruff",
                 "DavidAnson.vscode-markdownlint",
-                "tamasfe.even-better-toml"
+                "tamasfe.even-better-toml",
+                "rust-lang.rust-analyzer",
+                "andrewbrey.rust-test-highlight",
+                "Swellaby.vscode-rust-test-adapter"
             ],
             "settings": {
                 "python.defaultInterpreterPath": "/usr/bin/python3",
