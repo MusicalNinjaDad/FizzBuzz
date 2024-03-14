@@ -50,7 +50,7 @@ mod itertests {
     use super::*;
 
     #[test]
-    fn threes() {
+    fn three_is_fizz_or_fizzbuzz() {
         for num in (0..=300).step_by(3) {
             let result = fizzbuzz(num);
             assert!(result == "fizz" || result == "fizzbuzz");
@@ -62,6 +62,14 @@ mod itertests {
         for num in (0..=300).step_by(5) {
             let result = fizzbuzz(num);
             assert!(result == "buzz" || result == "fizzbuzz");
+        }
+    }
+
+    #[test]
+    fn fifteen_is_fizzbuzz(){
+        for num in (0..=300).step_by(15) {
+            let result = fizzbuzz(num);
+            assert!(result == "fizzbuzz");
         }
     }
 }
