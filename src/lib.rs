@@ -1,4 +1,4 @@
-pub fn fizzbuzz(number: usize) -> String {
+pub fn fizzbuzz(number: &usize) -> String {
     let response: String;
     if number % 15 == 0 {
         response = "fizzbuzz".to_string();
@@ -19,40 +19,42 @@ mod dumbtests {
 
     #[test]
     fn one() {
-        let result = fizzbuzz(1);
+        let result = fizzbuzz(&1);
         assert_eq!(result, "1");
     }
     #[test]
     fn three() {
-        let result = fizzbuzz(3);
+        let result = fizzbuzz(&3);
         assert_eq!(result, "fizz");
     }
 
     #[test]
     fn six() {
-        let result = fizzbuzz(6);
+        let result = fizzbuzz(&6);
         assert_eq!(result, "fizz");
     }
 
     #[test]
     fn five() {
-        let result = fizzbuzz(5);
+        let result = fizzbuzz(&5);
         assert_eq!(result, "buzz");
     }
     #[test]
     fn fifteen() {
-        let result = fizzbuzz(15);
+        let result = fizzbuzz(&15);
         assert_eq!(result, "fizzbuzz");
     }
 }
 #[cfg(test)]
 mod itertests {
+    use std::result;
+
     use super::*;
 
     #[test]
     fn three_is_fizz_or_fizzbuzz() {
         for num in (0..=300).step_by(3) {
-            let result = fizzbuzz(num);
+            let result = fizzbuzz(&num);
             assert!(result == "fizz" || result == "fizzbuzz");
         }
     }
@@ -60,7 +62,7 @@ mod itertests {
     #[test]
     fn five_is_buzz_or_fizzbuzz() {
         for num in (0..=300).step_by(5) {
-            let result = fizzbuzz(num);
+            let result = fizzbuzz(&num);
             assert!(result == "buzz" || result == "fizzbuzz");
         }
     }
@@ -68,7 +70,7 @@ mod itertests {
     #[test]
     fn fifteen_is_fizzbuzz(){
         for num in (0..=300).step_by(15) {
-            let result = fizzbuzz(num);
+            let result = fizzbuzz(&num);
             assert!(result == "fizzbuzz");
         }
     }
