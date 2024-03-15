@@ -1,3 +1,5 @@
+pub use f64;
+
 pub fn fizzbuzz(number: &usize) -> String {
     let response: String;
     if number % 15 == 0 {
@@ -16,6 +18,7 @@ pub trait FizzBuzz {
     fn fizzbuzz(&self) -> String;
 }
 
+#[macro_export]
 macro_rules! impl_fizzbuzz {
     ( $( $t:ty), *) => { // Any number of types, optionally separated by commas
         $(
