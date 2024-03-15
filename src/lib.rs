@@ -16,24 +16,6 @@ pub fn fizzbuzz(number: &usize) -> String {
 pub trait FizzBuzz {
     fn fizzbuzz(&self) -> String;
 }
-
-impl FizzBuzz for f32 {
-    fn fizzbuzz(&self) -> String {
-        let response: String;
-        if self % f32::from(15i8) == f32::from(0i8) {
-            response = "fizzbuzz".to_string();
-        } else if self % f32::from(3i8) == f32::from(0i8) {
-            response = "fizz".to_string();
-        } else if self % f32::from(5i8) == f32::from(0i8) {
-            response = "buzz".to_string();
-        }
-        else {
-            response = self.to_string();
-        }
-        response
-    }
-}
-
 macro_rules! impl_fizzbuzz {
     ( $( $t:ty), *) => { // Any number of types, optionally separated by commas
         $(
@@ -57,7 +39,7 @@ macro_rules! impl_fizzbuzz {
     };
 }
 
-impl_fizzbuzz!(f64);
+impl_fizzbuzz!(f32, f64);
 
 #[cfg(test)]
 mod dumbtests {
