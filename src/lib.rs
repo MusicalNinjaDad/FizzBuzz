@@ -34,22 +34,30 @@ impl FizzBuzz for f32 {
     }
 }
 
-impl FizzBuzz for f64 {
-    fn fizzbuzz(&self) -> String {
-        let response: String;
-        if self % 15.0 == 0.0 {
-            response = "fizzbuzz".to_string();
-        } else if self % 3.0 == 0.0 {
-            response = "fizz".to_string();
-        } else if self % 5.0 == 0.0 {
-            response = "buzz".to_string();
-        }
-        else {
-            response = self.to_string();
-        }
-        response
-    }
+macro_rules! impl_fizzbuzz {
+    ( $( $t:ty), *) => { // Any number of types, optionally separated by commas
+        $(
+            impl FizzBuzz for $t {
+                fn fizzbuzz(&self) -> String {
+                    let response: String;
+                    if self % f64::from(15i8) == f64::from(0i8) {
+                        response = "fizzbuzz".to_string();
+                    } else if self % f64::from(3i8) == f64::from(0i8) {
+                        response = "fizz".to_string();
+                    } else if self % f64::from(5i8) == f64::from(0i8) {
+                        response = "buzz".to_string();
+                    }
+                    else {
+                        response = self.to_string();
+                    }
+                    response
+                }
+            }
+        )*
+    };
 }
+
+impl_fizzbuzz!(f64);
 
 #[cfg(test)]
 mod dumbtests {
