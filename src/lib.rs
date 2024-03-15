@@ -89,3 +89,25 @@ mod itertests {
         }
     }
 }
+
+#[cfg(test)]
+mod floattests {
+    use super::*;
+
+    #[test]
+    fn allnumbers(){
+        let allnums: Vec<f32> = (1..=300).step_by(1).map(|i| f32::from(i)).collect();
+        let fifteens: Vec<f32>  = (0..=300).step_by(15).map(|i| f32::from(i)).collect();
+        let fives: Vec<f32> = (0..=300).step_by(5).map(|i| f32::from(i)).collect();
+        let threes: Vec<f32>  = (0..=300).step_by(3).map(|i| f32::from(i)).collect();
+
+        for num in allnums{
+            let result = num.fizzbuzz();
+            if fifteens.contains(&num) {assert_eq!(result, "fizzbuzz")}
+            else if fives.contains(&num) {assert_eq!(result, "buzz")}
+            else if threes.contains(&num) {assert_eq!(result, "fizz")}
+            else {assert_eq!(&result, &num.to_string())}
+        }
+    }
+
+}
