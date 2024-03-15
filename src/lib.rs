@@ -47,8 +47,6 @@ mod dumbtests {
 }
 #[cfg(test)]
 mod itertests {
-    use std::result;
-
     use super::*;
 
     #[test]
