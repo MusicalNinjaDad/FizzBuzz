@@ -20,11 +20,11 @@ pub trait FizzBuzz {
 impl FizzBuzz for f32 {
     fn fizzbuzz(&self) -> String {
         let response: String;
-        if self % 15.0 == 0.0 {
+        if self % f32::from(15i8) == f32::from(0i8) {
             response = "fizzbuzz".to_string();
-        } else if self % 3.0 == 0.0 {
+        } else if self % f32::from(3i8) == f32::from(0i8) {
             response = "fizz".to_string();
-        } else if self % 5.0 == 0.0 {
+        } else if self % f32::from(5i8) == f32::from(0i8) {
             response = "buzz".to_string();
         }
         else {
