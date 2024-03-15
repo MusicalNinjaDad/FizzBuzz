@@ -34,6 +34,23 @@ impl FizzBuzz for f32 {
     }
 }
 
+impl FizzBuzz for f64 {
+    fn fizzbuzz(&self) -> String {
+        let response: String;
+        if self % 15.0 == 0.0 {
+            response = "fizzbuzz".to_string();
+        } else if self % 3.0 == 0.0 {
+            response = "fizz".to_string();
+        } else if self % 5.0 == 0.0 {
+            response = "buzz".to_string();
+        }
+        else {
+            response = self.to_string();
+        }
+        response
+    }
+}
+
 #[cfg(test)]
 mod dumbtests {
     use super::*;
