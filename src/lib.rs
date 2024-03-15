@@ -6,8 +6,7 @@ pub fn fizzbuzz(number: &usize) -> String {
         response = "fizz".to_string();
     } else if number % 5 == 0 {
         response = "buzz".to_string();
-    }
-    else {
+    } else {
         response = number.to_string();
     }
     response
@@ -16,6 +15,7 @@ pub fn fizzbuzz(number: &usize) -> String {
 pub trait FizzBuzz {
     fn fizzbuzz(&self) -> String;
 }
+
 macro_rules! impl_fizzbuzz {
     ( $( $t:ty), *) => { // Any number of types, optionally separated by commas
         $(
@@ -94,7 +94,7 @@ mod itertests {
     }
 
     #[test]
-    fn fifteen_is_fizzbuzz(){
+    fn fifteen_is_fizzbuzz() {
         for num in (0..=300).step_by(15) {
             let result = fizzbuzz(&num);
             assert!(result == "fizzbuzz");
@@ -102,18 +102,23 @@ mod itertests {
     }
 
     #[test]
-    fn allnumbers(){
+    fn allnumbers() {
         let allnums: Vec<usize> = (1..=300).collect();
-        let fifteens: Vec<usize>  = (0..=300).step_by(15).collect();
+        let fifteens: Vec<usize> = (0..=300).step_by(15).collect();
         let fives: Vec<usize> = (0..=300).step_by(5).collect();
-        let threes: Vec<usize>  = (0..=300).step_by(3).collect();
+        let threes: Vec<usize> = (0..=300).step_by(3).collect();
 
-        for num in allnums{
+        for num in allnums {
             let result = fizzbuzz(&num);
-            if fifteens.contains(&num) {assert_eq!(result, "fizzbuzz")}
-            else if fives.contains(&num) {assert_eq!(result, "buzz")}
-            else if threes.contains(&num) {assert_eq!(result, "fizz")}
-            else {assert_eq!(&result, &num.to_string())}
+            if fifteens.contains(&num) {
+                assert_eq!(result, "fizzbuzz")
+            } else if fives.contains(&num) {
+                assert_eq!(result, "buzz")
+            } else if threes.contains(&num) {
+                assert_eq!(result, "fizz")
+            } else {
+                assert_eq!(&result, &num.to_string())
+            }
         }
     }
 }
@@ -123,35 +128,44 @@ mod floattests {
     use super::FizzBuzz;
 
     #[test]
-    fn allnumbers32(){
+    fn allnumbers32() {
         let allnums: Vec<f32> = (1i16..=300).step_by(1).map(|i| f32::from(i)).collect();
-        let fifteens: Vec<f32>  = (0i16..=300).step_by(15).map(|i| f32::from(i)).collect();
+        let fifteens: Vec<f32> = (0i16..=300).step_by(15).map(|i| f32::from(i)).collect();
         let fives: Vec<f32> = (0i16..=300).step_by(5).map(|i| f32::from(i)).collect();
-        let threes: Vec<f32>  = (0i16..=300).step_by(3).map(|i| f32::from(i)).collect();
+        let threes: Vec<f32> = (0i16..=300).step_by(3).map(|i| f32::from(i)).collect();
 
-        for num in allnums{
+        for num in allnums {
             let result = num.fizzbuzz();
-            if fifteens.contains(&num) {assert_eq!(result, "fizzbuzz")}
-            else if fives.contains(&num) {assert_eq!(result, "buzz")}
-            else if threes.contains(&num) {assert_eq!(result, "fizz")}
-            else {assert_eq!(&result, &num.to_string())}
+            if fifteens.contains(&num) {
+                assert_eq!(result, "fizzbuzz")
+            } else if fives.contains(&num) {
+                assert_eq!(result, "buzz")
+            } else if threes.contains(&num) {
+                assert_eq!(result, "fizz")
+            } else {
+                assert_eq!(&result, &num.to_string())
+            }
         }
     }
 
     #[test]
-    fn allnumbers64(){
+    fn allnumbers64() {
         let allnums: Vec<f64> = (1i16..=300).step_by(1).map(|i| f64::from(i)).collect();
-        let fifteens: Vec<f64>  = (0i16..=300).step_by(15).map(|i| f64::from(i)).collect();
+        let fifteens: Vec<f64> = (0i16..=300).step_by(15).map(|i| f64::from(i)).collect();
         let fives: Vec<f64> = (0i16..=300).step_by(5).map(|i| f64::from(i)).collect();
-        let threes: Vec<f64>  = (0i16..=300).step_by(3).map(|i| f64::from(i)).collect();
+        let threes: Vec<f64> = (0i16..=300).step_by(3).map(|i| f64::from(i)).collect();
 
-        for num in allnums{
+        for num in allnums {
             let result = num.fizzbuzz();
-            if fifteens.contains(&num) {assert_eq!(result, "fizzbuzz")}
-            else if fives.contains(&num) {assert_eq!(result, "buzz")}
-            else if threes.contains(&num) {assert_eq!(result, "fizz")}
-            else {assert_eq!(&result, &num.to_string())}
+            if fifteens.contains(&num) {
+                assert_eq!(result, "fizzbuzz")
+            } else if fives.contains(&num) {
+                assert_eq!(result, "buzz")
+            } else if threes.contains(&num) {
+                assert_eq!(result, "fizz")
+            } else {
+                assert_eq!(&result, &num.to_string())
+            }
         }
     }
-
 }
