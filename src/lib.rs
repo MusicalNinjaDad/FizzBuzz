@@ -40,11 +40,11 @@ macro_rules! impl_fizzbuzz {
             impl FizzBuzz for $t {
                 fn fizzbuzz(&self) -> String {
                     let response: String;
-                    if self % f64::from(15i8) == f64::from(0i8) {
+                    if self % <$t>::from(15i8) == <$t>::from(0i8) {
                         response = "fizzbuzz".to_string();
-                    } else if self % f64::from(3i8) == f64::from(0i8) {
+                    } else if self % <$t>::from(3i8) == <$t>::from(0i8) {
                         response = "fizz".to_string();
-                    } else if self % f64::from(5i8) == f64::from(0i8) {
+                    } else if self % <$t>::from(5i8) == <$t>::from(0i8) {
                         response = "buzz".to_string();
                     }
                     else {
