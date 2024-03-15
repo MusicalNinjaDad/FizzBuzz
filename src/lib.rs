@@ -72,4 +72,20 @@ mod itertests {
             assert!(result == "fizzbuzz");
         }
     }
+
+    #[test]
+    fn allnumbers(){
+        let allnums: Vec<usize> = (1..=300).collect();
+        let fifteens: Vec<usize>  = (0..=300).step_by(15).collect();
+        let fives: Vec<usize> = (0..=300).step_by(5).collect();
+        let threes: Vec<usize>  = (0..=300).step_by(3).collect();
+
+        for num in allnums{
+            let result = fizzbuzz(&num);
+            if fifteens.contains(&num) {assert_eq!(result, "fizzbuzz")}
+            else if fives.contains(&num) {assert_eq!(result, "buzz")}
+            else if threes.contains(&num) {assert_eq!(result, "fizz")}
+            else {assert_eq!(&result, &num.to_string())}
+        }
+    }
 }
