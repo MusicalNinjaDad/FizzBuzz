@@ -13,6 +13,27 @@ pub fn fizzbuzz(number: &usize) -> String {
     response
 }
 
+pub trait FizzBuzz {
+    fn fizzbuzz(&self) -> String;
+}
+
+impl FizzBuzz for f32 {
+    fn fizzbuzz(&self) -> String {
+        let response: String;
+    if self % 15.0 == 0.0 {
+        response = "fizzbuzz".to_string();
+    } else if self % 3.0 == 0.0 {
+        response = "fizz".to_string();
+    } else if self % 5.0 == 0.0 {
+        response = "buzz".to_string();
+    }
+    else {
+        response = self.to_string();
+    }
+    response
+    }
+}
+
 #[cfg(test)]
 mod dumbtests {
     use super::*;
@@ -92,14 +113,14 @@ mod itertests {
 
 #[cfg(test)]
 mod floattests {
-    use super::*;
+    use super::FizzBuzz;
 
     #[test]
     fn allnumbers(){
-        let allnums: Vec<f32> = (1..=300).step_by(1).map(|i| f32::from(i)).collect();
-        let fifteens: Vec<f32>  = (0..=300).step_by(15).map(|i| f32::from(i)).collect();
-        let fives: Vec<f32> = (0..=300).step_by(5).map(|i| f32::from(i)).collect();
-        let threes: Vec<f32>  = (0..=300).step_by(3).map(|i| f32::from(i)).collect();
+        let allnums: Vec<f32> = (1i16..=300).step_by(1).map(|i| f32::from(i)).collect();
+        let fifteens: Vec<f32>  = (0i16..=300).step_by(15).map(|i| f32::from(i)).collect();
+        let fives: Vec<f32> = (0i16..=300).step_by(5).map(|i| f32::from(i)).collect();
+        let threes: Vec<f32>  = (0i16..=300).step_by(3).map(|i| f32::from(i)).collect();
 
         for num in allnums{
             let result = num.fizzbuzz();
