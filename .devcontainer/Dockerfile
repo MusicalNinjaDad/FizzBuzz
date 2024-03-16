@@ -33,7 +33,8 @@ RUN dnf -y install \
     clang \
     rustup \
 && rustup-init -v -y \
-&& rustup component add rust-src
+&& rustup component add rust-src \
+&& chmod a+w -R $CARGO_HOME
 
 # ---
 # Set the default user
