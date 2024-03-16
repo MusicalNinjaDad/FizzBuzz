@@ -31,6 +31,10 @@ macro_rules! test_this {
 
 
 test_this! {
+    test_f32: f32,
     test_f64: f64,
-    test_f32: f32
+    test_i16: i16,
+    test_i32: i32,
+    test_i64: i64,
+    test_i128: i128
 }

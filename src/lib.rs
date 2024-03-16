@@ -40,7 +40,7 @@ macro_rules! impl_fizzbuzz {
     };
 }
 
-impl_fizzbuzz!(f32, f64);
+impl_fizzbuzz!(f32, f64, i16, i32, i64, i128);
 
 #[cfg(test)]
 mod dumbtests {
