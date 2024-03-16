@@ -23,11 +23,11 @@ macro_rules! impl_fizzbuzz {
             impl FizzBuzz for $t {
                 fn fizzbuzz(&self) -> String {
                     let response: String;
-                    if self % <$t>::from(15i8) == <$t>::from(0i8) {
+                    if self % <$t>::from(15u8) == <$t>::from(0u8) {
                         response = "fizzbuzz".to_string();
-                    } else if self % <$t>::from(3i8) == <$t>::from(0i8) {
+                    } else if self % <$t>::from(3u8) == <$t>::from(0u8) {
                         response = "fizz".to_string();
-                    } else if self % <$t>::from(5i8) == <$t>::from(0i8) {
+                    } else if self % <$t>::from(5u8) == <$t>::from(0u8) {
                         response = "buzz".to_string();
                     }
                     else {
@@ -40,7 +40,7 @@ macro_rules! impl_fizzbuzz {
     };
 }
 
-impl_fizzbuzz!(f32, f64, i16, i32, i64, i128);
+impl_fizzbuzz!(f32, f64, i16, i32, i64, i128, u16, u32, u64, u128, usize);
 
 #[cfg(test)]
 mod dumbtests {

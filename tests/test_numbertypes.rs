@@ -7,10 +7,10 @@ macro_rules! test_this {
         $(
             #[googletest::test]
             fn $id() {
-                let allnums: Vec<$t> = (1i16..=300).step_by(1).map(|i| {<$t>::from(i)}).collect();
-                let fifteens: Vec<$t> = (0i16..=300).step_by(15).map(|i| {<$t>::from(i)}).collect();
-                let fives: Vec<$t> = (0i16..=300).step_by(5).map(|i| {<$t>::from(i)}).collect();
-                let threes: Vec<$t> = (0i16..=300).step_by(3).map(|i| {<$t>::from(i)}).collect();
+                let allnums: Vec<$t> = (1u8..=255).step_by(1).map(|i| {<$t>::from(i)}).collect();
+                let fifteens: Vec<$t> = (0u8..=255).step_by(15).map(|i| {<$t>::from(i)}).collect();
+                let fives: Vec<$t> = (0u8..=255).step_by(5).map(|i| {<$t>::from(i)}).collect();
+                let threes: Vec<$t> = (0u8..=255).step_by(3).map(|i| {<$t>::from(i)}).collect();
 
                 for num in allnums {
                     let result = num.fizzbuzz();
@@ -36,5 +36,10 @@ test_this! {
     test_i16: i16,
     test_i32: i32,
     test_i64: i64,
-    test_i128: i128
+    test_i128: i128,
+    test_u16: u16,
+    test_u32: u32,
+    test_u64: u64,
+    test_u128: u128,
+    test_usize: usize
 }
