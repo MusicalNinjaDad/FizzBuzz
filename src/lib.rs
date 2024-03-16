@@ -1,5 +1,3 @@
-pub use f64;
-
 pub fn fizzbuzz(number: &usize) -> String {
     let response: String;
     if number % 15 == 0 {
