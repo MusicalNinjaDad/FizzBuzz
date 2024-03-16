@@ -15,13 +15,13 @@ macro_rules! test_this {
                 for num in allnums {
                     let result = num.fizzbuzz();
                     if fifteens.contains(&num) {
-                        expect_that!(result, eq("fizzbuzz"))
+                        expect_that!(result, eq("fizzbuzz"), "for {num}")
                     } else if fives.contains(&num) {
-                        expect_that!(result, eq("buzz"))
+                        expect_that!(result, eq("buzz"), "for {num}")
                     } else if threes.contains(&num) {
-                        expect_that!(result, eq("fizz"))
+                        expect_that!(result, eq("fizz"), "for {num}")
                     } else {
-                        expect_that!(&result, eq(&num.to_string()))
+                        expect_that!(&result, eq(&num.to_string()), "for {num}")
                     }
                 }
             }
