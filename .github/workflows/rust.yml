@@ -5,7 +5,7 @@ on:
     paths: 
     - "**.rs"
     - "Cargo.toml"
-    - ".github/worksflows/rust.yml"
+    - ".github/workflows/rust.yml"
   pull_request:
 
 env:
