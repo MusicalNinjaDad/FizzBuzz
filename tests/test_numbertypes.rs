@@ -45,3 +45,37 @@ test_this! {
     test_u128: u128,
     test_usize: usize
 }
+
+mod custom_types {
+    use std::{fmt::Display, ops::Rem};
+
+    use fizzbuzz::impl_fizzbuzz;
+
+    use super::*;
+
+    #[derive(PartialEq)]
+    struct Myint(i16);
+
+    impl Rem<Myint> for &Myint {
+        type Output = Myint;
+        fn rem(self, rhs: Myint) -> Self::Output {
+            Myint(self.0.rem(rhs.0))
+        }
+    }
+    impl Display for Myint {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            self.0.fmt(f)
+        }
+    }
+    impl From<u8> for Myint {
+        fn from(value: u8) -> Self {
+            Self(<i16>::from(value))
+        }
+    }
+
+    impl_fizzbuzz!(Myint);
+
+    test_this! {
+        my_int16: Myint
+    }
+}
