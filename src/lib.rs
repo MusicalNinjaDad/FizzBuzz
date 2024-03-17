@@ -64,9 +64,8 @@
 //! "fizz" if the number is divisible by 3 and "buzz" if divisible by 5 ("fizzbuzz" for
 //! those numbers divsible by both 3 and 5)
 
-
 /// Used to obtain the correct fizzbuzz answer for a given number
-/// 
+///
 /// ### Required:
 /// - fn fizzbuzz() -> String
 pub trait FizzBuzz {
@@ -87,18 +86,15 @@ macro_rules! impl_fizzbuzz {
         $(
             impl FizzBuzz for $t {
                 fn fizzbuzz(&self) -> String {
-                    let response: String;
-                    if self % <$t>::from(15u8) == <$t>::from(0u8) {
-                        response = "fizzbuzz".to_string();
-                    } else if self % <$t>::from(3u8) == <$t>::from(0u8) {
-                        response = "fizz".to_string();
-                    } else if self % <$t>::from(5u8) == <$t>::from(0u8) {
-                        response = "buzz".to_string();
+                    match (
+                        self % <$t>::from(3u8) == <$t>::from(0u8),
+                        self % <$t>::from(5u8) == <$t>::from(0u8)
+                    ) {
+                        (true, true)    => "fizzbuzz".to_string(),
+                        (true, false)   => "fizz".to_string(),
+                        (false, true)   => "buzz".to_string(),
+                        _               => self.to_string()
                     }
-                    else {
-                        response = self.to_string();
-                    }
-                    response
                 }
             }
         )*
