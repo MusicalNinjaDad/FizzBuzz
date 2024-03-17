@@ -81,7 +81,6 @@ extend-ignore = [
     "D409", # Section underline should match the length of its name (No underlines)
     "D413", # Missing blank line after last section (Not required)
     ]
-fixable = ["Q000"]
 
 [tool.ruff.lint.per-file-ignores]
 # Additional ignores for tests 
