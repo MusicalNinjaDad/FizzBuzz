@@ -13,8 +13,7 @@ def joiner(rules: dict) -> Callable[[Any], Any]:  # noqa: D103
         result = "".join(rtn for f, rtn in rules.items() if f(val))
         if result:
             return result
-        else:  # noqa: RET505
-            return val
+        return str(val)
     return _joiner
 
 
