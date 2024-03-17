@@ -3,7 +3,13 @@
 
 name: Python
 
-on: [push, pull_request]
+on:
+    push:
+      paths: 
+      - "**.py"
+      - "pyproject.toml"
+      - ".github/workflows/python.yml"
+    pull_request:
 
 jobs:
   test:
