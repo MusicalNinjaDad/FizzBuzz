@@ -64,7 +64,11 @@
 //! "fizz" if the number is divisible by 3 and "buzz" if divisible by 5 ("fizzbuzz" for
 //! those numbers divsible by both 3 and 5)
 
+
 /// Used to obtain the correct fizzbuzz answer for a given number
+/// 
+/// ### Required:
+/// - fn fizzbuzz() -> String
 pub trait FizzBuzz {
     /// Required function which will return a `String` containing:
     ///
@@ -75,7 +79,7 @@ pub trait FizzBuzz {
     fn fizzbuzz(&self) -> String;
 }
 
-/// Implements the FizzBuzz trait for any type `<T>` which supports `<T>::from(<u8>)
+/// Implements the FizzBuzz trait for any type `<T>` which supports `<T>::from(<u8>)`
 /// and `<T> % <T>`
 #[macro_export]
 macro_rules! impl_fizzbuzz {
