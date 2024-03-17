@@ -30,7 +30,11 @@
                     "bash": {
                         "path": "/usr/bin/bash"
                     }
-                }
+                },
+                // editor
+                "editor.rulers": [
+                    120
+                ]
             }
         }
     },
