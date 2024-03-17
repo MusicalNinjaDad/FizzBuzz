@@ -31,21 +31,28 @@ macro_rules! test_this {
     }
 }
 
-test_this! {
-    test_f32: f32,
-    test_f64: f64,
-    test_i16: i16,
-    test_i32: i32,
-    test_i64: i64,
-    test_i128: i128,
-    test_u8: u8,
-    test_u16: u16,
-    test_u32: u32,
-    test_u64: u64,
-    test_u128: u128,
-    test_usize: usize
+/// Test all compatible standard types
+mod standard_types {
+    use super::*;
+
+    test_this! {
+        test_f32: f32,
+        test_f64: f64,
+        test_i16: i16,
+        test_i32: i32,
+        test_i64: i64,
+        test_i128: i128,
+        test_u8: u8,
+        test_u16: u16,
+        test_u32: u32,
+        test_u64: u64,
+        test_u128: u128,
+        test_usize: usize
+    }
 }
 
+/// Create a custom type based on i16, add the minimum set of non-derivable
+/// traits, impl_fizzbuzz! and test ...
 mod custom_types {
     use std::{fmt::Display, ops::Rem};
 
