@@ -3,9 +3,9 @@ name: Rust
 on:
   push:
     paths: 
-    - "*.rs"
+    - "**.rs"
     - "Cargo.toml"
-    - "rust.yml"
+    - ".github/worksflows/rust.yml"
   pull_request:
 
 env:
