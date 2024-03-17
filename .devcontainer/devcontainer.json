@@ -30,8 +30,19 @@
                     "bash": {
                         "path": "/usr/bin/bash"
                     }
-                }
+                },
+                // editor
+                "editor.rulers": [
+                    120
+                ]
             }
         }
+    },
+    "updateContentCommand": {
+        "rust": "cargo test -v",
+        "python": "./setup-py.sh"
+    },
+    "postAttachCommand": {
+        "python": ". .venv/bin/activate"
     }
 }
