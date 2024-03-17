@@ -46,7 +46,6 @@ def fizzbuzz(val: int) -> str:
         },
     )
 
-    result = "".join(rtn for f, rtn in rules.items() if f(val))
-    if result:
+    if result := "".join(rtn for f, rtn in rules.items() if f(val)):
         return result
     return str(val)
