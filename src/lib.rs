@@ -1,17 +1,27 @@
 //! A Trait implementation of "fizzbuzz" providing implemented Traits on all standard number
-//! types *except* `i8` and a macro to implement the Trait on custom types
+//! types *except* `i8` and a macro to implement the Trait on custom types.
+//!
+//! Looking at rust for the first time a couple of things stood out to me that were applicable in the
+//! context of fizzbuzz:
 //! 
+//! - firstly; the segregation of traditional classes into their data structures and method
+//! implementations. This made a `FizzBuzz` `Trait` feel like the right approach.
+//! - secondly; the languages love of exclamation marks (`!`), which make a regular appearance in 
+//! "the book" and require you to be sure in your belief that `macro_rules!` ;) Exporting the macro
+//! seemed like the friendly thing to do for anyone who happens to have their own `struct` which could
+//! be made more valuable by it's ability to fizzbuzz!
+//!
 //! ## Example usage:
-//! 
+//!
 //! ```
 //! use fizzbuzz::FizzBuzz;
-//! 
+//!
 //! assert_eq!(1.fizzbuzz(), "1".to_string());
 //! assert_eq!(3.fizzbuzz(), "fizz".to_string());
 //! ```
-//! 
+//!
 //! ## fizzbuzz rules
-//! 
+//!
 //! Fizzbuzz is a child's counting game where instead of saying a number you must say:
 //! "fizz" if the number is divisible by 3 and "buzz" if divisible by 5 ("fizzbuzz" for
 //! those numbers divsible by both 3 and 5)
@@ -19,7 +29,7 @@
 /// Used to obtain the correct fizzbuzz answer for a given number
 pub trait FizzBuzz {
     /// Required function which will return a `String` containing:
-    /// 
+    ///
     /// - `fizzbuzz` if the number is directly divisible by 5 and 3
     /// - `fizz` if the number is directly divisible by 3
     /// - `buzz` if the number is directly divisible by 5
