@@ -9,7 +9,7 @@ description = "An implementation of the traditional fizzbuzz kata"
 license = {text = "MIT"}
 authors = [{name = "Mike Foster"}]
 dynamic = ["version"]
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
