@@ -27,7 +27,7 @@ Issues = "https://github.com/MusicalNinjaDad/fizzbuzz/issues"
 # Changelog = "https://github.com/MusicalNinjaDad/recurtools/blob/main/CHANGELOG.md"
 
 [tool.setuptools.dynamic]
-version = {file = "__version__"}
+version = {file = "__pyversion__"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
