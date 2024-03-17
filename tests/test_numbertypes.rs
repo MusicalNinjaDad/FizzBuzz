@@ -1,9 +1,8 @@
 use fizzbuzz::FizzBuzz;
-use googletest::*;
 use googletest::prelude::*;
 
 /// Create a test case which tests all numbers between 1 and 255 for a given type
-/// 
+///
 /// Call with `test_this! {test_case_name: type, ...}`
 macro_rules! test_this {
     ($($id:ident: $t:ty),*) => {
@@ -31,7 +30,6 @@ macro_rules! test_this {
         )*
     }
 }
-
 
 test_this! {
     test_f32: f32,
