@@ -1,4 +1,4 @@
-from collections import OrderedDict  # noqa: INP001, D100
+from collections import OrderedDict  # noqa: D100
 from typing import Any, Callable
 
 
