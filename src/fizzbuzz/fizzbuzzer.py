@@ -1,4 +1,4 @@
-"""Implements fizzbuzz() function."""
+"""Implements pyfizzbuzz() function."""
 
 from collections import OrderedDict
 from typing import Callable
