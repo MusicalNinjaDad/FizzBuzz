@@ -14,7 +14,7 @@
 //! ## Example usage:
 //!
 //! ```
-//! use fizzbuzz::FizzBuzz;
+//! use fizzbuzzo3::FizzBuzz;
 //!
 //! assert_eq!(1.fizzbuzz(), "1".to_string());
 //! assert_eq!(3.fizzbuzz(), "fizz".to_string());
