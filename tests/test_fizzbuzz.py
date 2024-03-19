@@ -1,18 +1,18 @@
-from fizzbuzz import fizzbuzz
+from fizzbuzz import pyfizzbuzz
 
 
 def test_lazy():
-    assert fizzbuzz(1) == "1"
-    assert fizzbuzz(2) == "2"
-    assert fizzbuzz(3) == "fizz"
-    assert fizzbuzz(4) == "4"
-    assert fizzbuzz(5) == "buzz"
-    assert fizzbuzz(6) == "fizz"
-    assert fizzbuzz(15) == "fizzbuzz"
+    assert pyfizzbuzz(1) == "1"
+    assert pyfizzbuzz(2) == "2"
+    assert pyfizzbuzz(3) == "fizz"
+    assert pyfizzbuzz(4) == "4"
+    assert pyfizzbuzz(5) == "buzz"
+    assert pyfizzbuzz(6) == "fizz"
+    assert pyfizzbuzz(15) == "fizzbuzz"
 
 
 def test_rules():
-    results = [fizzbuzz(i) for i in range(1, 101)]
+    results = [pyfizzbuzz(i) for i in range(1, 101)]
     every_3rd_has_fizz = all("fizz" in r for r in results[2::3])
     assert every_3rd_has_fizz
     every_5th_has_buzz = all("buzz" in r for r in results[4::5])

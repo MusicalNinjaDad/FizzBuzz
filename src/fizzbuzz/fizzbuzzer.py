@@ -23,19 +23,19 @@ def modulo(n: int) -> Callable[[int], bool]:
 
     return _modulo
 
-def fizzbuzz(val: int) -> str:
+def pyfizzbuzz(val: int) -> str:
     """
     Returns the correct fizzbuzz answer for any number.
 
     ## Examples:
 
     ```
-    >>> fizzbuzz(1)
+    >>> pyfizzbuzz(1)
     '1'
     ```
 
     ```
-    >>> fizzbuzz(3)
+    >>> pyfizzbuzz(3)
     'fizz'
     ```
     """
