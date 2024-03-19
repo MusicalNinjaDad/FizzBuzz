@@ -11,6 +11,7 @@ path = "src/lib.rs"
 crate-type = ["cdylib", "rlib"]  # required for shared library for Python to import from.
 
 [dependencies]
+pyo3 = "0.20.3"
 
 [dev-dependencies]
 googletest = "0.11.0"
