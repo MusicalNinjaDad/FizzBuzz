@@ -62,13 +62,14 @@ macro_rules! impl_fizzbuzz {
 impl_fizzbuzz!(f32, f64, i16, i32, i64, i128, u8, u16, u32, u64, u128, usize);
 
 #[pyfunction]
-fn fizzbuzz(num: i32) -> String {
+#[pyo3(name = "fizzbuzz")]
+fn py_fizzbuzz(num: i32) -> String {
     num.fizzbuzz()
 }
 
 #[pymodule]
 #[pyo3(name = "fizzbuzzo3")]
-fn my_extension(_py: Python, module: &PyModule) -> PyResult<()> {
-    module.add_function(wrap_pyfunction!(fizzbuzz, module)?)?;
+fn py_fizzbuzzo3(_py: Python, module: &PyModule) -> PyResult<()> {
+    module.add_function(wrap_pyfunction!(py_fizzbuzz, module)?)?;
     Ok(())
 }
