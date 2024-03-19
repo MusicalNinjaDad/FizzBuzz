@@ -19,50 +19,6 @@
 //! assert_eq!(1.fizzbuzz(), "1".to_string());
 //! assert_eq!(3.fizzbuzz(), "fizz".to_string());
 //! ```
-//!
-//! ## The experience:
-//!
-//! Rust is an interesting language to work with and I'd probably try choosing it in preference to C
-//! for work where I need a super-fast, compiled language with the abilty to really tweek the system.
-//! Rust is highly opinionated (not a bad thing) and the compiler is a real pain forcing you into perfect
-//! form - yes that's a good thing, "the book" keeps telling you to be grateful for this! (and always ends
-//! with an exclamation point!)
-//!
-//! ### Pros
-//! I like the focus on raising all the little bugs the C users may find at some point in runtime and
-//! confronting the developer with them upfront.
-//!
-//! ### Cons
-//! For a language with such a strong opinion and focus on maintaining good form, type safety etc. the
-//! testing support and explanation is terrible. Testing is first covered in Chapter 11 of "the book", far too late.
-//!  I was very disappointed with the poor (and late) integration of tests into VSCode's testing API. The discussions
-//! in the language development community regarding how, and whether, to integrate were saddening. Additionally the
-//! explanation of unit vs integration tests in "the book" are simply not quite right and a real chance was missed here
-//! to create a language that not only values good coding form, but also good testing form. Add to that the reliance on
-//! convention forcing a specific folder structure if you want tests to work, not only do tests have to go in the `tests`
-//! directory and helper functions have to go in a subdirectory; there is no support for fixtures, parameterisation etc.
-//! in the built in framework and the VSCode integration won't work if you don't have your source directly in the `src`
-//! directory. In short: very disappointing.
-//!
-//! > In case you're wondering how I would have described testing, here it is in a nutshell:
-//! >
-//! > 1. Well tested code should have tests which are complete *and* decoupled from the specific implementation
-//! > of what they are testing. Test the contracts your interfaces make with the rest of the world.
-//! >
-//! > 1. Place tests that test the internal interface one part of your code offers to another part of your code
-//! > in the `src` folder in the same file as the code you are testing. Aim to decouple this from the specific
-//! > implementation of that code - your test shouldn't change when your code under test does; if your test has
-//! > to change, then something elsewhere in your code should have to change too.
-//! >
-//! > 1. Place tests that test the interface you are offering to the users of our library / crate in the `tests`
-//! > directory. Again, these tests should be independent of the implementation - if you change them then users
-//! > of your library / crate will have to change something as well.
-//!
-//! ## fizzbuzz rules
-//!
-//! Fizzbuzz is a child's counting game where instead of saying a number you must say:
-//! "fizz" if the number is divisible by 3 and "buzz" if divisible by 5 ("fizzbuzz" for
-//! those numbers divsible by both 3 and 5)
 
 use pyo3::prelude::*;
 
