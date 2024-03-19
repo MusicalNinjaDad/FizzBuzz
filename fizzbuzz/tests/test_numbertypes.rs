@@ -1,4 +1,4 @@
-use fizzbuzzo3::FizzBuzz;
+use fizzbuzz::FizzBuzz;
 use googletest::prelude::*;
 
 /// Create a test case which tests all numbers between 1 and 255 for a given type
@@ -56,7 +56,7 @@ mod standard_types {
 mod custom_types {
     use std::{fmt::Display, ops::Rem};
 
-    use fizzbuzzo3::impl_fizzbuzz;
+    use fizzbuzz::impl_fizzbuzz;
 
     use super::*;
 

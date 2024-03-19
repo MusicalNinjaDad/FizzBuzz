@@ -14,13 +14,12 @@
 //! ## Example usage:
 //!
 //! ```
-//! use fizzbuzzo3::FizzBuzz;
+//! use fizzbuzz::FizzBuzz;
 //!
 //! assert_eq!(1.fizzbuzz(), "1".to_string());
 //! assert_eq!(3.fizzbuzz(), "fizz".to_string());
 //! ```
 
-use pyo3::prelude::*;
 
 /// Used to obtain the correct fizzbuzz answer for a given number
 ///
@@ -60,16 +59,3 @@ macro_rules! impl_fizzbuzz {
 }
 
 impl_fizzbuzz!(f32, f64, i16, i32, i64, i128, u8, u16, u32, u64, u128, usize);
-
-#[pyfunction]
-#[pyo3(name = "fizzbuzz")]
-fn py_fizzbuzz(num: i32) -> String {
-    num.fizzbuzz()
-}
-
-#[pymodule]
-#[pyo3(name = "fizzbuzzo3")]
-fn py_fizzbuzzo3(_py: Python, module: &PyModule) -> PyResult<()> {
-    module.add_function(wrap_pyfunction!(py_fizzbuzz, module)?)?;
-    Ok(())
-}
