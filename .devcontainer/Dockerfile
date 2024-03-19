@@ -31,6 +31,7 @@ ENV RUSTUP_HOME=/opt/rustup \
     PATH=/opt/cargo/bin:$PATH
 RUN dnf -y install \
     clang \
+    python3-devel \
     rustup \
 && rustup-init -v -y \
 && rustup component add rust-src \

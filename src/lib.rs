@@ -64,6 +64,8 @@
 //! "fizz" if the number is divisible by 3 and "buzz" if divisible by 5 ("fizzbuzz" for
 //! those numbers divsible by both 3 and 5)
 
+use pyo3::prelude::*;
+
 /// Used to obtain the correct fizzbuzz answer for a given number
 ///
 /// ### Required:
@@ -102,3 +104,15 @@ macro_rules! impl_fizzbuzz {
 }
 
 impl_fizzbuzz!(f32, f64, i16, i32, i64, i128, u8, u16, u32, u64, u128, usize);
+
+#[pyfunction]
+fn fizzbuzz(num: i32) -> String {
+    num.fizzbuzz()
+}
+
+#[pymodule]
+#[pyo3(name = "fizzbuzzo3")]
+fn my_extension(_py: Python, module: &PyModule) -> PyResult<()> {
+    module.add_function(wrap_pyfunction!(fizzbuzz, module)?)?;
+    Ok(())
+}
