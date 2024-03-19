@@ -22,7 +22,7 @@
                 "rust-analyzer.interpret.tests": true,
                 "rust-analyzer.testExplorer": true,
                 // python
-                "python.defaultInterpreterPath": "/usr/bin/python3",
+                "python.defaultInterpreterPath": "./.venv/bin/python3",
                 "python.testing.pytestEnabled": true,
                 // shell
                 "terminal.integrated.defaultProfile.linux": "bash", 
