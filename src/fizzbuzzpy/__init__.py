@@ -8,7 +8,7 @@ expression.
 ## Usage:
 
 ```
-from fizzbuzz import fizzbuzz
+from fizzbuzz import pyfizzbuzz
 ```
 
 """
