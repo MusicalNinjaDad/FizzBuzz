@@ -145,3 +145,7 @@ cython_debug/
 #for keeping Pesonal Access Tokens etc ...
 secrets
 *.PAT
+
+# rust
+Cargo.lock
+target/
