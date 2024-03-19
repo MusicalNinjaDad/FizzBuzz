@@ -12,4 +12,4 @@ from fizzbuzz import pyfizzbuzz
 ```
 
 """
-from .fizzbuzzer import pyfizzbuzz
+from .fizzbuzzer import fizzbuzz

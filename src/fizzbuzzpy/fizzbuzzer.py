@@ -1,4 +1,4 @@
-"""Implements pyfizzbuzz() function."""
+"""Implements fizzbuzz() function."""
 
 from collections import OrderedDict
 from typing import Callable
@@ -23,19 +23,19 @@ def modulo(n: int) -> Callable[[int], bool]:
 
     return _modulo
 
-def pyfizzbuzz(val: int) -> str:
+def fizzbuzz(val: int) -> str:
     """
     Returns the correct fizzbuzz answer for any number.
 
     ## Examples:
 
     ```
-    >>> pyfizzbuzz(1)
+    >>> fizzbuzz(1)
     '1'
     ```
 
     ```
-    >>> pyfizzbuzz(3)
+    >>> fizzbuzz(3)
     'fizz'
     ```
     """
