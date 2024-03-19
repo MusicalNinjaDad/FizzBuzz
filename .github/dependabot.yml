@@ -1,0 +1,23 @@
+version: 2
+updates:
+- package-ecosystem: "pip"
+  directory: "/"
+  schedule:
+    interval: "daily"
+- package-ecosystem: "cargo"
+  directory: "/"
+  schedule:
+    interval: "daily"
+  vendor: true
+- package-ecosystem: "docker"
+  directory: "/.devcontainer"
+  schedule:
+    interval: "daily"
+- package-ecosystem: "devcontainers"
+  directory: "/"
+  schedule:
+    interval: "daily"
+- package-ecosystem: "github-actions"
+  directory: "/"
+  schedule:
+    interval: "daily"
