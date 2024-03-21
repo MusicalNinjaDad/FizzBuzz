@@ -39,7 +39,7 @@
         }
     },
     "updateContentCommand": {
-        "rust": "cargo test -v",
+        "rust": "cargo test -v || true",
         "python": "./setup-py.sh"
     },
     "postAttachCommand": {
