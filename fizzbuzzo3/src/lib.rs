@@ -1,10 +1,19 @@
 use fizzbuzz::FizzBuzz;
 use pyo3::prelude::*;
 
+#[derive(FromPyObject)]
+enum PyNum {
+    Int(isize),
+    Float(f64),
+}
+
 #[pyfunction]
 #[pyo3(name = "fizzbuzz")]
-fn py_fizzbuzz(num: i32) -> String {
-    num.fizzbuzz()
+fn py_fizzbuzz(num: PyNum) -> String {
+    match num {
+    PyNum::Int(n) => n.fizzbuzz(),
+    PyNum::Float(n) => n.fizzbuzz(),
+    }
 }
 
 #[pymodule]
@@ -77,7 +86,7 @@ mod tests {
                 Err(e) => Err(e),
             };
             let result = result.unwrap();
-            let expected_result = "1.0";
+            let expected_result = "1";
             assert_eq!(result, expected_result);
         });
     }

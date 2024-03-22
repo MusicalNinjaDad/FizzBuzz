@@ -33,4 +33,7 @@ def test_rules():
 def test_string():
     with pytest.raises(TypeError):
         fizzbuzz("1")
-        
+
+def test_float():
+    assert fizzbuzz(1.0) == "1"
+    assert fizzbuzz(3.0) == "fizz"
