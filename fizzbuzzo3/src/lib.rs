@@ -25,8 +25,12 @@ mod tests {
         pyo3::append_to_inittab!(py_fizzbuzzo3);
         pyo3::prepare_freethreaded_python();
         Python::with_gil(|py| {
-            let fizzbuzzo3 = py.import_bound("fizzbuzzo3").expect("Failed to import fizzbuzzo3");
-            let fizzbuzz = fizzbuzzo3.getattr("fizzbuzz").expect("Failed to get fizzbuzz function");
+            let fizzbuzzo3 = py
+                .import_bound("fizzbuzzo3")
+                .expect("Failed to import fizzbuzzo3");
+            let fizzbuzz = fizzbuzzo3
+                .getattr("fizzbuzz")
+                .expect("Failed to get fizzbuzz function");
             let result: PyResult<String> = match fizzbuzz.call1((1i32,)) {
                 Ok(r) => r.extract(),
                 Err(e) => Err(e),
@@ -36,16 +40,21 @@ mod tests {
             assert_eq!(result, expected_result);
         });
     }
+
     #[test]
     fn test_fizzbuzz_string() {
         pyo3::append_to_inittab!(py_fizzbuzzo3);
         pyo3::prepare_freethreaded_python();
         Python::with_gil(|py| {
-            let fizzbuzzo3 = py.import_bound("fizzbuzzo3").expect("Failed to import fizzbuzzo3");
-            let fizzbuzz = fizzbuzzo3.getattr("fizzbuzz").expect("Failed to get fizzbuzz function");
+            let fizzbuzzo3 = py
+                .import_bound("fizzbuzzo3")
+                .expect("Failed to import fizzbuzzo3");
+            let fizzbuzz = fizzbuzzo3
+                .getattr("fizzbuzz")
+                .expect("Failed to get fizzbuzz function");
             let result: PyResult<bool> = match fizzbuzz.call1(("one",)) {
                 Ok(_) => Ok(false),
-                Err(error)if error.is_instance_of::<PyTypeError>(py) => Ok(true),
+                Err(error) if error.is_instance_of::<PyTypeError>(py) => Ok(true),
                 Err(e) => Err(e),
             };
             assert!(result.unwrap());
