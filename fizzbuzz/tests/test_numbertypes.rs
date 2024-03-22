@@ -42,6 +42,7 @@ mod standard_types {
         test_i32: i32,
         test_i64: i64,
         test_i128: i128,
+        test_isize: isize,
         test_u8: u8,
         test_u16: u16,
         test_u32: u32,
