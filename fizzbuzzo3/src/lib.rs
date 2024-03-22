@@ -14,12 +14,9 @@ fn py_fizzbuzzo3(module: &Bound<'_, PyModule>) -> PyResult<()> {
     Ok(())
 }
 
-// tests/my_integration_tests.rs
-
 #[cfg(test)]
 mod tests {
     use super::*;
-    // use pyo3::prelude::*;
 
     #[test]
     fn test_fizzbuzz() {
@@ -28,9 +25,13 @@ mod tests {
         Python::with_gil(|py| {
             let fizzbuzzo3 = py.import_bound("fizzbuzzo3").expect("Failed to import fizzbuzzo3");
             let fizzbuzz = fizzbuzzo3.getattr("fizzbuzz").expect("Failed to get fizzbuzz function");
-            let result = fizzbuzz.call1((1i32,)).expect("Failed to call fizzbuzz");
+            let result: PyResult<String> = match fizzbuzz.call1((1i32,)) {
+                Ok(r) => r.extract(),
+                Err(e) => Err(e),
+            };
+            let result = result.unwrap();
             let expected_result = "1";
-            assert_eq!(result.extract::<String>().unwrap(), expected_result);
+            assert_eq!(result, expected_result);
         });
     }
 }
