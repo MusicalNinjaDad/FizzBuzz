@@ -2,10 +2,7 @@
 
 members = [
     "fizzbuzz",
-    "fizzbuzzo3"
-]
-
-exclude = [
+    "fizzbuzzo3",
     "pyo3testing"
 ]
 

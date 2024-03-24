@@ -10,3 +10,5 @@ crate-type = ["rlib"]  # cdylib required for python import, rlib required for ru
 
 [dependencies]
 pyo3 = "0.21.0-beta.0"
+quote = "1.0.35"
+proc-macro2 = "1.0.74"
