@@ -1,11 +1,14 @@
 use quote::quote;
 use proc_macro2::TokenStream as TokenStream2;
 
-fn importmodule(module: TokenStream2, input: TokenStream2) -> TokenStream2 {
+fn importmodule(module: TokenStream2, modulename: String, input: TokenStream2) -> TokenStream2 {
     quote!(
         pyo3::append_to_inittab!(#module);
         pyo3::prepare_freethreaded_python();
         Python::with_gil(|py| {
+            let fizzbuzzo3 = py
+            .import_bound(#modulename)
+            .expect("Failed to import fizzbuzzo3");
             #input
         });
     )
@@ -36,7 +39,7 @@ mod tests {
             });
         };
 
-        let output = importmodule(attr, input);
+        let output = importmodule(attr, "fizzbuzzo3".to_string(), input);
 
         assert_eq!(output.to_string(), expected.to_string());
 
