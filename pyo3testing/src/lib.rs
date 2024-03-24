@@ -1,12 +1,15 @@
 use quote::quote;
-use proc_macro2::TokenStream as TokenStream2;
+use proc_macro2::{TokenStream as TokenStream2, Span};
+use syn::Ident;
 
 fn importmodule(module: TokenStream2, modulename: String, input: TokenStream2) -> TokenStream2 {
+    let moduleident = Ident::new(&modulename, Span::mixed_site());
+    
     quote!(
         pyo3::append_to_inittab!(#module);
         pyo3::prepare_freethreaded_python();
         Python::with_gil(|py| {
-            let fizzbuzzo3 = py
+            let #moduleident = py
             .import_bound(#modulename)
             .expect("Failed to import fizzbuzzo3");
             #input
