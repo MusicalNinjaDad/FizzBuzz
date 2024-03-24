@@ -20,7 +20,10 @@ mod tests {
 
         let expected = quote!{
             pyo3::append_to_inittab!(py_fizzbuzzo3);
-            assert!(true);
+            pyo3::prepare_freethreaded_python();
+            Python::with_gil(|py| {
+                assert!(true);
+            });
         };
 
         let output = importmodule(input);
