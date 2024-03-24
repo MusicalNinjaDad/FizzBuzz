@@ -2,11 +2,16 @@ use quote::quote;
 use proc_macro2::TokenStream as TokenStream2;
 
 fn importmodule(input: TokenStream2) -> TokenStream2 {
-    input
+    quote!(
+        pyo3::append_to_inittab!(py_fizzbuzzo3);
+        #input
+    )
 }
 
 #[cfg(test)]
 mod tests {
+    use quote::ToTokens;
+
     use super::*;
 
     #[test]
