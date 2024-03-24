@@ -5,4 +5,8 @@ members = [
     "fizzbuzzo3"
 ]
 
+exclude = [
+    "pyo3testing"
+]
+
 resolver = "2"

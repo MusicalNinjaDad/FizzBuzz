@@ -1,0 +1,12 @@
+[package]
+name = "pyo3testing"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "pyo3testing"
+path = "src/lib.rs"
+crate-type = ["rlib"]  # cdylib required for python import, rlib required for rust tests.
+
+[dependencies]
+pyo3 = "0.21.0-beta.0"
