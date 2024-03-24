@@ -10,8 +10,6 @@ fn importmodule(input: TokenStream2) -> TokenStream2 {
 
 #[cfg(test)]
 mod tests {
-    use quote::ToTokens;
-
     use super::*;
 
     #[test]
