@@ -4,7 +4,10 @@ use proc_macro2::TokenStream as TokenStream2;
 fn importmodule(input: TokenStream2) -> TokenStream2 {
     quote!(
         pyo3::append_to_inittab!(py_fizzbuzzo3);
-        #input
+        pyo3::prepare_freethreaded_python();
+        Python::with_gil(|py| {
+            #input
+        });
     )
 }
 
