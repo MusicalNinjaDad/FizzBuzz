@@ -2,19 +2,28 @@ use quote::quote;
 use proc_macro2::{TokenStream as TokenStream2, Span};
 use syn::Ident;
 
-fn importmodule(module: TokenStream2, modulename: String, input: TokenStream2) -> TokenStream2 {
-    let moduleident = Ident::new(&modulename, Span::mixed_site());
+fn importmodule(module: Pyo3Import, input: TokenStream2) -> TokenStream2 {
     
+    let moduleident = module.identifier;
+    let pymoduleident = Ident::new(&module.name, Span::mixed_site());
+    let modulename = module.name;
+    let modulerror = "Failed to import ".to_string() + &modulename;
+
     quote!(
-        pyo3::append_to_inittab!(#module);
+        pyo3::append_to_inittab!(#moduleident);
         pyo3::prepare_freethreaded_python();
         Python::with_gil(|py| {
-            let #moduleident = py
+            let #pymoduleident = py
             .import_bound(#modulename)
-            .expect("Failed to import fizzbuzzo3");
+            .expect(#modulerror);
             #input
         });
     )
+}
+
+struct Pyo3Import {
+    identifier: Ident,
+    name: String
 }
 
 #[cfg(test)]
@@ -27,9 +36,12 @@ mod tests {
             assert!(true);
         };
 
-        let attr = quote!(
-            py_fizzbuzzo3
-        );
+        let py_fizzbuzzo3 = Ident::new("py_fizzbuzzo3", Span::call_site());
+
+        let module = Pyo3Import {
+            identifier: py_fizzbuzzo3,
+            name: "fizzbuzzo3".to_string()
+        };
 
         let expected = quote!{
             pyo3::append_to_inittab!(py_fizzbuzzo3);
@@ -42,7 +54,7 @@ mod tests {
             });
         };
 
-        let output = importmodule(attr, "fizzbuzzo3".to_string(), input);
+        let output = importmodule(module, input);
 
         assert_eq!(output.to_string(), expected.to_string());
 
