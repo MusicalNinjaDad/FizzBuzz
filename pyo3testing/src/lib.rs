@@ -1,9 +1,8 @@
+use proc_macro2::{Span, TokenStream as TokenStream2};
 use quote::quote;
-use proc_macro2::{TokenStream as TokenStream2, Span};
 use syn::Ident;
 
 fn import_pyo3_from(import: Pyo3Import, input: TokenStream2) -> TokenStream2 {
-    
     let moduleident = import.moduleidentifier;
     let pymoduleident = Ident::new(&import.modulename, Span::mixed_site());
     let modulename = import.modulename;
@@ -38,7 +37,7 @@ mod tests {
 
     #[test]
     fn test_importmodule() {
-        let input = quote!{
+        let input = quote! {
             assert!(true);
         };
 
@@ -50,7 +49,7 @@ mod tests {
             functionname: "fizzbuzz".to_string(),
         };
 
-        let expected = quote!{
+        let expected = quote! {
             pyo3::append_to_inittab!(py_fizzbuzzo3);
             pyo3::prepare_freethreaded_python();
             Python::with_gil(|py| {
@@ -67,6 +66,5 @@ mod tests {
         let output = import_pyo3_from(module, input);
 
         assert_eq!(output.to_string(), expected.to_string());
-
     }
 }
