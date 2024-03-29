@@ -9,6 +9,7 @@
                 // rust
                 "rust-lang.rust-analyzer",
                 "andrewbrey.rust-test-highlight",
+                "vadimcn.vscode-lldb",
                 // python
                 "ms-python.python",
                 "ms-python.vscode-pylance",
