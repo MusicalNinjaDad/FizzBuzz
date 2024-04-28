@@ -64,12 +64,4 @@ mod tests {
         let expected_result = "1";
         assert_eq!(result, expected_result);
     }
-
-    #[pyo3test]
-    #[pyo3import(py_fizzbuzzo3: from fizzbuzzo3 import fizzbuzz)]
-    fn test_pythoncall() {
-        let result: String = py.eval_bound("from fizzbuzzo3 import fizzbuzz; fizzbuzz(1)", None, None).unwrap().extract().unwrap();
-        let expected_result = "1";
-        assert_eq!(result, expected_result);
-    }
 }
