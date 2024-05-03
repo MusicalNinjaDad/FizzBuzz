@@ -24,7 +24,10 @@ pub trait FizzBuzz {
     /// - the number in other cases
     ///
     /// A default implementation is available for any type `<Num>` which supports
-    /// `<Num>::from(<u8>)`, `std::fmt::Display`, `PartialEq` and `<&Num> % <Num>`
+    /// `<Num>::try_from(<u8>)`: `Num` must be able to constructed from 0, 3 & 5.
+    /// `std::fmt::Display`: Allows `Num` to be formatted as a string.
+    /// `PartialEq`: Enables comparison operations for `Num`.
+    /// `<&Num> % <Num>`: Allows modulus operations between two `Num`.
     fn fizzbuzz(&self) -> String;
 }
 
