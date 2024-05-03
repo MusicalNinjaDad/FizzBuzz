@@ -16,18 +16,18 @@
 /// ### Required:
 /// - fn fizzbuzz() -> String
 pub trait FizzBuzz {
-    /// Required function which will return a `String` containing:
+    /// Accepts a number and returns a `String` containing:
     ///
-    /// - `fizzbuzz` if the number is directly divisible by 5 and 3
+    /// - `fizzbuzz` if the number is directly divisible by 5 *and* 3
     /// - `fizz` if the number is directly divisible by 3
     /// - `buzz` if the number is directly divisible by 5
     /// - the number in other cases
     ///
     /// A default implementation is available for any type `<Num>` which supports
-    /// `<Num>::try_from(<u8>)`: `Num` must be able to constructed from 0, 3 & 5.
-    /// `std::fmt::Display`: Allows `Num` to be formatted as a string.
-    /// `PartialEq`: Enables comparison operations for `Num`.
-    /// `<&Num> % <Num>`: Allows modulus operations between two `Num`.
+    /// - `<Num>::try_from(<u8>)`: `Num` must be able to constructed from 0, 3 & 5.
+    /// - `std::fmt::Display`: Allows `Num` to be formatted as a string.
+    /// - `PartialEq`: Enables comparison operations for `Num`.
+    /// - `<&Num> % <Num>`: Allows modulus operations between two `Num`.
     fn fizzbuzz(&self) -> String;
 }
 
