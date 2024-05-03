@@ -38,6 +38,7 @@ mod standard_types {
     test_this! {
         test_f32: f32,
         test_f64: f64,
+        test_i8: i8,
         test_i16: i16,
         test_i32: i32,
         test_i64: i64,
