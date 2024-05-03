@@ -22,6 +22,9 @@ pub trait FizzBuzz {
     /// - `fizz` if the number is directly divisible by 3
     /// - `buzz` if the number is directly divisible by 5
     /// - the number in other cases
+    /// 
+    /// A default implementation is available for any type `<Num>` which supports
+    /// `<Num>::from(<u8>)`, `std::fmt::Display`, `PartialEq` and `<&Num> % <Num>`
     fn fizzbuzz(&self) -> String;
 }
 
@@ -32,7 +35,7 @@ where
     Num: From<u8> + std::fmt::Display + PartialEq,
     for<'a> &'a Num: std::ops::Rem<Num, Output = Num>,
 {
-    fn fizzbuzz(self: &Num) -> String {
+    fn fizzbuzz(&self) -> String {
         match (
             self % <Num>::from(3_u8) == <Num>::from(0_u8),
             self % <Num>::from(5_u8) == <Num>::from(0_u8),
