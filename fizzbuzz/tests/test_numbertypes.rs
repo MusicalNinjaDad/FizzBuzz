@@ -9,10 +9,10 @@ macro_rules! test_this {
         $(
             #[googletest::test]
             fn $id() {
-                let allnums: Vec<$t> = (1u8..=255).step_by(1).map(|i| {<$t>::from(i)}).collect();
-                let fifteens: Vec<$t> = (0u8..=255).step_by(15).map(|i| {<$t>::from(i)}).collect();
-                let fives: Vec<$t> = (0u8..=255).step_by(5).map(|i| {<$t>::from(i)}).collect();
-                let threes: Vec<$t> = (0u8..=255).step_by(3).map(|i| {<$t>::from(i)}).collect();
+                let allnums: Vec<$t> = (1u8..=127).step_by(1).map(|i| {<$t>::try_from(i)}.unwrap()).collect();
+                let fifteens: Vec<$t> = (0u8..=127).step_by(15).map(|i| {<$t>::try_from(i).unwrap()}).collect();
+                let fives: Vec<$t> = (0u8..=127).step_by(5).map(|i| {<$t>::try_from(i).unwrap()}).collect();
+                let threes: Vec<$t> = (0u8..=127).step_by(3).map(|i| {<$t>::try_from(i).unwrap()}).collect();
 
                 for num in allnums {
                     let result = num.fizzbuzz();
@@ -38,6 +38,7 @@ mod standard_types {
     test_this! {
         test_f32: f32,
         test_f64: f64,
+        test_i8: i8,
         test_i16: i16,
         test_i32: i32,
         test_i64: i64,
@@ -49,6 +50,19 @@ mod standard_types {
         test_u64: u64,
         test_u128: u128,
         test_usize: usize
+    }
+
+    #[test]
+    fn test_negative() {
+        assert_eq!((-1_i8).fizzbuzz(), "-1");
+        assert_eq!((-3_i8).fizzbuzz(), "fizz");
+        assert_eq!((-5_i8).fizzbuzz(), "buzz");
+        assert_eq!((-15_i8).fizzbuzz(), "fizzbuzz");
+    }
+
+    #[test]
+    fn test_not_whole_number() {
+        assert_eq!(3.2_f32.fizzbuzz(), "3.2");
     }
 }
 

@@ -16,15 +16,18 @@
 /// ### Required:
 /// - fn fizzbuzz() -> String
 pub trait FizzBuzz {
-    /// Required function which will return a `String` containing:
+    /// Accepts a number and returns a `String` containing:
     ///
-    /// - `fizzbuzz` if the number is directly divisible by 5 and 3
+    /// - `fizzbuzz` if the number is directly divisible by 5 *and* 3
     /// - `fizz` if the number is directly divisible by 3
     /// - `buzz` if the number is directly divisible by 5
     /// - the number in other cases
-    /// 
+    ///
     /// A default implementation is available for any type `<Num>` which supports
-    /// `<Num>::from(<u8>)`, `std::fmt::Display`, `PartialEq` and `<&Num> % <Num>`
+    /// - `<Num>::try_from(<u8>)`: `Num` must be able to be constructed from 0, 3 & 5.
+    /// - `std::fmt::Display`: Allows `Num` to be formatted as a string.
+    /// - `PartialEq`: Enables comparison operations for `Num`.
+    /// - `<&Num> % <Num>`: Allows modulus operations between two `Num`.
     fn fizzbuzz(&self) -> String;
 }
 
@@ -32,14 +35,23 @@ pub trait FizzBuzz {
 /// and `<T> % <T>`
 impl<Num> FizzBuzz for Num
 where
-    Num: From<u8> + std::fmt::Display + PartialEq,
+    Num: TryFrom<u8> + std::fmt::Display + PartialEq,
     for<'a> &'a Num: std::ops::Rem<Num, Output = Num>,
 {
     fn fizzbuzz(&self) -> String {
-        match (
-            self % <Num>::from(3_u8) == <Num>::from(0_u8),
-            self % <Num>::from(5_u8) == <Num>::from(0_u8),
-        ) {
+        let three = match <Num>::try_from(3_u8) {
+            Ok(three) => three,
+            Err(_) => return self.to_string(),
+        };
+        let five = match <Num>::try_from(5_u8) {
+            Ok(five) => five,
+            Err(_) => return self.to_string(),
+        };
+        let zero = match <Num>::try_from(0_u8) {
+            Ok(zero) => zero,
+            Err(_) => return self.to_string(),
+        };
+        match (self % three == zero, self % five == zero) {
             (true, true) => "fizzbuzz".to_string(),
             (true, false) => "fizz".to_string(),
             (false, true) => "buzz".to_string(),
