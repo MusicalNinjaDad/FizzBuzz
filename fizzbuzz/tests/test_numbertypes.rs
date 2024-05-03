@@ -51,6 +51,19 @@ mod standard_types {
         test_u128: u128,
         test_usize: usize
     }
+
+    #[test]
+    fn test_negative() {
+        assert_eq!((-1_i8).fizzbuzz(), "-1");
+        assert_eq!((-3_i8).fizzbuzz(), "fizz");
+        assert_eq!((-5_i8).fizzbuzz(), "buzz");
+        assert_eq!((-15_i8).fizzbuzz(), "fizzbuzz");
+    }
+
+    #[test]
+    fn test_not_whole_number() {
+        assert_eq!(3.2_f32.fizzbuzz(), "3.2");
+    }
 }
 
 /// Create a custom type based on i16, add the minimum set of non-derivable
