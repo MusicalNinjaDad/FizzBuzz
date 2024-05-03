@@ -57,8 +57,6 @@ mod standard_types {
 mod custom_types {
     use std::{fmt::Display, ops::Rem};
 
-    use fizzbuzz::impl_fizzbuzz;
-
     use super::*;
 
     #[derive(PartialEq)]
@@ -80,8 +78,6 @@ mod custom_types {
             Self(<i16>::from(value))
         }
     }
-
-    impl_fizzbuzz!(Myint);
 
     test_this! {
         my_int16: Myint

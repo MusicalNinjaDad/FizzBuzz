@@ -1,15 +1,6 @@
-//! A Trait implementation of "fizzbuzz" providing implemented Traits on all standard number
-//! types *except* `i8` and a macro to implement the Trait on custom types.
+//! A Trait implementation of "fizzbuzz" providing a default implementation for all types which can be
+//! converted from u8 (everything *except* `i8`)
 //!
-//! Looking at rust for the first time a couple of things stood out to me that were applicable in the
-//! context of fizzbuzz:
-//!
-//! - firstly; the segregation of traditional classes into their data structures and method
-//! implementations. This made a `FizzBuzz` `Trait` feel like the right approach.
-//! - secondly; the languages love of exclamation marks (`!`), which make a regular appearance in
-//! "the book" and require you to be sure in your belief that `macro_rules!` ;) Exporting the macro
-//! seemed like the friendly thing to do for anyone who happens to have their own `struct` which could
-//! be made more valuable by it's ability to fizzbuzz!
 //!
 //! ## Example usage:
 //!
@@ -19,7 +10,6 @@
 //! assert_eq!(1.fizzbuzz(), "1".to_string());
 //! assert_eq!(3.fizzbuzz(), "fizz".to_string());
 //! ```
-
 
 /// Used to obtain the correct fizzbuzz answer for a given number
 ///
@@ -37,25 +27,20 @@ pub trait FizzBuzz {
 
 /// Implements the FizzBuzz trait for any type `<T>` which supports `<T>::from(<u8>)`
 /// and `<T> % <T>`
-#[macro_export]
-macro_rules! impl_fizzbuzz {
-    ( $( $t:ty), *) => { // Any number of types, optionally separated by commas
-        $(
-            impl FizzBuzz for $t {
-                fn fizzbuzz(&self) -> String {
-                    match (
-                        self % <$t>::from(3u8) == <$t>::from(0u8),
-                        self % <$t>::from(5u8) == <$t>::from(0u8)
-                    ) {
-                        (true, true)    => "fizzbuzz".to_string(),
-                        (true, false)   => "fizz".to_string(),
-                        (false, true)   => "buzz".to_string(),
-                        _               => self.to_string()
-                    }
-                }
-            }
-        )*
-    };
+impl<Num> FizzBuzz for Num
+where
+    Num: From<u8> + std::fmt::Display + PartialEq,
+    for<'a> &'a Num: std::ops::Rem<Num, Output = Num>,
+{
+    fn fizzbuzz(self: &Num) -> String {
+        match (
+            self % <Num>::from(3_u8) == <Num>::from(0_u8),
+            self % <Num>::from(5_u8) == <Num>::from(0_u8),
+        ) {
+            (true, true) => "fizzbuzz".to_string(),
+            (true, false) => "fizz".to_string(),
+            (false, true) => "buzz".to_string(),
+            _ => self.to_string(),
+        }
+    }
 }
-
-impl_fizzbuzz!(f32, f64, i16, i32, i64, i128, isize, u8, u16, u32, u64, u128, usize);
