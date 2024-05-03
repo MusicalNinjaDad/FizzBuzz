@@ -9,10 +9,10 @@ macro_rules! test_this {
         $(
             #[googletest::test]
             fn $id() {
-                let allnums: Vec<$t> = (1u8..=255).step_by(1).map(|i| {<$t>::from(i)}).collect();
-                let fifteens: Vec<$t> = (0u8..=255).step_by(15).map(|i| {<$t>::from(i)}).collect();
-                let fives: Vec<$t> = (0u8..=255).step_by(5).map(|i| {<$t>::from(i)}).collect();
-                let threes: Vec<$t> = (0u8..=255).step_by(3).map(|i| {<$t>::from(i)}).collect();
+                let allnums: Vec<$t> = (1u8..=127).step_by(1).map(|i| {<$t>::try_from(i)}.unwrap()).collect();
+                let fifteens: Vec<$t> = (0u8..=127).step_by(15).map(|i| {<$t>::try_from(i).unwrap()}).collect();
+                let fives: Vec<$t> = (0u8..=127).step_by(5).map(|i| {<$t>::try_from(i).unwrap()}).collect();
+                let threes: Vec<$t> = (0u8..=127).step_by(3).map(|i| {<$t>::try_from(i).unwrap()}).collect();
 
                 for num in allnums {
                     let result = num.fizzbuzz();
