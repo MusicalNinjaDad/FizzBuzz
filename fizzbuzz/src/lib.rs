@@ -32,13 +32,25 @@ pub trait FizzBuzz {
 /// and `<T> % <T>`
 impl<Num> FizzBuzz for Num
 where
-    Num: From<u8> + std::fmt::Display + PartialEq,
+    Num: TryFrom<u8> + std::fmt::Display + PartialEq,
     for<'a> &'a Num: std::ops::Rem<Num, Output = Num>,
 {
     fn fizzbuzz(&self) -> String {
+        let three = match <Num>::try_from(3_u8) {
+            Ok(three) => three,
+            Err(_) => return self.to_string()
+        };
+        let five = match <Num>::try_from(5_u8) {
+            Ok(five) => five,
+            Err(_) => return self.to_string()
+        };
+        let zero = match <Num>::try_from(0_u8) {
+            Ok(zero) => zero,
+            Err(_) => return self.to_string()
+        };
         match (
-            self % <Num>::from(3_u8) == <Num>::from(0_u8),
-            self % <Num>::from(5_u8) == <Num>::from(0_u8),
+            self % three == zero,
+            self % five == zero,
         ) {
             (true, true) => "fizzbuzz".to_string(),
             (true, false) => "fizz".to_string(),
