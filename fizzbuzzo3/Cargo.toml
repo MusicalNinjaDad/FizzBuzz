@@ -9,7 +9,7 @@ path = "src/lib.rs"
 crate-type = ["cdylib"]  # cdylib required for python import, rlib required for rust tests.
 
 [dependencies]
-pyo3 = { git = "https://github.com/MusicalNinjaDad/pyo3.git", branch = "pyo3-testing" }
+pyo3 = { path = "../pyo3" }
 fizzbuzz = { path = "../fizzbuzz", version = "1.0.0"}
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
