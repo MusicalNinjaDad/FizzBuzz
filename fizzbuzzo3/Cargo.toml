@@ -10,6 +10,6 @@ crate-type = ["cdylib"]  # cdylib required for python import, rlib required for 
 
 [dependencies]
 pyo3 = { path = "../pyo3" }
-fizzbuzz = { path = "../fizzbuzz", version = "1.0.0"}
+fizzbuzz = { path = "../fizzbuzz" }
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
