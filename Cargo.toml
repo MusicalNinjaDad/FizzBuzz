@@ -5,8 +5,4 @@ members = [
     "fizzbuzzo3"
 ]
 
-exclude = [
-    "pyo3"
-]
-
 resolver = "2"
