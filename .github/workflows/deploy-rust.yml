@@ -15,9 +15,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+    - name: Setup Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+    - name: Build and package
+      run: |
+        cargo build --release
+        cargo package
     - name: Login to ADO
       env:
         PAT: ${{ secrets.ADO_TOKEN }}
-      run: echo -n Basic $(echo -n PAT:$PAT | base64) | cargo login --registry FizzBuzz
+      run: cargo login --registry FizzBuzz --token "$PAT" 
     - name: Publish to ADO
       run: cargo publish --package fizzbuzz --registry FizzBuzz --token "$ADO_TOKEN"
