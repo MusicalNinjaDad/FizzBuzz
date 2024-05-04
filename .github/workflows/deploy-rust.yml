@@ -24,8 +24,8 @@ jobs:
         toolchain: stable
     - name: Build and package
       run: |
-        cargo build --release
-        cargo package
+        cargo build --release -p fizzbuzz
+        cargo package -p fizzbuzz
     - name: Login to ADO
       env:
         PAT: ${{ secrets.ADO_TOKEN }}
