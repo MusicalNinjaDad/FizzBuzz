@@ -1,5 +1,5 @@
 //! A Trait implementation of "fizzbuzz" providing a default implementation for all types which can be
-//! converted from u8 (everything *except* `i8`)
+//! constructed from `0`,`3`,`5` and support the `%` operator.
 //!
 //!
 //! ## Example usage:
@@ -24,10 +24,10 @@ pub trait FizzBuzz {
     /// - the number in other cases
     ///
     /// A default implementation is available for any type `<Num>` which supports
-    /// - `<Num>::try_from(<u8>)`: `Num` must be able to be constructed from 0, 3 & 5.
-    /// - `std::fmt::Display`: Allows `Num` to be formatted as a string.
+    /// - `<Num>::try_from(<u8>)`: `Num` must be able to be constructed from `0`, `3` & `5`.
+    /// - `std::fmt::Display`: Allows `Num` to be formatted as a `String`.
     /// - `PartialEq`: Enables comparison operations for `Num`.
-    /// - `<&Num> % <Num>`: Allows modulus operations between two `Num`.
+    /// - `<&Num>::Rem<Num, Output = Num>`: Allows `&Num % Num`.
     fn fizzbuzz(&self) -> String;
 }
 
