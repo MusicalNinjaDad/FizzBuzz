@@ -28,7 +28,7 @@ jobs:
         cargo package -p fizzbuzz
     - name: Login to ADO
       env:
-        CARGO_LOGIN_TOKEN: ${{ secrets.ADO_TOKEN }}
-      run: cargo login --registry FizzBuzz
+        PAT: ${{ secrets.ADO_TOKEN }}
+      run: echo $PAT | cargo login --registry FizzBuzz
     - name: Publish to ADO
       run: cargo publish --package fizzbuzz --registry FizzBuzz
