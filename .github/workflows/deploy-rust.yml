@@ -29,4 +29,4 @@ jobs:
         PAT: ${{ secrets.ADO_TOKEN }}
       run: cargo login --registry FizzBuzz --token "$PAT" 
     - name: Publish to ADO
-      run: cargo publish --package fizzbuzz --registry FizzBuzz --token "$ADO_TOKEN"
+      run: cargo publish --package fizzbuzz --registry FizzBuzz
