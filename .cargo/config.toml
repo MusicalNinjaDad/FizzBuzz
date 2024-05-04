@@ -1,0 +1,2 @@
+[registries]
+FizzBuzz = { index = "sparse+https://pkgs.dev.azure.com/MusicalNinjas/FizzBuzz/_packaging/FizzBuzz/Cargo/index/" }
