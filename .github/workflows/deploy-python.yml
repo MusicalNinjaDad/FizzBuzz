@@ -1,0 +1,36 @@
+concurrency: ADO-twine
+
+on:
+  workflow_dispatch:
+  push: 
+    tags: "python-v*"
+
+jobs:
+  quality-check:
+    uses: ./.github/workflows/python.yml
+
+  publish:
+    environment: ADO-Packages
+    needs: quality-check
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: 3.12
+    - name: Setup Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+    - name: Install Build tooling
+      run: pip install twine build
+    - name: Build sdist
+      run: python -m build
+    - name: Install ADO tooling
+      run: pip install keyring artifacts-keyring
+    - name: Upload to ADO
+      env: 
+        TWINE_REPOSITORY_URL: https://pkgs.dev.azure.com/MusicalNinjas/FizzBuzz/_packaging/FizzBuzz/pypi/upload/
+        TWINE_PASSWORD: ${{ secrets.ADO_TOKEN }}
+      run: twine upload --non-interactive dist/*
