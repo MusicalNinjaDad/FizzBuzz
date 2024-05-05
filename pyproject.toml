@@ -54,18 +54,6 @@ addopts = [
     "--doctest-mdcodeblocks",
     "--doctest-glob='*.md'",
 ]
-norecursedirs = [
-    "pyo3", # by adding pyo3 we also need to specify all standard exclusions ...
-    "*.egg",
-    ".*",
-    "_darcs",
-    "build",
-    "CVS",
-    "dist",
-    "node_modules",
-    "venv",
-    "{arch}",
-]
 
 [tool.coverage.run]
 branch=true
