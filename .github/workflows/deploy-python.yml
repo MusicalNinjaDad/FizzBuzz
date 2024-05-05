@@ -32,5 +32,6 @@ jobs:
     - name: Upload to ADO
       env: 
         TWINE_REPOSITORY_URL: https://pkgs.dev.azure.com/MusicalNinjas/FizzBuzz/_packaging/FizzBuzz/pypi/upload/
+        TWINE_USERNAME: FizzBuzz
         TWINE_PASSWORD: ${{ secrets.ADO_TOKEN }}
       run: twine upload --non-interactive dist/*
