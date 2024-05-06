@@ -38,6 +38,7 @@ target = "fizzbuzzo3"  # The last part of the name (e.g. "_lib") has to match li
                              # but you can add a prefix to nest it inside of a Python package.
 path = "fizzbuzzo3/Cargo.toml"      # Default value, can be omitted
 binding = "PyO3"         # Default value, can be omitted
+features = ["pyo3/extension-module"]
 
 [project.optional-dependencies]
 dev = [
