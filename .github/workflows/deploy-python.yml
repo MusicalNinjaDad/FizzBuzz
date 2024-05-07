@@ -6,32 +6,46 @@ on:
     tags: "python-v*"
 
 jobs:
-  quality-check:
+  python-checks:
     uses: ./.github/workflows/python.yml
 
-  publish:
-    environment: ADO-Packages
-    needs: quality-check
+  rust-checks:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - uses: actions/setup-python@v5
+    - name: Set up Python
+      uses: actions/setup-python@v5
       with:
-        python-version: 3.12
+        python-version: 3.8
+    - name: Test fizzbuzzo3
+      run: cargo test --package fizzbuzzo3
+
+  publish:
+    environment: ADO-Packages
+    needs: [python-checks, rust-checks]
+    runs-on: ubuntu-latest
+    container: quay.io/pypa/manylinux2014_x86_64
+    steps:
+    - uses: actions/checkout@v4
     - name: Setup Rust
       uses: actions-rs/toolchain@v1
       with:
         profile: minimal
         toolchain: stable
-    - name: Install Build tooling
-      run: pip install twine build
-    - name: Build sdist
-      run: python -m build
+    - name: Build cp38-abi3 sdist
+      run: python3.8 -m build --config-setting=--build-option=--py-limited-api=cp38
+    - name: Auditwheel 
+      run: |
+        for whl in dist/*linux*.whl; do
+          auditwheel repair "$whl"
+        done \
+        && rm -f dist/*linux*.whl \
+        && mv wheelhouse/* dist
     - name: Install ADO tooling
-      run: pip install keyring artifacts-keyring
+      run: python3.12 -m pip install keyring artifacts-keyring
     - name: Upload to ADO
       env: 
         TWINE_REPOSITORY_URL: https://pkgs.dev.azure.com/MusicalNinjas/FizzBuzz/_packaging/FizzBuzz/pypi/upload/
         TWINE_USERNAME: FizzBuzz
         TWINE_PASSWORD: ${{ secrets.ADO_TOKEN }}
-      run: twine upload --non-interactive dist/*
+      run: python3.12 -m twine upload --non-interactive dist/*
