@@ -38,6 +38,7 @@ jobs:
           CIBW_BEFORE_ALL_MACOS: "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal"
           CIBW_BEFORE_ALL_WINDOWS: "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --target i686-pc-windows-gnu --profile minimal"
           CIBW_ENVIRONMENT_LINUX: PATH="$HOME/.cargo/bin:$PATH"
+          CIBW_SKIP: "*-musllinux_i686"
         # with:
         #   package-dir: .
         #   output-dir: wheelhouse
