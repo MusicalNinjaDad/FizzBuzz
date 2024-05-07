@@ -25,7 +25,6 @@ jobs:
     name: Build wheels on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
-      fail-fast: false
       matrix:
         # macos-13 is an intel runner, macos-14 is apple silicon
         os: [ubuntu-latest, windows-latest, macos-13, macos-14]
@@ -35,9 +34,9 @@ jobs:
         uses: pypa/cibuildwheel@v2.17.0
         env:
           # CIBW_CONFIG_SETTINGS: "--build-option=--py-limited-api=cp38"
-          CIBW_BEFORE_ALL_LINUX: "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile complete"
-          CIBW_BEFORE_ALL_MACOS: "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile complete"
-          CIBW_BEFORE_ALL_WINDOWS: "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile complete --target i686-pc-windows-gnu"
+          CIBW_BEFORE_ALL_LINUX: "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && source $HOME/.cargo/env"
+          CIBW_BEFORE_ALL_MACOS: "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y"
+          CIBW_BEFORE_ALL_WINDOWS: "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --target i686-pc-windows-gnu"
         # with:
         #   package-dir: .
         #   output-dir: wheelhouse
