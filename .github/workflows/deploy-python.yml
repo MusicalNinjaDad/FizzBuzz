@@ -35,9 +35,9 @@ jobs:
         uses: pypa/cibuildwheel@v2.17.0
         env:
           # CIBW_CONFIG_SETTINGS: "--build-option=--py-limited-api=cp38"
-          CIBW_BEFORE_ALL_LINUX: "yum install -y rust cargo"
-          CIBW_BEFORE_ALL_MACOS: "brew install rust"
-          CIBW_BEFORE_ALL_WINDOWS: "choco install -y rust"
+          CIBW_BEFORE_ALL_LINUX: "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile complete"
+          CIBW_BEFORE_ALL_MACOS: "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile complete"
+          CIBW_BEFORE_ALL_WINDOWS: "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile complete --target i686-pc-windows-gnu"
         # with:
         #   package-dir: .
         #   output-dir: wheelhouse
