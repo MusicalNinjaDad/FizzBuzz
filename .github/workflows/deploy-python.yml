@@ -70,8 +70,8 @@ jobs:
         pattern: cibw-*
         path: dist
         merge-multiple: true
-    - name: Install ADO tooling
-      run: python -m pip install keyring artifacts-keyring
+    - name: Install tooling
+      run: python -m pip install twine keyring artifacts-keyring
     - name: Upload to ADO
       env: 
         TWINE_REPOSITORY_URL: https://pkgs.dev.azure.com/MusicalNinjas/FizzBuzz/_packaging/FizzBuzz/pypi/upload/
