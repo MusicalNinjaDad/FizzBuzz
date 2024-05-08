@@ -1,3 +1,4 @@
+name: Deploy Python
 concurrency: ADO-twine
 
 on:
