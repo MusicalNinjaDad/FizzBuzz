@@ -10,5 +10,10 @@ crate-type = ["rlib"]  # cdylib required for python import, rlib required for ru
 
 [dev-dependencies]
 googletest = "0.11.0"
+criterion = { version = "0.4", features = ["html_reports"] }
+
+[[bench]]
+name = "bench_fizzbuzz"
+harness = false
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
