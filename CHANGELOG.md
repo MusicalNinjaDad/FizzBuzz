@@ -1,6 +1,6 @@
 # FizzBuzz Changelog
 
-## Python 1.1.2
+## Python 1.1.2 & Rust 1.0.1
 
 - Test each wheel as part of build process
 - Release from `main` branch
