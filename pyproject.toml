@@ -46,6 +46,8 @@ linux.before-all = "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | 
 linux.environment = { PATH="$HOME/.cargo/bin:$PATH" }
 macos.before-all = "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal"
 windows.before-all = "rustup target add aarch64-pc-windows-msvc i586-pc-windows-msvc i686-pc-windows-msvc x86_64-pc-windows-msvc"
+windows.archs = "all"
+# test-skip = "*-win_arm64" # commented out to check that expected warning occurs
 
 [project.optional-dependencies]
 dev = [
