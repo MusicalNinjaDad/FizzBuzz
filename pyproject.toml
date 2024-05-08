@@ -41,8 +41,10 @@ binding = "PyO3"         # Default value, can be omitted
 features = ["pyo3/extension-module"]
 
 [tool.cibuildwheel]
-skip = "*-musllinux_i686" # No musllinux-i686 rust compiler available.
-linux.before-all = [
+skip = [
+    "*-musllinux_i686", # No musllinux-i686 rust compiler available.
+    "*-musllinux_ppc64le", 
+]
     "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal",
     "rustup target add all",
 ]
