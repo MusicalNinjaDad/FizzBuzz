@@ -1,0 +1,6 @@
+[registries]
+FizzBuzz = { index = "sparse+https://pkgs.dev.azure.com/MusicalNinjas/FizzBuzz/_packaging/FizzBuzz/Cargo/index/" }
+
+# Priority given to wincred if running on WSL (later entries have higher precedence)
+[registry]
+global-credential-providers = ["cargo:token"]

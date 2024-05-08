@@ -6,7 +6,11 @@ on:
     - "**.rs"
     - "Cargo.toml"
     - ".github/workflows/rust.yml"
+    tags-ignore:
+    - "rust-v*"
+    - "python-v*"
   pull_request:
+  workflow_call:
 
 env:
     CARGO_TERM_COLOR: always
@@ -16,9 +20,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-      with:
-        submodules: true
     - name: Build
       run: cargo build --verbose
     - name: Run tests
       run: cargo test --verbose
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: fmt
+      run: cargo fmt --check
+    - name: clippy
+      run: cargo clippy
+    

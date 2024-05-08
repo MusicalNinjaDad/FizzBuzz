@@ -1,4 +1,0 @@
-[submodule "pyo3"]
-	path = pyo3
-	url = https://github.com/MusicalNinjaDad/pyo3.git
-	branch = pyo3-testing

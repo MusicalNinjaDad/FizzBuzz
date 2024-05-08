@@ -38,6 +38,29 @@ target = "fizzbuzzo3"  # The last part of the name (e.g. "_lib") has to match li
                              # but you can add a prefix to nest it inside of a Python package.
 path = "fizzbuzzo3/Cargo.toml"      # Default value, can be omitted
 binding = "PyO3"         # Default value, can be omitted
+features = ["pyo3/extension-module"]
+
+[tool.cibuildwheel]
+skip = [
+    "*-musllinux_i686", # No musllinux-i686 rust compiler available.
+    "*-musllinux_ppc64le", # no rust target available.
+    "*-musllinux_s390x", # no rust target available.
+]
+
+[tool.cibuildwheel.linux]
+before-all = "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal"
+environment = { PATH="$HOME/.cargo/bin:$PATH" }
+archs = "all"
+test-command = "pytest {package}"
+test-extras = "dev"
+
+[tool.cibuildwheel.macos]
+before-all = "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal"
+
+[tool.cibuildwheel.windows]
+before-all = "rustup target add aarch64-pc-windows-msvc i586-pc-windows-msvc i686-pc-windows-msvc x86_64-pc-windows-msvc"
+before-build = "pip install delvewheel"
+repair-wheel-command = "delvewheel repair -w {dest_dir} {wheel}"
 
 [project.optional-dependencies]
 dev = [
@@ -53,18 +76,6 @@ addopts = [
     "--doctest-modules",
     "--doctest-mdcodeblocks",
     "--doctest-glob='*.md'",
-]
-norecursedirs = [
-    "pyo3", # by adding pyo3 we also need to specify all standard exclusions ...
-    "*.egg",
-    ".*",
-    "_darcs",
-    "build",
-    "CVS",
-    "dist",
-    "node_modules",
-    "venv",
-    "{arch}",
 ]
 
 [tool.coverage.run]

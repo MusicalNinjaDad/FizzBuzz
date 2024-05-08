@@ -1,0 +1,34 @@
+concurrency: ADO-Cargo
+
+on:
+  workflow_dispatch:
+  push: 
+    tags: "rust-v*"
+
+jobs:
+  quality-check:
+    uses: ./.github/workflows/rust.yml
+
+  publish:
+    environment: ADO-Packages
+    needs: quality-check
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: true
+    - name: Setup Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+    - name: Build and package
+      run: |
+        cargo build --release -p fizzbuzz
+        cargo package -p fizzbuzz
+    - name: Login to ADO
+      env:
+        PAT: ${{ secrets.ADO_TOKEN }}
+      run: echo -n Basic $(echo -n PAT:$PAT | base64) | cargo login --registry FizzBuzz
+    - name: Publish to ADO
+      run: cargo publish --package fizzbuzz --registry FizzBuzz
