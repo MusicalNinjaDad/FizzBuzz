@@ -51,6 +51,8 @@ skip = [
 before-all = "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal"
 environment = { PATH="$HOME/.cargo/bin:$PATH" }
 archs = "all"
+test-command = "pytest {package}"
+test-extras = "dev"
 
 [tool.cibuildwheel.macos]
 before-all = "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal"
