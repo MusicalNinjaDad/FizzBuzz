@@ -43,13 +43,14 @@ features = ["pyo3/extension-module"]
 [tool.cibuildwheel]
 skip = [
     "*-musllinux_i686", # No musllinux-i686 rust compiler available.
-    "*-musllinux_ppc64le", 
+    "*-musllinux_ppc64le", # no rust target available.
+    "*-musllinux_s390x", # no rust target available.
 ]
 
 [tool.cibuildwheel.linux]
 before-all = [
     "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal",
-    "rustup target add all",
+    "rustup target add x86_64-unknown-linux-gnu i686-unknown-linux-gnu aarch64-unknown-linux-gnu powerpc64le-unknown-linux-gnu s390x-unknown-linux-gnu x86_64-unknown-linux-musl i686-unknown-linux-musl aarch64-unknown-linux-musl",
 ]
 environment = { PATH="$HOME/.cargo/bin:$PATH" }
 archs = "all"
