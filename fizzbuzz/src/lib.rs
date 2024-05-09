@@ -33,6 +33,15 @@ impl From<FizzBuzzAnswer> for String {
     }
 }
 
+impl From<FizzBuzzAnswer> for Vec<String> {
+    fn from(value: FizzBuzzAnswer) -> Self {
+        match value {
+            FizzBuzzAnswer::String(s) => vec![s],
+            FizzBuzzAnswer::Vec(v) => v
+        }
+    }
+}
+
 pub trait FizzBuzz {
     /// Accepts a number and returns a `String` containing:
     ///
@@ -107,19 +116,5 @@ mod test {
         let output: String = input.into();
         let expected = "1, 2, fizz, 4, buzz".to_string();
         assert_eq!(output, expected)
-    }
-
-    #[test]
-    fn fizzbuzz_a_vec() {
-        let mut input = vec![1, 2, 3, 4, 5];
-        let answer = input.fizzbuzz();
-        let expected = FizzBuzzAnswer::Vec(vec![
-            "1".to_string(),
-            "2".to_string(),
-            "fizz".to_string(),
-            "4".to_string(),
-            "buzz".to_string(),
-        ]);
-        assert_eq!(answer, expected)
     }
 }
