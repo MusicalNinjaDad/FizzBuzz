@@ -1,18 +1,20 @@
-use fizzbuzz::FizzBuzz;
+use fizzbuzz::{FizzBuzz, MultiFizzBuzz};
 use pyo3::prelude::*;
 
 #[derive(FromPyObject)]
-enum PyNum {
+enum FizzBuzzable {
     Int(isize),
     Float(f64),
+    Vec(Vec<isize>),
 }
 
 #[pyfunction]
 #[pyo3(name = "fizzbuzz")]
-fn py_fizzbuzz(num: PyNum) -> String {
+fn py_fizzbuzz(num: FizzBuzzable) -> String {
     match num {
-        PyNum::Int(n) => n.fizzbuzz().into(),
-        PyNum::Float(n) => n.fizzbuzz().into(),
+        FizzBuzzable::Int(n) => n.fizzbuzz().into(),
+        FizzBuzzable::Float(n) => n.fizzbuzz().into(),
+        FizzBuzzable::Vec(v) => v.fizzbuzz().into()
     }
 }
 
