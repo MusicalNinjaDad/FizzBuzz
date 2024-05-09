@@ -77,3 +77,18 @@ where
         }
     }
 }
+
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn vec_to_string() {
+        let input = FizzBuzzAnswer::Vec(vec!["1".to_string(),"2".to_string(),"fizz".to_string(),"4".to_string(),"buzz".to_string()]);
+        let output: String = input.into();
+        let expected = "1, 2, fizz, 4, buzz".to_string();
+        assert_eq!(output, expected)
+    }
+
+}
