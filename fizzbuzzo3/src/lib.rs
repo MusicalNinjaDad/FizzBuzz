@@ -64,4 +64,18 @@ mod tests {
         let expected_result = "1";
         assert_eq!(result, expected_result);
     }
+
+    #[pyo3test]
+    #[pyo3import(py_fizzbuzzo3: from fizzbuzzo3 import fizzbuzz)]
+    fn test_fizzbuzz_vec() {
+        let input = vec![1,2,3,4,5];
+        let result: PyResult<String> = match fizzbuzz.call1((input,)) {
+            Ok(r) => r.extract(),
+            Err(e) => Err(e),
+        };
+        let result = result.unwrap();
+        let expected_result = "1, 2, fizz, 4, buzz";
+        assert_eq!(result, expected_result);
+    }
+
 }
