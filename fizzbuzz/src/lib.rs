@@ -37,7 +37,7 @@ impl From<FizzBuzzAnswer> for Vec<String> {
     fn from(value: FizzBuzzAnswer) -> Self {
         match value {
             FizzBuzzAnswer::String(s) => vec![s],
-            FizzBuzzAnswer::Vec(v) => v
+            FizzBuzzAnswer::Vec(v) => v,
         }
     }
 }
@@ -88,15 +88,15 @@ where
 }
 
 pub trait MultiFizzBuzz {
-    fn fizzbuzz(&mut self) -> FizzBuzzAnswer;
+    fn fizzbuzz(self) -> FizzBuzzAnswer;
 }
 
 impl<Num> MultiFizzBuzz for Vec<Num>
 where
     Num: FizzBuzz,
 {
-    fn fizzbuzz(&mut self) -> FizzBuzzAnswer {
-        FizzBuzzAnswer::Vec(self.iter().map(|n| n.fizzbuzz().into()).collect())
+    fn fizzbuzz(self) -> FizzBuzzAnswer {
+        FizzBuzzAnswer::Vec(self.into_iter().map(|n| n.fizzbuzz().into()).collect())
     }
 }
 

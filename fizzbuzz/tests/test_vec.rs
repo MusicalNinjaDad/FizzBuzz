@@ -6,7 +6,7 @@ mod vectors {
 
     #[test]
     fn test_vec() {
-        let mut input = vec![1, 2, 3, 4, 5];
+        let input = vec![1, 2, 3, 4, 5];
         let answer: Vec<String> = input.fizzbuzz().into();
         let expected = vec![
             "1".to_string(),
