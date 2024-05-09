@@ -91,4 +91,12 @@ mod test {
         assert_eq!(output, expected)
     }
 
+    #[test]
+    fn fizzbuzz_a_vec() {
+        let input = vec![1,2,3,4,5];
+        let answer = input.fizzbuzz();
+        let expected = vec!["1".to_string(),"2".to_string(),"fizz".to_string(),"4".to_string(),"buzz".to_string()];
+        assert_eq!(answer, expected)
+    }
+
 }
