@@ -7,8 +7,10 @@
 //! ```
 //! use fizzbuzz::FizzBuzz;
 //!
-//! assert_eq!(1.fizzbuzz(), fizzbuzz::FizzBuzzResult::String("1".to_string()));
-//! assert_eq!(3.fizzbuzz(), fizzbuzz::FizzBuzzResult::String("fizz".to_string()));
+//! let one: String = 1.fizzbuzz().into();
+//! let three: String = 3.fizzbuzz().into();
+//! assert_eq!(one, "1".to_string());
+//! assert_eq!(three, "fizz".to_string());
 //! ```
 
 /// Used to obtain the correct fizzbuzz answer for a given number
