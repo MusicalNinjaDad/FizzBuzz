@@ -21,7 +21,7 @@ def main():
     print(f"Python: [{REPEAT} calls of {NUMBER} runs fizzbuzzing up to {FIZZBUZZES}]")
     fbpytimes = fbpytimer.repeat(repeat=REPEAT, number=NUMBER)
     print(fbpytimes)
-    print(f"Rust vector: [{REPEAT} calls of {NUMBER} runs fizzbuzzing a list of numbers up to {FIZZBUZZES}]")
+    print(f"Rust vector: [{REPEAT} calls of {NUMBER} runs fizzbuzzing a list of numbers up to {len(LISTOFNUMBERS)}]")
     fbo3vectimes = fbo3vectimer.repeat(repeat=REPEAT, number=NUMBER)
     print(fbo3vectimes)
 
