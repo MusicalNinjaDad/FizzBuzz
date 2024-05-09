@@ -13,8 +13,6 @@
 //! assert_eq!(three, "fizz".to_string());
 //! ```
 
-use rayon::prelude::*;
-
 /// Used to obtain the correct fizzbuzz answer for a given number
 ///
 /// ### Required:
@@ -95,10 +93,10 @@ pub trait MultiFizzBuzz {
 
 impl<Num> MultiFizzBuzz for Vec<Num>
 where
-    Num: Sync + FizzBuzz,
+    Num: FizzBuzz,
 {
     fn fizzbuzz(self) -> FizzBuzzAnswer {
-        FizzBuzzAnswer::Vec(self.par_iter().map(|n| n.fizzbuzz().into()).collect())
+        FizzBuzzAnswer::Vec(self.into_iter().map(|n| n.fizzbuzz().into()).collect())
     }
 }
 
