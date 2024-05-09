@@ -28,7 +28,7 @@ impl Into<String> for FizzBuzzAnswer {
     fn into(self) -> String {
         match self {
             Self::String(s) => s,
-            Self::Vec(_) => "Dummy String".to_string(),
+            Self::Vec(v) => v.join(", "),
         }
     }
 }
