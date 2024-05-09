@@ -24,11 +24,11 @@ pub enum FizzBuzzAnswer {
     Vec(Vec<String>),
 }
 
-impl Into<String> for FizzBuzzAnswer {
-    fn into(self) -> String {
-        match self {
-            Self::String(s) => s,
-            Self::Vec(v) => v.join(", "),
+impl From<FizzBuzzAnswer> for String {
+    fn from(value: FizzBuzzAnswer) -> Self {
+        match value {
+            FizzBuzzAnswer::String(s) => s,
+            FizzBuzzAnswer::Vec(v) => v.join(", "),
         }
     }
 }
