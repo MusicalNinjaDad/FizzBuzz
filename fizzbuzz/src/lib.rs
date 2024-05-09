@@ -19,14 +19,14 @@
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub enum FizzBuzzAnswer {
     String(String),
-    Vec(Vec<String>)
+    Vec(Vec<String>),
 }
 
 impl Into<String> for FizzBuzzAnswer {
     fn into(self) -> String {
         match self {
             Self::String(s) => s,
-            Self::Vec(_) => "Dummy String".to_string()
+            Self::Vec(_) => "Dummy String".to_string(),
         }
     }
 }
