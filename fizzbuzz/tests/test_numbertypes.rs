@@ -1,4 +1,4 @@
-use fizzbuzz::{FizzBuzz, FizzBuzzResult};
+use fizzbuzz::{FizzBuzz, FizzBuzzAnswer};
 use googletest::prelude::*;
 
 /// Create a test case which tests all numbers between 1 and 255 for a given type
@@ -17,13 +17,13 @@ macro_rules! test_this {
                 for num in allnums {
                     let result = num.fizzbuzz();
                     if fifteens.contains(&num) {
-                        expect_that!(result, eq(FizzBuzzResult::String("fizzbuzz".to_string())), "for {num}")
+                        expect_that!(result, eq(FizzBuzzAnswer::String("fizzbuzz".to_string())), "for {num}")
                     } else if fives.contains(&num) {
-                        expect_that!(result, eq(FizzBuzzResult::String("buzz".to_string())), "for {num}")
+                        expect_that!(result, eq(FizzBuzzAnswer::String("buzz".to_string())), "for {num}")
                     } else if threes.contains(&num) {
-                        expect_that!(result, eq(FizzBuzzResult::String("fizz".to_string())), "for {num}")
+                        expect_that!(result, eq(FizzBuzzAnswer::String("fizz".to_string())), "for {num}")
                     } else {
-                        expect_that!(result, eq(FizzBuzzResult::String(num.to_string())), "for {num}")
+                        expect_that!(result, eq(FizzBuzzAnswer::String(num.to_string())), "for {num}")
                     }
                 }
             }
