@@ -11,8 +11,6 @@
 //! assert_eq!(3.fizzbuzz(), fizzbuzz::FizzBuzzResult::String("fizz".to_string()));
 //! ```
 
-use std::fmt::Error;
-
 /// Used to obtain the correct fizzbuzz answer for a given number
 ///
 /// ### Required:
@@ -24,12 +22,11 @@ pub enum FizzBuzzAnswer {
     Vec(Vec<String>)
 }
 
-impl TryInto<String> for FizzBuzzAnswer {
-    type Error = Error;
-    fn try_into(self) -> Result<String, Self::Error> {
+impl Into<String> for FizzBuzzAnswer {
+    fn into(self) -> String {
         match self {
-            Self::String(string) => Ok(string),
-            Self::Vec(_) => Err(Error)
+            Self::String(s) => s,
+            Self::Vec(_) => "Dummy String".to_string()
         }
     }
 }
