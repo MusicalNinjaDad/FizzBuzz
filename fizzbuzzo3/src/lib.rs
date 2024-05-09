@@ -11,8 +11,8 @@ enum PyNum {
 #[pyo3(name = "fizzbuzz")]
 fn py_fizzbuzz(num: PyNum) -> String {
     match num {
-        PyNum::Int(n) => n.fizzbuzz().try_into().unwrap(),
-        PyNum::Float(n) => n.fizzbuzz().try_into().unwrap(),
+        PyNum::Int(n) => n.fizzbuzz().into(),
+        PyNum::Float(n) => n.fizzbuzz().into(),
     }
 }
 
