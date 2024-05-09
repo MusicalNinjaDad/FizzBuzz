@@ -78,6 +78,18 @@ where
     }
 }
 
+pub trait MultiFizzBuzz {
+    fn fizzbuzz(&mut self) -> FizzBuzzAnswer;
+}
+
+impl<Num> MultiFizzBuzz for Vec<Num>
+where
+    Num: FizzBuzz,
+{
+    fn fizzbuzz(&mut self) -> FizzBuzzAnswer {
+        FizzBuzzAnswer::Vec(self.iter().map(|n| n.fizzbuzz().into()).collect())
+    }
+}
 
 #[cfg(test)]
 mod test {
@@ -85,7 +97,13 @@ mod test {
 
     #[test]
     fn vec_to_string() {
-        let input = FizzBuzzAnswer::Vec(vec!["1".to_string(),"2".to_string(),"fizz".to_string(),"4".to_string(),"buzz".to_string()]);
+        let input = FizzBuzzAnswer::Vec(vec![
+            "1".to_string(),
+            "2".to_string(),
+            "fizz".to_string(),
+            "4".to_string(),
+            "buzz".to_string(),
+        ]);
         let output: String = input.into();
         let expected = "1, 2, fizz, 4, buzz".to_string();
         assert_eq!(output, expected)
@@ -93,10 +111,15 @@ mod test {
 
     #[test]
     fn fizzbuzz_a_vec() {
-        let input = vec![1,2,3,4,5];
+        let mut input = vec![1, 2, 3, 4, 5];
         let answer = input.fizzbuzz();
-        let expected = vec!["1".to_string(),"2".to_string(),"fizz".to_string(),"4".to_string(),"buzz".to_string()];
+        let expected = FizzBuzzAnswer::Vec(vec![
+            "1".to_string(),
+            "2".to_string(),
+            "fizz".to_string(),
+            "4".to_string(),
+            "buzz".to_string(),
+        ]);
         assert_eq!(answer, expected)
     }
-
 }
