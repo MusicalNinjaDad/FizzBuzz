@@ -129,7 +129,7 @@ mod test {
 
     #[test]
     fn vec_not_consumed() {
-        let input = vec![1,2,3];
+        let input = vec![1, 2, 3];
         let _output: String = input.fizzbuzz().into();
         let _output2 = input.fizzbuzz();
     }
