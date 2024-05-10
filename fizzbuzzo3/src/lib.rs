@@ -1,18 +1,20 @@
-use fizzbuzz::FizzBuzz;
+use fizzbuzz::{FizzBuzz, MultiFizzBuzz};
 use pyo3::prelude::*;
 
 #[derive(FromPyObject)]
-enum PyNum {
+enum FizzBuzzable {
     Int(isize),
     Float(f64),
+    Vec(Vec<isize>),
 }
 
 #[pyfunction]
 #[pyo3(name = "fizzbuzz")]
-fn py_fizzbuzz(num: PyNum) -> String {
+fn py_fizzbuzz(num: FizzBuzzable) -> String {
     match num {
-        PyNum::Int(n) => n.fizzbuzz(),
-        PyNum::Float(n) => n.fizzbuzz(),
+        FizzBuzzable::Int(n) => n.fizzbuzz().into(),
+        FizzBuzzable::Float(n) => n.fizzbuzz().into(),
+        FizzBuzzable::Vec(v) => v.fizzbuzz().into(),
     }
 }
 
@@ -62,6 +64,19 @@ mod tests {
         };
         let result = result.unwrap();
         let expected_result = "1";
+        assert_eq!(result, expected_result);
+    }
+
+    #[pyo3test]
+    #[pyo3import(py_fizzbuzzo3: from fizzbuzzo3 import fizzbuzz)]
+    fn test_fizzbuzz_vec() {
+        let input = vec![1, 2, 3, 4, 5];
+        let result: PyResult<String> = match fizzbuzz.call1((input,)) {
+            Ok(r) => r.extract(),
+            Err(e) => Err(e),
+        };
+        let result = result.unwrap();
+        let expected_result = "1, 2, fizz, 4, buzz";
         assert_eq!(result, expected_result);
     }
 }

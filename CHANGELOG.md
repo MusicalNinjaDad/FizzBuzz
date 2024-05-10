@@ -1,5 +1,16 @@
 # FizzBuzz Changelog
 
+## Rust 2.0.0 & Python 1.2.0
+
+### Rust
+
+- `fizzbuzz()` can be called on a `Vec<Num>`
+- Provide the return from `fizzbuzz()` as a `FizzBuzzAnswer` which supports `.into()` `String` and `Vec<String>`
+
+### Python
+
+- `fizzbuzzo3.fizzbuzz` can be passed a `list` of numbers, the return will be a `str` of all the answers
+
 ## Python 1.1.2 & Rust 1.0.1
 
 - Test each wheel as part of build process

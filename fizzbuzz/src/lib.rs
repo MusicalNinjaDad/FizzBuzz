@@ -7,16 +7,48 @@
 //! ```
 //! use fizzbuzz::FizzBuzz;
 //!
-//! assert_eq!(1.fizzbuzz(), "1".to_string());
-//! assert_eq!(3.fizzbuzz(), "fizz".to_string());
+//! let one: String = 1.fizzbuzz().into();
+//! let three: String = 3.fizzbuzz().into();
+//! assert_eq!(one, "1".to_string());
+//! assert_eq!(three, "fizz".to_string());
 //! ```
+
+#[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
+/// Provides conversion to `String` and `Vec<String>` via `.into()`,
+/// ::From() etc.
+pub enum FizzBuzzAnswer {
+    /// Stores a single FizzBuzz value
+    String(String),
+    /// Stores a series of FizzBuzz values
+    Vec(Vec<String>),
+}
+
+impl From<FizzBuzzAnswer> for String {
+    fn from(value: FizzBuzzAnswer) -> Self {
+        match value {
+            FizzBuzzAnswer::String(s) => s,
+            FizzBuzzAnswer::Vec(v) => v.join(", "),
+        }
+    }
+}
+
+impl From<FizzBuzzAnswer> for Vec<String> {
+    fn from(value: FizzBuzzAnswer) -> Self {
+        match value {
+            FizzBuzzAnswer::String(s) => vec![s],
+            FizzBuzzAnswer::Vec(v) => v,
+        }
+    }
+}
 
 /// Used to obtain the correct fizzbuzz answer for a given number
 ///
 /// ### Required:
 /// - fn fizzbuzz() -> String
 pub trait FizzBuzz {
-    /// Accepts a number and returns a `String` containing:
+    /// Computes the FizzBuzz value for the implementing type.
+    /// Returns a `FizzBuzzAnswer` which provides a structured representation
+    /// of the FizzBuzz result.
     ///
     /// - `fizzbuzz` if the number is directly divisible by 5 *and* 3
     /// - `fizz` if the number is directly divisible by 3
@@ -28,7 +60,7 @@ pub trait FizzBuzz {
     /// - `std::fmt::Display`: Allows `Num` to be formatted as a `String`.
     /// - `PartialEq`: Enables comparison operations for `Num`.
     /// - `<&Num>::Rem<Num, Output = Num>`: Allows `&Num % Num`.
-    fn fizzbuzz(&self) -> String;
+    fn fizzbuzz(&self) -> FizzBuzzAnswer;
 }
 
 /// Implements the FizzBuzz trait for any type `<T>` which supports `<T>::from(<u8>)`
@@ -38,24 +70,67 @@ where
     Num: TryFrom<u8> + std::fmt::Display + PartialEq,
     for<'a> &'a Num: std::ops::Rem<Num, Output = Num>,
 {
-    fn fizzbuzz(&self) -> String {
+    fn fizzbuzz(&self) -> FizzBuzzAnswer {
         let three = match <Num>::try_from(3_u8) {
             Ok(three) => three,
-            Err(_) => return self.to_string(),
+            Err(_) => return FizzBuzzAnswer::String(self.to_string()),
         };
         let five = match <Num>::try_from(5_u8) {
             Ok(five) => five,
-            Err(_) => return self.to_string(),
+            Err(_) => return FizzBuzzAnswer::String(self.to_string()),
         };
         let zero = match <Num>::try_from(0_u8) {
             Ok(zero) => zero,
-            Err(_) => return self.to_string(),
+            Err(_) => return FizzBuzzAnswer::String(self.to_string()),
         };
         match (self % three == zero, self % five == zero) {
-            (true, true) => "fizzbuzz".to_string(),
-            (true, false) => "fizz".to_string(),
-            (false, true) => "buzz".to_string(),
-            _ => self.to_string(),
+            (true, true) => FizzBuzzAnswer::String("fizzbuzz".to_string()),
+            (true, false) => FizzBuzzAnswer::String("fizz".to_string()),
+            (false, true) => FizzBuzzAnswer::String("buzz".to_string()),
+            _ => FizzBuzzAnswer::String(self.to_string()),
         }
+    }
+}
+
+/// Used to obtain the correct `FizzBuzzAnswer` for a `Vec` of numbers
+///
+/// ### Required:
+/// - fn fizzbuzz(self) -> FizzBuzzAnswer
+pub trait MultiFizzBuzz {
+    fn fizzbuzz(&self) -> FizzBuzzAnswer;
+}
+
+impl<Num> MultiFizzBuzz for Vec<Num>
+where
+    Num: FizzBuzz,
+{
+    fn fizzbuzz(&self) -> FizzBuzzAnswer {
+        FizzBuzzAnswer::Vec(self.iter().map(|n| n.fizzbuzz().into()).collect())
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn vec_to_string() {
+        let input = FizzBuzzAnswer::Vec(vec![
+            "1".to_string(),
+            "2".to_string(),
+            "fizz".to_string(),
+            "4".to_string(),
+            "buzz".to_string(),
+        ]);
+        let output: String = input.into();
+        let expected = "1, 2, fizz, 4, buzz".to_string();
+        assert_eq!(output, expected)
+    }
+
+    #[test]
+    fn vec_not_consumed() {
+        let input = vec![1, 2, 3];
+        let _output: String = input.fizzbuzz().into();
+        let _output2 = input.fizzbuzz();
     }
 }
