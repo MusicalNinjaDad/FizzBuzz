@@ -13,14 +13,13 @@
 //! assert_eq!(three, "fizz".to_string());
 //! ```
 
-/// Used to obtain the correct fizzbuzz answer for a given number
-///
-/// ### Required:
-/// - fn fizzbuzz() -> String
-
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
+/// Provides conversion to `String` and `Vec<String>` via `.into()`,
+/// ::From() etc.
 pub enum FizzBuzzAnswer {
+    /// Stores a single FizzBuzz value
     String(String),
+    /// Stores a series of FizzBuzz values
     Vec(Vec<String>),
 }
 
@@ -42,8 +41,14 @@ impl From<FizzBuzzAnswer> for Vec<String> {
     }
 }
 
+/// Used to obtain the correct fizzbuzz answer for a given number
+///
+/// ### Required:
+/// - fn fizzbuzz() -> String
 pub trait FizzBuzz {
-    /// Accepts a number and returns a `String` containing:
+    /// Computes the FizzBuzz value for the implementing type.
+    /// Returns a `FizzBuzzAnswer` which provides a structured representation
+    /// of the FizzBuzz result.
     ///
     /// - `fizzbuzz` if the number is directly divisible by 5 *and* 3
     /// - `fizz` if the number is directly divisible by 3
@@ -87,6 +92,10 @@ where
     }
 }
 
+/// Used to obtain the correct `FizzBuzzAnswer` for a `Vec` of numbers
+///
+/// ### Required:
+/// - fn fizzbuzz(self) -> FizzBuzzAnswer
 pub trait MultiFizzBuzz {
     fn fizzbuzz(self) -> FizzBuzzAnswer;
 }
