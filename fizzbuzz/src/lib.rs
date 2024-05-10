@@ -60,17 +60,17 @@ pub trait FizzBuzz {
     /// - `std::fmt::Display`: Allows `Num` to be formatted as a `String`.
     /// - `PartialEq`: Enables comparison operations for `Num`.
     /// - `<&Num>::Rem<Num, Output = Num>`: Allows `&Num % Num`.
-    fn fizzbuzz(self) -> FizzBuzzAnswer;
+    fn fizzbuzz(&self) -> FizzBuzzAnswer;
 }
 
 /// Implements the FizzBuzz trait for any type `<T>` which supports `<T>::from(<u8>)`
 /// and `<T> % <T>`
 impl<Num> FizzBuzz for Num
 where
-    Num: TryFrom<u8> + std::fmt::Display + PartialEq, // + std::ops::Rem<Num, Output = Num>,
+    Num: TryFrom<u8> + std::fmt::Display + PartialEq,
     for<'a> &'a Num: std::ops::Rem<Num, Output = Num>,
 {
-    fn fizzbuzz(self) -> FizzBuzzAnswer {
+    fn fizzbuzz(&self) -> FizzBuzzAnswer {
         let three = match <Num>::try_from(3_u8) {
             Ok(three) => three,
             Err(_) => return FizzBuzzAnswer::String(self.to_string()),
@@ -83,7 +83,7 @@ where
             Ok(zero) => zero,
             Err(_) => return FizzBuzzAnswer::String(self.to_string()),
         };
-        match (&self % three == zero, &self % five == zero) {
+        match (self % three == zero, self % five == zero) {
             (true, true) => FizzBuzzAnswer::String("fizzbuzz".to_string()),
             (true, false) => FizzBuzzAnswer::String("fizz".to_string()),
             (false, true) => FizzBuzzAnswer::String("buzz".to_string()),
