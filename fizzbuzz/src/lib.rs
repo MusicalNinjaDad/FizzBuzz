@@ -97,15 +97,15 @@ where
 /// ### Required:
 /// - fn fizzbuzz(self) -> FizzBuzzAnswer
 pub trait MultiFizzBuzz {
-    fn fizzbuzz(self) -> FizzBuzzAnswer;
+    fn fizzbuzz(&self) -> FizzBuzzAnswer;
 }
 
 impl<Num> MultiFizzBuzz for Vec<Num>
 where
     Num: FizzBuzz,
 {
-    fn fizzbuzz(self) -> FizzBuzzAnswer {
-        FizzBuzzAnswer::Vec(self.into_iter().map(|n| n.fizzbuzz().into()).collect())
+    fn fizzbuzz(&self) -> FizzBuzzAnswer {
+        FizzBuzzAnswer::Vec(self.iter().map(|n| n.fizzbuzz().into()).collect())
     }
 }
 
@@ -125,5 +125,12 @@ mod test {
         let output: String = input.into();
         let expected = "1, 2, fizz, 4, buzz".to_string();
         assert_eq!(output, expected)
+    }
+
+    #[test]
+    fn vec_not_consumed() {
+        let input = vec![1,2,3];
+        let _output: String = input.fizzbuzz().into();
+        let _output2 = input.fizzbuzz();
     }
 }
