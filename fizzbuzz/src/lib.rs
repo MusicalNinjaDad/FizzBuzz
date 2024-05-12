@@ -99,14 +99,14 @@ where
 /// ### Required:
 /// - fn fizzbuzz(self) -> FizzBuzzAnswer
 pub trait MultiFizzBuzz {
-    fn fizzbuzz(self) -> FizzBuzzAnswer;
+    fn fizzbuzz(&self) -> FizzBuzzAnswer;
 }
 
 impl<Num> MultiFizzBuzz for Vec<Num>
 where
     Num: FizzBuzz + Sync,
 {
-    fn fizzbuzz(self) -> FizzBuzzAnswer {
+    fn fizzbuzz(&self) -> FizzBuzzAnswer {
         if self.len() < 300_000 {
             FizzBuzzAnswer::Vec(self.iter().map(|n| n.fizzbuzz().into()).collect())
         } else {
