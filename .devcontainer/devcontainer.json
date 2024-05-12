@@ -1,11 +1,10 @@
 {
-    "image": "ghcr.io/musicalninjas/pyo3-devcontainer:latest",
-    // "build": {
-    //     "dockerfile": "Dockerfile",
-    //     "args": {
-    //         "USERNAME": "fizzbuzz"
-    //     }
-    // },
+    "build": {
+        "dockerfile": "Dockerfile",
+        "args": {
+            "USERNAME": "fizzbuzz"
+        }
+    },
     "customizations": {
         "vscode": {
             "extensions": [
