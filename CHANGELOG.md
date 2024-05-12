@@ -1,5 +1,9 @@
 # FizzBuzz Changelog
 
+## Rust 2.1.0 & Python 1.3.0
+
+- Process `Vec`s / `list`s with more than 300k elements in parallel
+
 ## Rust 2.0.0 & Python 1.2.0
 
 ### Rust
