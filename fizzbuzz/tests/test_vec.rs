@@ -5,7 +5,7 @@ mod vectors {
     use super::*;
 
     #[test]
-    fn test_vec() {
+    fn test_small_vec() {
         let input = vec![1, 2, 3, 4, 5];
         let answer: Vec<String> = input.fizzbuzz().into();
         let expected = vec![

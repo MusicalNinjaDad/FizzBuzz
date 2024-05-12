@@ -14,6 +14,7 @@
 //! ```
 
 use rayon::prelude::*;
+static BIG_VECTOR: usize = 300_000; // Size from which parallelisation makes sense
 
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
 /// Provides conversion to `String` and `Vec<String>` via `.into()`,
@@ -107,7 +108,7 @@ where
     Num: FizzBuzz + Sync,
 {
     fn fizzbuzz(&self) -> FizzBuzzAnswer {
-        if self.len() < 300_000 {
+        if self.len() < BIG_VECTOR {
             FizzBuzzAnswer::Vec(self.iter().map(|n| n.fizzbuzz().into()).collect())
         } else {
             FizzBuzzAnswer::Vec(self.par_iter().map(|n| n.fizzbuzz().into()).collect())
@@ -131,5 +132,16 @@ mod test {
         let output: String = input.into();
         let expected = "1, 2, fizz, 4, buzz".to_string();
         assert_eq!(output, expected)
+    }
+
+    #[test]
+    fn big_vector_is_well_ordered() {
+        let input: Vec<_> = (1..BIG_VECTOR+1).collect();
+        let output: Vec<_> = input.fizzbuzz().into();
+        let mut expected: Vec<String> = vec![];
+            for i in input.iter() {
+                expected.push(i.fizzbuzz().into())
+            };
+        assert_eq!(output, expected);
     }
 }
