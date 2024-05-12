@@ -29,7 +29,10 @@ fn vec_iter() {
 #[inline]
 fn vec_intoiter() {
     let inputs: Vec<_> = (1..TEST_SIZE).collect();
-    let _: Vec<String> = inputs.into_iter().map(|num| num.fizzbuzz().into()).collect();
+    let _: Vec<String> = inputs
+        .into_iter()
+        .map(|num| num.fizzbuzz().into())
+        .collect();
 }
 
 #[inline]
@@ -46,7 +49,9 @@ fn multifizzbuzz_trait() {
 
 fn criterion_benchmark(c: &mut Criterion) {
     c.bench_function("for_loop", |b| b.iter(|| for_loop()));
-    c.bench_function("for_loop_with_vec_overhead", |b| b.iter(|| for_loop_with_vec_overhead()));
+    c.bench_function("for_loop_with_vec_overhead", |b| {
+        b.iter(|| for_loop_with_vec_overhead())
+    });
     c.bench_function("vec_iter", |b| b.iter(|| vec_iter()));
     c.bench_function("vec_intoiter", |b| b.iter(|| vec_intoiter()));
     c.bench_function("vec_pariter", |b| b.iter(|| vec_pariter()));

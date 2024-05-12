@@ -382,7 +382,6 @@ Found 1 outliers among 100 measurements (1.00%)
   1 (1.00%) high mild
 ```
 
-
 ### 250_000
 
 ```text

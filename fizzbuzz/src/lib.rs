@@ -107,10 +107,11 @@ where
     Num: FizzBuzz + Sync,
 {
     fn fizzbuzz(self) -> FizzBuzzAnswer {
-        if self.len()<300_000 {
+        if self.len() < 300_000 {
             FizzBuzzAnswer::Vec(self.iter().map(|n| n.fizzbuzz().into()).collect())
         } else {
-        FizzBuzzAnswer::Vec(self.par_iter().map(|n| n.fizzbuzz().into()).collect())}
+            FizzBuzzAnswer::Vec(self.par_iter().map(|n| n.fizzbuzz().into()).collect())
+        }
     }
 }
 
