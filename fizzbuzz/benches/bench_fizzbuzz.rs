@@ -1,41 +1,41 @@
 use criterion::{criterion_group, criterion_main, Criterion};
-use fizzbuzz::{self, FizzBuzz, FizzBuzzAnswer};
+use fizzbuzz::{self, FizzBuzz};
 use rayon::prelude::*;
 
-static TEST_SIZE: isize = 10_000_000;
+static TEST_SIZE: isize = 1_000_000;
 
 #[inline]
 fn for_loop() {
     for i in 1..TEST_SIZE {
-        let _ = i.fizzbuzz();
+        let _: String = i.fizzbuzz().into();
     }
 }
 
 #[inline]
 fn for_loop_with_vec_overhead() {
     let inputs: Vec<_> = (1..TEST_SIZE).collect();
-    let mut out: Vec<FizzBuzzAnswer> = vec![];
+    let mut out: Vec<String> = vec![];
     for i in inputs.into_iter() {
-        out.push(i.fizzbuzz());
+        out.push(i.fizzbuzz().into());
     }
 }
 
 #[inline]
 fn vec_iter() {
     let inputs: Vec<_> = (1..TEST_SIZE).collect();
-    let _: Vec<_> = inputs.iter().map(|num| num.fizzbuzz()).collect();
+    let _: Vec<String> = inputs.iter().map(|num| num.fizzbuzz().into()).collect();
 }
 
 #[inline]
 fn vec_intoiter() {
     let inputs: Vec<_> = (1..TEST_SIZE).collect();
-    let _: Vec<_> = inputs.into_iter().map(|num| num.fizzbuzz()).collect();
+    let _: Vec<String> = inputs.into_iter().map(|num| num.fizzbuzz().into()).collect();
 }
 
 #[inline]
 fn vec_pariter() {
     let inputs: Vec<_> = (1..TEST_SIZE).collect();
-    let _: Vec<_> = inputs.par_iter().map(|num| num.fizzbuzz()).collect();
+    let _: Vec<String> = inputs.par_iter().map(|num| num.fizzbuzz().into()).collect();
 }
 
 fn criterion_benchmark(c: &mut Criterion) {

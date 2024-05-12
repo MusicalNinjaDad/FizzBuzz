@@ -225,3 +225,140 @@ Found 6 outliers among 100 measurements (6.00%)
   5 (5.00%) low mild
   1 (1.00%) high mild
 ```
+
+## Return String
+
+```rust
+use criterion::{criterion_group, criterion_main, Criterion};
+use fizzbuzz::{self, FizzBuzz};
+use rayon::prelude::*;
+
+static TEST_SIZE: isize = 100_000;
+
+#[inline]
+fn for_loop() {
+    for i in 1..TEST_SIZE {
+        let _: String = i.fizzbuzz().into();
+    }
+}
+
+#[inline]
+fn for_loop_with_vec_overhead() {
+    let inputs: Vec<_> = (1..TEST_SIZE).collect();
+    let mut out: Vec<String> = vec![];
+    for i in inputs.into_iter() {
+        out.push(i.fizzbuzz().into());
+    }
+}
+
+#[inline]
+fn vec_iter() {
+    let inputs: Vec<_> = (1..TEST_SIZE).collect();
+    let _: Vec<String> = inputs.iter().map(|num| num.fizzbuzz().into()).collect();
+}
+
+#[inline]
+fn vec_intoiter() {
+    let inputs: Vec<_> = (1..TEST_SIZE).collect();
+    let _: Vec<String> = inputs.into_iter().map(|num| num.fizzbuzz().into()).collect();
+}
+
+#[inline]
+fn vec_pariter() {
+    let inputs: Vec<_> = (1..TEST_SIZE).collect();
+    let _: Vec<String> = inputs.par_iter().map(|num| num.fizzbuzz().into()).collect();
+}
+
+fn criterion_benchmark(c: &mut Criterion) {
+    c.bench_function("for_loop", |b| b.iter(|| for_loop()));
+    c.bench_function("for_loop_with_vec_overhead", |b| b.iter(|| for_loop_with_vec_overhead()));
+    c.bench_function("vec_iter", |b| b.iter(|| vec_iter()));
+    c.bench_function("vec_intoiter", |b| b.iter(|| vec_intoiter()));
+    c.bench_function("vec_pariter", |b| b.iter(|| vec_pariter()));
+}
+
+criterion_group!(benches, criterion_benchmark);
+criterion_main!(benches);
+```
+
+### 100_000
+
+```text
+for_loop                time:   [4.3261 ms 4.4395 ms 4.5679 ms]
+                        change: [+10.161% +14.014% +18.197%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+Found 12 outliers among 100 measurements (12.00%)
+  5 (5.00%) high mild
+  7 (7.00%) high severe
+
+for_loop_with_vec_overhead
+                        time:   [11.089 ms 11.465 ms 11.916 ms]
+                        change: [+5.7443% +11.000% +17.067%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+Found 8 outliers among 100 measurements (8.00%)
+  4 (4.00%) high mild
+  4 (4.00%) high severe
+
+vec_iter                time:   [7.8512 ms 8.0857 ms 8.3479 ms]
+                        change: [-3.4048% +0.9937% +5.5594%] (p = 0.66 > 0.05)
+                        No change in performance detected.
+Found 8 outliers among 100 measurements (8.00%)
+  4 (4.00%) high mild
+  4 (4.00%) high severe
+
+vec_intoiter            time:   [7.5814 ms 7.7746 ms 8.0153 ms]
+                        change: [-5.4652% -2.3848% +0.8759%] (p = 0.17 > 0.05)
+                        No change in performance detected.
+Found 10 outliers among 100 measurements (10.00%)
+  6 (6.00%) high mild
+  4 (4.00%) high severe
+
+vec_pariter             time:   [14.346 ms 14.729 ms 15.116 ms]
+                        change: [-14.415% -10.728% -6.8381%] (p = 0.00 < 0.05)
+                        Performance has improved.
+```
+
+### 1_000_000
+
+```text
+for_loop                time:   [43.455 ms 44.500 ms 45.739 ms]
+                        change: [+867.32% +902.39% +941.10%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+Found 11 outliers among 100 measurements (11.00%)
+  5 (5.00%) high mild
+  6 (6.00%) high severe
+
+Benchmarking for_loop_with_vec_overhead: Warming up for 3.0000 s
+Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 9.9s, or reduce sample count to 50.
+for_loop_with_vec_overhead
+                        time:   [96.174 ms 98.352 ms 100.78 ms]
+                        change: [+720.66% +757.83% +794.82%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+Found 7 outliers among 100 measurements (7.00%)
+  5 (5.00%) high mild
+  2 (2.00%) high severe
+
+Benchmarking vec_iter: Warming up for 3.0000 s
+Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 10.0s, or reduce sample count to 50.
+vec_iter                time:   [91.775 ms 93.762 ms 96.066 ms]
+                        change: [+1016.5% +1059.6% +1105.9%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+Found 8 outliers among 100 measurements (8.00%)
+  4 (4.00%) high mild
+  4 (4.00%) high severe
+
+Benchmarking vec_intoiter: Warming up for 3.0000 s
+Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 9.5s, or reduce sample count to 50.
+vec_intoiter            time:   [94.280 ms 96.871 ms 99.813 ms]
+                        change: [+1096.1% +1146.0% +1196.5%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+Found 9 outliers among 100 measurements (9.00%)
+  6 (6.00%) high mild
+  3 (3.00%) high severe
+
+vec_pariter             time:   [55.747 ms 57.200 ms 58.714 ms]
+                        change: [+274.43% +288.36% +303.41%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high mild
+```
