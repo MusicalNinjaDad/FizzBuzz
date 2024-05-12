@@ -1,3 +1,4 @@
+!#[allow(dead_code)]
 use criterion::{criterion_group, criterion_main, Criterion};
 use fizzbuzz::{self, FizzBuzz, MultiFizzBuzz};
 use rayon::prelude::*;
@@ -55,12 +56,12 @@ fn multifizzbuzz_trait_as_string() {
 
 
 fn criterion_benchmark(c: &mut Criterion) {
-    c.bench_function("for_loop", |b| b.iter(|| for_loop()));
-    c.bench_function("for_loop_with_vec_overhead", |b| {
-        b.iter(|| for_loop_with_vec_overhead())
-    });
+    // c.bench_function("for_loop", |b| b.iter(|| for_loop()));
+    // c.bench_function("for_loop_with_vec_overhead", |b| {
+    //     b.iter(|| for_loop_with_vec_overhead())
+    // });
     c.bench_function("vec_iter", |b| b.iter(|| vec_iter()));
-    c.bench_function("vec_intoiter", |b| b.iter(|| vec_intoiter()));
+    // c.bench_function("vec_intoiter", |b| b.iter(|| vec_intoiter()));
     c.bench_function("vec_pariter", |b| b.iter(|| vec_pariter()));
     c.bench_function("multifizzbuzz_trait", |b| b.iter(|| multifizzbuzz_trait()));
     c.bench_function("multifizzbuzz_trait_as_string", |b| b.iter(|| multifizzbuzz_trait_as_string()));
