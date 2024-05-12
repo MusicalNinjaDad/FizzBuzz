@@ -1,25 +1,71 @@
+#![allow(dead_code)]
 use criterion::{criterion_group, criterion_main, Criterion};
 use fizzbuzz::{self, FizzBuzz, MultiFizzBuzz};
+use rayon::prelude::*;
+
+static TEST_SIZE: isize = 1_000_000;
 
 #[inline]
-fn fb100_000() {
-    for _ in 1..10 {
-        for i in 1..100_000 {
-            i.fizzbuzz();
-        }
+fn for_loop() {
+    for i in 1..TEST_SIZE {
+        let _: String = i.fizzbuzz().into();
     }
 }
 
 #[inline]
-fn fb100_000_vec() {
-    for _ in 1..10 {
-        (1..100_000).collect::<Vec<_>>().fizzbuzz();
+fn for_loop_with_vec_overhead() {
+    let inputs: Vec<_> = (1..TEST_SIZE).collect();
+    let mut out: Vec<String> = vec![];
+    for i in inputs.into_iter() {
+        out.push(i.fizzbuzz().into());
     }
+}
+
+#[inline]
+fn vec_iter() {
+    let inputs: Vec<_> = (1..TEST_SIZE).collect();
+    let _: Vec<String> = inputs.iter().map(|num| num.fizzbuzz().into()).collect();
+}
+
+#[inline]
+fn vec_intoiter() {
+    let inputs: Vec<_> = (1..TEST_SIZE).collect();
+    let _: Vec<String> = inputs
+        .into_iter()
+        .map(|num| num.fizzbuzz().into())
+        .collect();
+}
+
+#[inline]
+fn vec_pariter() {
+    let inputs: Vec<_> = (1..TEST_SIZE).collect();
+    let _: Vec<String> = inputs.par_iter().map(|num| num.fizzbuzz().into()).collect();
+}
+
+#[inline]
+fn multifizzbuzz_trait() {
+    let inputs: Vec<_> = (1..TEST_SIZE).collect();
+    let _: Vec<String> = inputs.fizzbuzz().into();
+}
+
+#[inline]
+fn multifizzbuzz_trait_as_string() {
+    let inputs: Vec<_> = (1..TEST_SIZE).collect();
+    let _: String = inputs.fizzbuzz().into();
 }
 
 fn criterion_benchmark(c: &mut Criterion) {
-    c.bench_function("fizzbuzz 100_000", |b| b.iter(|| fb100_000()));
-    c.bench_function("fizzbuzz 100_000_vector", |b| b.iter(|| fb100_000_vec()));
+    // c.bench_function("for_loop", |b| b.iter(|| for_loop()));
+    // c.bench_function("for_loop_with_vec_overhead", |b| {
+    //     b.iter(|| for_loop_with_vec_overhead())
+    // });
+    c.bench_function("vec_iter", |b| b.iter(|| vec_iter()));
+    // c.bench_function("vec_intoiter", |b| b.iter(|| vec_intoiter()));
+    c.bench_function("vec_pariter", |b| b.iter(|| vec_pariter()));
+    c.bench_function("multifizzbuzz_trait", |b| b.iter(|| multifizzbuzz_trait()));
+    c.bench_function("multifizzbuzz_trait_as_string", |b| {
+        b.iter(|| multifizzbuzz_trait_as_string())
+    });
 }
 
 criterion_group!(benches, criterion_benchmark);

@@ -13,6 +13,9 @@
 //! assert_eq!(three, "fizz".to_string());
 //! ```
 
+use rayon::prelude::*;
+static BIG_VECTOR: usize = 300_000; // Size from which parallelisation makes sense
+
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
 /// Provides conversion to `String` and `Vec<String>` via `.into()`,
 /// ::From() etc.
@@ -102,10 +105,14 @@ pub trait MultiFizzBuzz {
 
 impl<Num> MultiFizzBuzz for Vec<Num>
 where
-    Num: FizzBuzz,
+    Num: FizzBuzz + Sync,
 {
     fn fizzbuzz(&self) -> FizzBuzzAnswer {
-        FizzBuzzAnswer::Vec(self.iter().map(|n| n.fizzbuzz().into()).collect())
+        if self.len() < BIG_VECTOR {
+            FizzBuzzAnswer::Vec(self.iter().map(|n| n.fizzbuzz().into()).collect())
+        } else {
+            FizzBuzzAnswer::Vec(self.par_iter().map(|n| n.fizzbuzz().into()).collect())
+        }
     }
 }
 
@@ -128,9 +135,13 @@ mod test {
     }
 
     #[test]
-    fn vec_not_consumed() {
-        let input = vec![1, 2, 3];
-        let _output: String = input.fizzbuzz().into();
-        let _output2 = input.fizzbuzz();
+    fn big_vector_is_well_ordered() {
+        let input: Vec<_> = (1..BIG_VECTOR + 1).collect();
+        let output: Vec<_> = input.fizzbuzz().into();
+        let mut expected: Vec<String> = vec![];
+        for i in input.iter() {
+            expected.push(i.fizzbuzz().into())
+        }
+        assert_eq!(output, expected);
     }
 }

@@ -1,3 +1,6 @@
+# Comparing multiple calls to rust, python native and single call to rust
+
+```py
 # ruff: noqa
 import timeit
 
@@ -7,7 +10,7 @@ from fizzbuzzpy import fizzbuzz as fbpy
 
 REPEAT = 1
 NUMBER = 10
-FIZZBUZZES = 100_000
+FIZZBUZZES = 1_000_000
 LISTOFNUMBERS = list(range(1, FIZZBUZZES))
 
 
@@ -27,3 +30,37 @@ def main():
 
 if __name__ == "__main__":
     main()
+```
+
+## Without parallelisation
+
+```text
+Rust: [1 calls of 10 runs fizzbuzzing up to 1000000]
+[12.454665303001093]
+Python: [1 calls of 10 runs fizzbuzzing up to 1000000]
+[39.32552230800138]
+Rust vector: [1 calls of 10 runs fizzbuzzing a list of numbers up to 1000000]
+[6.319926773001498]
+```
+
+## With parallelisation
+
+Using up to 4 cores via rust ...
+
+```text
+Rust: [1 calls of 10 runs fizzbuzzing up to 1000000]
+[12.806449372001225]
+Python: [1 calls of 10 runs fizzbuzzing up to 1000000]
+[39.52900022100221]
+Rust vector: [1 calls of 10 runs fizzbuzzing a list of numbers up to 1000000]
+[5.022411942001781]
+```
+
+```text
+Rust: [1 calls of 10 runs fizzbuzzing up to 2000000]
+[26.059991252001055]
+Python: [1 calls of 10 runs fizzbuzzing up to 2000000]
+[79.7828568210025]
+Rust vector: [1 calls of 10 runs fizzbuzzing a list of numbers up to 2000000]
+[9.551074810999125]
+```
