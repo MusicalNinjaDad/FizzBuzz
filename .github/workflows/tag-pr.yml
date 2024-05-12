@@ -1,0 +1,29 @@
+name: Tag PR
+
+on: 
+  pull_request: 
+    types: closed
+  
+jobs:
+  tag:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/github-script@v7
+      with:
+        script: |
+          github.rest.git.createRef({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            ref: 'refs/tags/PR${{ github.event.number }}',
+            
+            sha: context.sha
+          }).catch(err => {
+            if (err.status !== 409) throw err;
+            github.rest.git.updateRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: 'refs/tags/PR${{ github.event.number }}',
+              sha: context.sha
+            });
+          })
