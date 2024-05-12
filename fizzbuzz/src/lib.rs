@@ -136,12 +136,12 @@ mod test {
 
     #[test]
     fn big_vector_is_well_ordered() {
-        let input: Vec<_> = (1..BIG_VECTOR+1).collect();
+        let input: Vec<_> = (1..BIG_VECTOR + 1).collect();
         let output: Vec<_> = input.fizzbuzz().into();
         let mut expected: Vec<String> = vec![];
-            for i in input.iter() {
-                expected.push(i.fizzbuzz().into())
-            };
+        for i in input.iter() {
+            expected.push(i.fizzbuzz().into())
+        }
         assert_eq!(output, expected);
     }
 }
