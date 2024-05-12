@@ -362,3 +362,212 @@ vec_pariter             time:   [55.747 ms 57.200 ms 58.714 ms]
 Found 2 outliers among 100 measurements (2.00%)
   2 (2.00%) high mild
 ```
+
+## Finding break-even
+
+### 300_000
+
+```text
+vec_iter                time:   [23.252 ms 23.915 ms 24.645 ms]
+                        change: [-75.400% -74.494% -73.522%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 12 outliers among 100 measurements (12.00%)
+  3 (3.00%) high mild
+  9 (9.00%) high severe
+
+vec_pariter             time:   [24.358 ms 25.161 ms 25.992 ms]
+                        change: [-57.684% -56.013% -54.132%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+```
+
+
+### 250_000
+
+```text
+vec_iter                time:   [18.911 ms 19.349 ms 19.850 ms]
+                        change: [-22.174% -19.095% -16.151%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 16 outliers among 100 measurements (16.00%)
+  4 (4.00%) high mild
+  12 (12.00%) high severe
+
+vec_pariter             time:   [26.470 ms 27.406 ms 28.384 ms]
+                        change: [+3.9135% +8.9233% +14.506%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+Found 6 outliers among 100 measurements (6.00%)
+  6 (6.00%) high mild
+```
+
+### 275_000
+
+```text
+vec_iter                time:   [20.926 ms 21.342 ms 21.792 ms]
+                        change: [+6.8293% +10.300% +13.824%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+Found 11 outliers among 100 measurements (11.00%)
+  10 (10.00%) high mild
+  1 (1.00%) high severe
+
+vec_pariter             time:   [23.185 ms 23.981 ms 24.823 ms]
+                        change: [-16.495% -12.497% -7.8280%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 4 outliers among 100 measurements (4.00%)
+  4 (4.00%) high mild
+```
+
+## Using MultiFizzBuzz trait, with par_iter when >300_000 elements
+
+```rust
+use criterion::{criterion_group, criterion_main, Criterion};
+use fizzbuzz::{self, FizzBuzz, MultiFizzBuzz};
+use rayon::prelude::*;
+
+static TEST_SIZE: isize = 100_000;
+
+#[inline]
+fn for_loop() {
+    for i in 1..TEST_SIZE {
+        let _: String = i.fizzbuzz().into();
+    }
+}
+
+#[inline]
+fn for_loop_with_vec_overhead() {
+    let inputs: Vec<_> = (1..TEST_SIZE).collect();
+    let mut out: Vec<String> = vec![];
+    for i in inputs.into_iter() {
+        out.push(i.fizzbuzz().into());
+    }
+}
+
+#[inline]
+fn vec_iter() {
+    let inputs: Vec<_> = (1..TEST_SIZE).collect();
+    let _: Vec<String> = inputs.iter().map(|num| num.fizzbuzz().into()).collect();
+}
+
+#[inline]
+fn vec_intoiter() {
+    let inputs: Vec<_> = (1..TEST_SIZE).collect();
+    let _: Vec<String> = inputs.into_iter().map(|num| num.fizzbuzz().into()).collect();
+}
+
+#[inline]
+fn vec_pariter() {
+    let inputs: Vec<_> = (1..TEST_SIZE).collect();
+    let _: Vec<String> = inputs.par_iter().map(|num| num.fizzbuzz().into()).collect();
+}
+
+#[inline]
+fn multifizzbuzz_trait() {
+    let inputs: Vec<_> = (1..TEST_SIZE).collect();
+    let _: Vec<String> = inputs.fizzbuzz().into();
+}
+
+fn criterion_benchmark(c: &mut Criterion) {
+    c.bench_function("for_loop", |b| b.iter(|| for_loop()));
+    c.bench_function("for_loop_with_vec_overhead", |b| b.iter(|| for_loop_with_vec_overhead()));
+    c.bench_function("vec_iter", |b| b.iter(|| vec_iter()));
+    c.bench_function("vec_intoiter", |b| b.iter(|| vec_intoiter()));
+    c.bench_function("vec_pariter", |b| b.iter(|| vec_pariter()));
+    c.bench_function("multifizzbuzz_trait", |b| b.iter(|| multifizzbuzz_trait()));
+}
+
+criterion_group!(benches, criterion_benchmark);
+criterion_main!(benches);
+```
+
+### 100_000
+
+```text
+for_loop                time:   [4.2707 ms 4.3504 ms 4.4401 ms]
+                        change: [-90.538% -90.224% -89.916%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 14 outliers among 100 measurements (14.00%)
+  9 (9.00%) high mild
+  5 (5.00%) high severe
+
+for_loop_with_vec_overhead
+                        time:   [11.099 ms 11.428 ms 11.789 ms]
+                        change: [-88.836% -88.381% -87.900%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 8 outliers among 100 measurements (8.00%)
+  6 (6.00%) high mild
+  2 (2.00%) high severe
+
+vec_iter                time:   [7.7721 ms 8.0990 ms 8.4777 ms]
+                        change: [-63.641% -62.051% -60.088%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 11 outliers among 100 measurements (11.00%)
+  5 (5.00%) high mild
+  6 (6.00%) high severe
+
+vec_intoiter            time:   [7.4831 ms 7.6820 ms 7.9091 ms]
+                        change: [-92.383% -92.070% -91.727%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 14 outliers among 100 measurements (14.00%)
+  7 (7.00%) high mild
+  7 (7.00%) high severe
+
+vec_pariter             time:   [16.626 ms 17.076 ms 17.532 ms]
+                        change: [-31.716% -28.794% -25.604%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+
+multifizzbuzz_trait     time:   [7.8593 ms 8.0643 ms 8.2940 ms]
+Found 8 outliers among 100 measurements (8.00%)
+  5 (5.00%) high mild
+  3 (3.00%) high severe
+```
+
+### 1_000_000
+
+```text
+for_loop                time:   [43.583 ms 44.555 ms 45.632 ms]
+                        change: [+894.93% +924.17% +957.38%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+Found 17 outliers among 100 measurements (17.00%)
+  10 (10.00%) high mild
+  7 (7.00%) high severe
+
+Benchmarking for_loop_with_vec_overhead: Warming up for 3.0000 s
+Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 10.9s, or reduce sample count to 40.
+for_loop_with_vec_overhead
+                        time:   [97.879 ms 99.476 ms 101.23 ms]
+                        change: [+739.76% +770.48% +800.07%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+Found 5 outliers among 100 measurements (5.00%)
+  4 (4.00%) high mild
+  1 (1.00%) high severe
+
+Benchmarking vec_iter: Warming up for 3.0000 s
+Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 9.9s, or reduce sample count to 50.
+vec_iter                time:   [91.757 ms 94.214 ms 97.209 ms]
+                        change: [+1000.5% +1063.3% +1127.1%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+Found 12 outliers among 100 measurements (12.00%)
+  7 (7.00%) high mild
+  5 (5.00%) high severe
+
+Benchmarking vec_intoiter: Warming up for 3.0000 s
+Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 10.0s, or reduce sample count to 40.
+vec_intoiter            time:   [93.728 ms 95.574 ms 97.608 ms]
+                        change: [+1100.8% +1144.1% +1187.1%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+Found 4 outliers among 100 measurements (4.00%)
+  2 (2.00%) high mild
+  2 (2.00%) high severe
+
+vec_pariter             time:   [57.161 ms 58.950 ms 60.776 ms]
+                        change: [+230.76% +245.22% +258.85%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+
+multifizzbuzz_trait     time:   [56.362 ms 57.859 ms 59.375 ms]
+                        change: [+590.60% +617.47% +644.82%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+```
