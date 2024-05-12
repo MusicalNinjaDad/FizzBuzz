@@ -1,4 +1,4 @@
-!#[allow(dead_code)]
+#![allow(dead_code)]
 use criterion::{criterion_group, criterion_main, Criterion};
 use fizzbuzz::{self, FizzBuzz, MultiFizzBuzz};
 use rayon::prelude::*;
