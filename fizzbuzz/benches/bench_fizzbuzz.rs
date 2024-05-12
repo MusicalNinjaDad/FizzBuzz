@@ -47,6 +47,13 @@ fn multifizzbuzz_trait() {
     let _: Vec<String> = inputs.fizzbuzz().into();
 }
 
+#[inline]
+fn multifizzbuzz_trait_as_string() {
+    let inputs: Vec<_> = (1..TEST_SIZE).collect();
+    let _: String = inputs.fizzbuzz().into();
+}
+
+
 fn criterion_benchmark(c: &mut Criterion) {
     c.bench_function("for_loop", |b| b.iter(|| for_loop()));
     c.bench_function("for_loop_with_vec_overhead", |b| {
@@ -56,6 +63,7 @@ fn criterion_benchmark(c: &mut Criterion) {
     c.bench_function("vec_intoiter", |b| b.iter(|| vec_intoiter()));
     c.bench_function("vec_pariter", |b| b.iter(|| vec_pariter()));
     c.bench_function("multifizzbuzz_trait", |b| b.iter(|| multifizzbuzz_trait()));
+    c.bench_function("multifizzbuzz_trait_as_string", |b| b.iter(|| multifizzbuzz_trait_as_string()));
 }
 
 criterion_group!(benches, criterion_benchmark);
