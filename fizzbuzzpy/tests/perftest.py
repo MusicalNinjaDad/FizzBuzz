@@ -1,8 +1,8 @@
 # ruff: noqa
 import timeit
 
-from fizzbuzz.fizzbuzzo3 import fizzbuzz as fbo3
-from fizzbuzz.fizzbuzzpy import fizzbuzz as fbpy
+from fizzbuzzo3 import fizzbuzz as fbo3
+from fizzbuzzpy import fizzbuzz as fbpy
 
 
 REPEAT = 1

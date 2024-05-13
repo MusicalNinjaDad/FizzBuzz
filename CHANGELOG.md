@@ -1,10 +1,5 @@
 # FizzBuzz Changelog
 
-## Python 2.0.0
-
-- **Breaking:** Changed top level module name to `fizzbuzz`. Use `from fizzbuzz.fizzbuzzo3 import fizzbuzz`
-for rust implementation or `from fizzbuzz.fizzbuzzpy import fizzbuzz` for python implementation (slower).
-
 ## Rust 2.1.0 & Python 1.3.0
 
 - Process `Vec`s / `list`s with more than 300k elements in parallel
