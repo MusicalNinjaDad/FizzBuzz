@@ -1,4 +1,5 @@
 import pytest
+
 from fizzbuzz.fizzbuzzo3 import fizzbuzz
 
 
