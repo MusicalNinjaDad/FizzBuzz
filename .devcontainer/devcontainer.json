@@ -1,7 +1,5 @@
 {
     "image": "ghcr.io/musicalninjas/pyo3-devcontainer:latest",
-    "containerUser": "fizzbuzz",
-    "updateRemoteUserUID": true,
     // "build": {
     //     "dockerfile": "Dockerfile",
     //     "args": {
