@@ -1,4 +1,5 @@
 {
+    // "image": "ghcr.io/musicalninjas/pyo3-devcontainer:latest", // untested with mac, expect issues due to x_64 rust installation
     "build": {
         "dockerfile": "Dockerfile",
         "args": {
