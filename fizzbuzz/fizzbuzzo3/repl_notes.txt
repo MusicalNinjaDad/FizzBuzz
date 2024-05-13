@@ -1,0 +1,71 @@
+Python 3.12.3 (main, Apr 17 2024, 00:00:00) [GCC 14.0.1 20240411 (Red Hat 14.0.1-0)] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import fizzbuzz.fizzbuzzo3 as fb
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+ModuleNotFoundError: No module named 'fizzbuzz.fizzbuzzo3'
+>>> import fizzbuzz.fizzbuzzpy.fizzbuzzo3 as fb
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+ModuleNotFoundError: No module named 'fizzbuzz.fizzbuzzpy'
+>>> import fizzbuzzpy.fizzbuzzo3 as fb
+>>> fb.fizzbuzz.__doc__
+>>> fb.fizzbuzz
+<built-in function fizzbuzz>
+>>> dict(fb.fizzbuzz)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: 'builtin_function_or_method' object is not iterable
+>>> fb.fizzbuzz.__dict__
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: 'builtin_function_or_method' object has no attribute '__dict__'. Did you mean: '__dir__'?
+>>> fb.fizzbuzz.__dir__
+<built-in method __dir__ of builtin_function_or_method object at 0x7fda6d9922f0>
+>>> fb.fizzbuzz.__dir__()
+['__repr__', '__hash__', '__call__', '__getattribute__', '__lt__', '__le__', '__eq__', '__ne__', '__gt__', '__ge__', '__reduce__', '__module__', '__doc__', '__name__', '__qualname__', '__self__', '__text_signature__', '__new__', '__str__', '__setattr__', '__delattr__', '__init__', '__reduce_ex__', '__getstate__', '__subclasshook__', '__init_subclass__', '__format__', '__sizeof__', '__dir__', '__class__']
+>>> fb.fizzbuzz.__text_signature__()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: 'str' object is not callable
+>>> fb.fizzbuzz.__text_signature__
+'(num)'
+>>> fb._dir__()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: module 'fizzbuzzpy.fizzbuzzo3' has no attribute '_dir__'
+>>> import ast
+>>> dir(fb)
+['__all__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'fizzbuzz']
+>>> type(fb.fizzbuzz)
+<class 'builtin_function_or_method'>
+>>> type(type(fb.fizzbuzz))
+<class 'type'>
+>>> type(fb.fizzbuzz) == builtin_function_or_method
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+NameError: name 'builtin_function_or_method' is not defined
+>>> type(fb.fizzbuzz) == type('builtin_function_or_method')
+False
+>>> type(fb.fizzbuzz) == 'builtin_function_or_method'
+False
+>>> isinstance(fb.fizzbuzz, builtin_function_or_method)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+NameError: name 'builtin_function_or_method' is not defined
+>>> import types.builtin_function_or_method
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+ModuleNotFoundError: No module named 'types.builtin_function_or_method'; 'types' is not a package
+>>> import types
+>>> isinstance(fb.fizzbuzz, types.builtin_function_or_method)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: module 'types' has no attribute 'builtin_function_or_method'
+>>> isinstance(fb.fizzbuzz, types.BuiltinFunctionType)
+True
+>>> import types.BuiltinFunctionType as builtin
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+ModuleNotFoundError: No module named 'types.BuiltinFunctionType'; 'types' is not a package
+>>> 
