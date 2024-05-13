@@ -15,8 +15,9 @@ def fizzbuzz(n: int | list[int]) -> str:
         n: either `int` the  single number to fizzbuzz or `list[int]` a list of numbers to fizzbuzz.
 
     Returns:
-        `n [int]`: A string with the correct fizzbuzz answer
-        `n [list[int]]`: A string with all the correct fizzbuzz answers, separated by commas and spaces (`, `)
+        A string representing the fizzbuzz result. If `n` is an integer, the string contains the fizzbuzz 
+        answer for that number. If `n` is a list of integers, the string contains the fizzbuzz answers for each number,
+        separated by commas and spaces (`, `).
 
     Examples:
         Using a single value:
