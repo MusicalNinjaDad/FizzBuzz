@@ -1,7 +1,7 @@
 [workspace]
 
 members = [
-    "fizzbuzz-rust",
+    "fizzbuzz",
     "fizzbuzzo3"
 ]
 
