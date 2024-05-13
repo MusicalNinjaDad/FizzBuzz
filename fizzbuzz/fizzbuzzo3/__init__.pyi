@@ -21,17 +21,17 @@ def fizzbuzz(n: int | list[int]) -> str:
     Examples:
         Using a single value:
         ```
-        > from fizzbuzz.fizzbuzzo3 import fizzbuzz
-        > fizzbuzz(1)
+        >>> from fizzbuzz.fizzbuzzo3 import fizzbuzz
+        >>> fizzbuzz(1)
         '1'
-        > fizzbuzz(5)
+        >>> fizzbuzz(5)
         'buzz'
         ```
 
         Using a list:
         ```
-        > from fizzbuzz.fizzbuzzo3 import fizzbuzz
-        > fizzbuzz([1, 5])
+        >>> from fizzbuzz.fizzbuzzo3 import fizzbuzz
+        >>> fizzbuzz([1, 5])
         '1, buzz'
         ```
     """

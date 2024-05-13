@@ -72,7 +72,8 @@ xfail_strict = true
 addopts = [
     "--doctest-modules",
     "--doctest-mdcodeblocks",
-    "--doctest-glob='*.md'",
+    "--doctest-glob=*.md",
+    "--doctest-glob=*.pyi",
 ]
 
 [tool.coverage.run]
