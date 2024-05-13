@@ -1,2 +1,37 @@
-def fizzbuzz (n: int | list[int]) -> str:
-    """A docstring."""
+# ruff: noqa: PYI021
+def fizzbuzz(n: int | list[int]) -> str:
+    """
+    Compute the fizzbuzz answer for `n` using a highly efficient algorithm written in rust.
+
+    The correct fizzbuzz answer is the original number, unless divisible by 3 or 5.
+    For numbers divisible by 3, the correct answer is 'fizz'.
+    For numbers divisible by 5, the correct answer is 'buzz'.
+    For numbers divisible by both 3 & 5, the correct answer is 'fizzbuzz'.
+
+    **Note:** Passing a `list` of values to fizzbuzz is more efficient than making multiple calls.
+    Larger lists will be processed in parallel on multiple cpu cores.
+
+    Arguments:
+        n: either `int` the  single number to fizzbuzz or `list[int]` a list of numbers to fizzbuzz.
+
+    Returns:
+        `n [int]`: A string with the correct fizzbuzz answer
+        `n [list[int]]`: A string with all the correct fizzbuzz answers, separated by commas and spaces (`, `)
+
+    Examples:
+        Using a single value:
+        ```
+        > from fizzbuzzpy.fizzbuzzo3 import fizzbuzz
+        > fizzbuzz(1)
+        '1'
+        > fizzbuzz(5)
+        'buzz'
+        ```
+
+        Using a list:
+        ```
+        > from fizzbuzzpy.fizzbuzzo3 import fizzbuzz
+        > fizzbuzz([1, 5])
+        '1, buzz'
+        ```
+    """
