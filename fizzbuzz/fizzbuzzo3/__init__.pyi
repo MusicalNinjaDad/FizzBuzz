@@ -21,7 +21,7 @@ def fizzbuzz(n: int | list[int]) -> str:
     Examples:
         Using a single value:
         ```
-        > from fizzbuzzpy.fizzbuzzo3 import fizzbuzz
+        > from fizzbuzz.fizzbuzzo3 import fizzbuzz
         > fizzbuzz(1)
         '1'
         > fizzbuzz(5)
@@ -30,7 +30,7 @@ def fizzbuzz(n: int | list[int]) -> str:
 
         Using a list:
         ```
-        > from fizzbuzzpy.fizzbuzzo3 import fizzbuzz
+        > from fizzbuzz.fizzbuzzo3 import fizzbuzz
         > fizzbuzz([1, 5])
         '1, buzz'
         ```

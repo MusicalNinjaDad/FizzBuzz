@@ -30,14 +30,14 @@ Issues = "https://github.com/MusicalNinjaDad/fizzbuzz/issues"
 version = { file = "__pyversion__" }
 
 [tool.setuptools.packages.find]
-where = ["fizzbuzzpy"]
+where = ["fizzbuzz"]
 
 [[tool.setuptools-rust.ext-modules]]
 # Private Rust extension module to be nested into the Python package
-target = "fizzbuzzpy.fizzbuzzo3" # The last part of the name (e.g. "_lib") has to match lib.name in Cargo.toml,
+target = "fizzbuzzo3" # The last part of the name (e.g. "_lib") has to match lib.name in Cargo.toml,
 # but you can add a prefix to nest it inside of a Python package.
-path = "fizzbuzzo3/Cargo.toml"       # Default value, can be omitted
-binding = "PyO3"                     # Default value, can be omitted
+path = "fizzbuzzo3/Cargo.toml"
+binding = "PyO3"
 features = ["pyo3/extension-module"]
 
 [tool.cibuildwheel]
