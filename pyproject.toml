@@ -78,7 +78,7 @@ addopts = [
 
 [tool.coverage.run]
 branch = true
-omit = ["test_*"]
+omit = ["test_*", "tests/*"]
 dynamic_context = "test_function"
 
 [tool.ruff]
