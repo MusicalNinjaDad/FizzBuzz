@@ -1,4 +1,4 @@
-from fizzbuzzpy import fizzbuzz
+from fizzbuzz import fizzbuzz
 
 
 def test_lazy():
