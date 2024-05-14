@@ -21,16 +21,16 @@ static BIG_VECTOR: usize = 300_000; // Size from which parallelisation makes sen
 /// ::From() etc.
 pub enum FizzBuzzAnswer {
     /// Stores a single FizzBuzz value
-    String(String),
+    One(String),
     /// Stores a series of FizzBuzz values
-    Vec(Vec<String>),
+    Many(Vec<String>),
 }
 
 impl From<FizzBuzzAnswer> for String {
     fn from(value: FizzBuzzAnswer) -> Self {
         match value {
-            FizzBuzzAnswer::String(s) => s,
-            FizzBuzzAnswer::Vec(v) => v.join(", "),
+            FizzBuzzAnswer::One(s) => s,
+            FizzBuzzAnswer::Many(v) => v.join(", "),
         }
     }
 }
@@ -38,8 +38,8 @@ impl From<FizzBuzzAnswer> for String {
 impl From<FizzBuzzAnswer> for Vec<String> {
     fn from(value: FizzBuzzAnswer) -> Self {
         match value {
-            FizzBuzzAnswer::String(s) => vec![s],
-            FizzBuzzAnswer::Vec(v) => v,
+            FizzBuzzAnswer::One(s) => vec![s],
+            FizzBuzzAnswer::Many(v) => v,
         }
     }
 }
@@ -76,21 +76,21 @@ where
     fn fizzbuzz(&self) -> FizzBuzzAnswer {
         let three = match <Num>::try_from(3_u8) {
             Ok(three) => three,
-            Err(_) => return FizzBuzzAnswer::String(self.to_string()),
+            Err(_) => return FizzBuzzAnswer::One(self.to_string()),
         };
         let five = match <Num>::try_from(5_u8) {
             Ok(five) => five,
-            Err(_) => return FizzBuzzAnswer::String(self.to_string()),
+            Err(_) => return FizzBuzzAnswer::One(self.to_string()),
         };
         let zero = match <Num>::try_from(0_u8) {
             Ok(zero) => zero,
-            Err(_) => return FizzBuzzAnswer::String(self.to_string()),
+            Err(_) => return FizzBuzzAnswer::One(self.to_string()),
         };
         match (self % three == zero, self % five == zero) {
-            (true, true) => FizzBuzzAnswer::String("fizzbuzz".to_string()),
-            (true, false) => FizzBuzzAnswer::String("fizz".to_string()),
-            (false, true) => FizzBuzzAnswer::String("buzz".to_string()),
-            _ => FizzBuzzAnswer::String(self.to_string()),
+            (true, true) => FizzBuzzAnswer::One("fizzbuzz".to_string()),
+            (true, false) => FizzBuzzAnswer::One("fizz".to_string()),
+            (false, true) => FizzBuzzAnswer::One("buzz".to_string()),
+            _ => FizzBuzzAnswer::One(self.to_string()),
         }
     }
 }
@@ -109,9 +109,9 @@ where
 {
     fn fizzbuzz(&self) -> FizzBuzzAnswer {
         if self.len() < BIG_VECTOR {
-            FizzBuzzAnswer::Vec(self.iter().map(|n| n.fizzbuzz().into()).collect())
+            FizzBuzzAnswer::Many(self.iter().map(|n| n.fizzbuzz().into()).collect())
         } else {
-            FizzBuzzAnswer::Vec(self.par_iter().map(|n| n.fizzbuzz().into()).collect())
+            FizzBuzzAnswer::Many(self.par_iter().map(|n| n.fizzbuzz().into()).collect())
         }
     }
 }
@@ -122,7 +122,7 @@ mod test {
 
     #[test]
     fn vec_to_string() {
-        let input = FizzBuzzAnswer::Vec(vec![
+        let input = FizzBuzzAnswer::Many(vec![
             "1".to_string(),
             "2".to_string(),
             "fizz".to_string(),
