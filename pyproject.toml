@@ -30,7 +30,7 @@ Issues = "https://github.com/MusicalNinjaDad/fizzbuzz/issues"
 version = { file = "__pyversion__" }
 
 [tool.setuptools.packages.find]
-where = ["fizzbuzzpy"]
+where = ["python"]
 
 [[tool.setuptools-rust.ext-modules]]
 # Private Rust extension module to be nested into the Python package
