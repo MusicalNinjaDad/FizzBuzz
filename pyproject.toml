@@ -48,7 +48,7 @@ skip = [
 ]
 
 [tool.cibuildwheel.linux]
-before-all = "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal"
+before-all = "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal && cargo install just && just clean"
 environment = { PATH = "$HOME/.cargo/bin:$PATH" }
 archs = "all"
 test-command = "pytest {package}"

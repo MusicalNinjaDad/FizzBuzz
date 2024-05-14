@@ -47,8 +47,7 @@
         }
     },
     "updateContentCommand": {
-        "rust": ".devcontainer/check-rust.sh",
-        "python": ".devcontainer/setup-py.sh"
+        "reset-check": "just reset check"
     },
     "postAttachCommand": {
         "python": ". .venv/bin/activate"
