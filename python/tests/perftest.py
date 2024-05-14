@@ -1,7 +1,7 @@
 # ruff: noqa
 import timeit
 
-from fizzbuzzo3 import fizzbuzz as fbo3
+from fizzbuzz.fizzbuzzo3 import fizzbuzz as fbo3
 from fizzbuzz import fizzbuzz as fbpy
 
 

@@ -1,6 +1,6 @@
 import pytest
 
-from fizzbuzzo3 import fizzbuzz
+from fizzbuzz.fizzbuzzo3 import fizzbuzz
 
 
 def test_lazy():
