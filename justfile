@@ -4,7 +4,7 @@ list:
   
 # remove pre-built rust and python libraries (excluding .venv)
 clean:
-    cargo clean
+    - .ve cargo clean
     rm -rf .pytest_cache
     find . -depth -type d -not -path "./.venv/*" -name "__pycache__" -exec rm -rf "{}" \;
     find . -depth -type d -path "*.egg-info" -exec rm -rf "{}" \;
