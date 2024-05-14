@@ -1,5 +1,10 @@
 # FizzBuzz Changelog
 
+## Python 1.3.1
+
+- Clean before building each set of wheels to ensure that wheels compiled for non x86 linux architectures run correctly
+- Add a justfile to make cleaning, linting, testing etc. easier
+
 ## Rust 2.1.0 & Python 1.3.0
 
 - Process `Vec`s / `list`s with more than 300k elements in parallel
