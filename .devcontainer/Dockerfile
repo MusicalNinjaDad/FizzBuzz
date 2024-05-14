@@ -39,6 +39,7 @@ RUN dnf -y --setopt=install_weak_deps=False reinstall $(dnf list --installed | a
 # Basic development tools
 RUN dnf -y --setopt=install_weak_deps=False install \
     git \
+    just \
     which
 
 # Python
