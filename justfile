@@ -44,3 +44,7 @@ check-python: lint-python test-python
 
 # lint and test both rust and python
 check: check-rust check-python
+
+# build and test a wheel
+test-wheel: clean
+  cibuildwheel --only cp312-manylinux_x86_64
