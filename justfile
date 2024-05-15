@@ -4,7 +4,7 @@ list:
   
 # remove pre-built rust and python libraries (excluding .venv)
 clean:
-    cargo clean
+    - cargo clean
     rm -rf .pytest_cache
     find . -depth -type d -not -path "./.venv/*" -name "__pycache__" -exec rm -rf "{}" \;
     find . -depth -type d -path "*.egg-info" -exec rm -rf "{}" \;
@@ -15,9 +15,8 @@ clean:
 reset: clean
     rm -rf .venv
     python -m venv .venv
-    . .venv/bin/activate
-    python -m pip install --upgrade pip 
-    pip install -e .[dev]
+    .venv/bin/python -m pip install --upgrade pip 
+    .venv/bin/pip install -e .[dev]
 
 # lint rust files with fmt & clippy
 lint-rust:
@@ -33,14 +32,18 @@ check-rust: lint-rust test-rust
 
 # lint python with ruff
 lint-python:
-  - ruff check .
+  - .venv/bin/ruff check .
 
 # test python
 test-python:
-  - pytest
+  - .venv/bin/pytest
 
 # lint and test python
 check-python: lint-python test-python
 
 # lint and test both rust and python
 check: check-rust check-python
+
+# build and test a wheel (a suitable venv must already by active!)
+test-wheel: clean
+  cibuildwheel --only cp312-manylinux_x86_64

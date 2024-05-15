@@ -1,8 +1,7 @@
 [workspace]
 
 members = [
-    "fizzbuzz",
-    "fizzbuzzo3"
+    "rust/*"
 ]
 
 resolver = "2"

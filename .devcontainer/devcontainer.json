@@ -48,8 +48,5 @@
     },
     "updateContentCommand": {
         "reset-check": "just reset check"
-    },
-    "postAttachCommand": {
-        "python": ". .venv/bin/activate"
     }
 }
