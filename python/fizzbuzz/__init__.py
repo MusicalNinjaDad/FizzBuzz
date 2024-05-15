@@ -12,4 +12,5 @@ from fizzbuzz import pyfizzbuzz
 ```
 
 """
-from .fizzbuzzer import fizzbuzz
+from .fizzbuzzer import fizzbuzz as fbpy
+from .fizzbuzzo3 import fizzbuzz as fbo3
