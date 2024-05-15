@@ -1,5 +1,12 @@
 # FizzBuzz Changelog
 
+## Python 2.0.0
+
+- Python and rust variants are now under single fizzbuzz namespace as `fizzbuzz.fizzbuzzpy` and `fizzbuzz.fizzbuzzo3`
+- Add type and docstring hinting for fizzbuzzo3
+- Add signature and docstring info to pyo3function in case needed via `fizzbuzz.__doc__` and `fizzbuzz.____text_signature__`
+- Enable python doctests for both python and rust variants
+
 ## Python 1.3.1
 
 - Clean before building each set of wheels to ensure that wheels compiled for non x86 linux architectures run correctly
