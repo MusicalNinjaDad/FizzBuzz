@@ -32,11 +32,11 @@ check-rust: lint-rust test-rust
 
 # lint python with ruff
 lint-python:
-  - ruff check .
+  - .venv/bin/ruff check .
 
 # test python
 test-python:
-  - pytest
+  - .venv/bin/pytest
 
 # lint and test python
 check-python: lint-python test-python
@@ -44,6 +44,6 @@ check-python: lint-python test-python
 # lint and test both rust and python
 check: check-rust check-python
 
-# build and test a wheel
+# build and test a wheel (a suitable venv must already by active!)
 test-wheel: clean
   cibuildwheel --only cp312-manylinux_x86_64
