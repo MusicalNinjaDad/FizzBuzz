@@ -1,5 +1,14 @@
 #ruff: noqa: PYI021
-"""Module level Docstring for fizzbuzzo3."""
+"""
+An optimised rust version of fizzbuzz.
+
+Provides a fizzbuzz() function which will run on multiple CPU cores if needed.
+
+Usage:
+    ```
+    >>> from fizzbuzz.fizzbuzzo3 import fizzbuzz
+    ```
+"""
 
 def fizzbuzz(n: int | list[int]) -> str:
     """
