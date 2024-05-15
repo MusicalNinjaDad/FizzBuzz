@@ -1,5 +1,5 @@
 import pytest
-from fizzbuzz import fbo3 as fizzbuzz
+from fizzbuzz.fizzbuzzo3 import fizzbuzz
 
 
 def test_lazy():

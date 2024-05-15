@@ -1,4 +1,4 @@
-from fizzbuzz import fbpy as fizzbuzz
+from fizzbuzz.fizzbuzzer import fizzbuzz
 
 
 def test_lazy():
