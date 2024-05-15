@@ -2,7 +2,7 @@
 import timeit
 
 from fizzbuzz.fizzbuzzo3 import fizzbuzz as fbo3
-from fizzbuzz.fizzbuzzer import fizzbuzz as fbpy
+from fizzbuzz.fizzbuzzpy import fizzbuzz as fbpy
 
 
 REPEAT = 1
