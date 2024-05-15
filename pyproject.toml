@@ -76,6 +76,9 @@ addopts = [
     "--doctest-mdcodeblocks",
     "--doctest-glob='*.md'",
 ]
+testpaths = [
+    "tests",
+]
 
 [tool.coverage.run]
 branch = true
