@@ -4,7 +4,7 @@ list:
   
 # remove pre-built rust and python libraries (excluding .venv)
 clean:
-    - .ve cargo clean
+    - cargo clean
     rm -rf .pytest_cache
     find . -depth -type d -not -path "./.venv/*" -name "__pycache__" -exec rm -rf "{}" \;
     find . -depth -type d -path "*.egg-info" -exec rm -rf "{}" \;
@@ -15,9 +15,8 @@ clean:
 reset: clean
     rm -rf .venv
     python -m venv .venv
-    . .venv/bin/activate
-    python -m pip install --upgrade pip 
-    pip install -e .[dev]
+    .venv/bin/python -m pip install --upgrade pip 
+    .venv/bin/pip install -e .[dev]
 
 # lint rust files with fmt & clippy
 lint-rust:
