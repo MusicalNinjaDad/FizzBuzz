@@ -47,13 +47,13 @@ skip = [
     "*-musllinux_s390x",   # no rust target available.
 ]
 # Use prebuilt copies of pypa images with rust and just ready compiled (saves up to 25 mins on emulated archs)
-manylinux-x86_64-image = "ghcr.io/musicalninjas/quay.io/pypa/manylinux2010_x86_64-rust"
-manylinux-i686-image = "ghcr.io/musicalninjas/quay.io/pypa/manylinux2010_i686-rust"
+manylinux-x86_64-image = "ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_x86_64-rust"
+manylinux-i686-image = "ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_i686-rust"
 manylinux-aarch64-image = "ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_aarch64-rust"
 manylinux-ppc64le-image = "ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_ppc64le-rust"
 manylinux-s390x-image = "ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_s390x-rust"
-manylinux-pypy_x86_64-image = "ghcr.io/musicalninjas/quay.io/pypa/manylinux2010_x86_64-rust"
-manylinux-pypy_i686-image = "ghcr.io/musicalninjas/quay.io/pypa/manylinux2010_i686-rust"
+manylinux-pypy_x86_64-image = "ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_x86_64-rust"
+manylinux-pypy_i686-image = "ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_i686-rust"
 manylinux-pypy_aarch64-image = "ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_aarch64-rust"
 musllinux-x86_64-image = "ghcr.io/musicalninjas/quay.io/pypa/musllinux_1_2_x86_64-rust"
 musllinux-aarch64-image = "ghcr.io/musicalninjas/quay.io/pypa/musllinux_1_2_aarch64-rust"
