@@ -22,12 +22,13 @@ jobs:
       run: cargo test --workspace
 
   wheels:
-    name: Build wheels on ${{ matrix.os }}
+    name: Build wheels on ${{ matrix.os }} - ${{ matrix.target }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         # macos-13 is an intel runner, macos-14 is apple silicon
         os: [ubuntu-latest, windows-latest, macos-13, macos-14]
+        target: ['*']
         include:
         - os: ubuntu-latest
           target: '*x86*'
@@ -41,6 +42,9 @@ jobs:
           target: '*ppc64le*'
         - os: ubuntu-latest
           target: '*s390x*'
+        exclude:
+        - os: ubuntu-latest
+          target: '*'
     steps:
       - uses: actions/checkout@v4
       - name: Set up QEMU
