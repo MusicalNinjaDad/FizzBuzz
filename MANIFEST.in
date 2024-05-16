@@ -1,2 +1,4 @@
-graft fizzbuzzo3
-graft fizzbuzz
+graft rust
+graft tests
+graft Cargo.toml
+prune */__pycache__

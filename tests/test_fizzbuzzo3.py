@@ -1,4 +1,5 @@
-from fizzbuzzpy import fizzbuzz
+import pytest
+from fizzbuzz.fizzbuzzo3 import fizzbuzz
 
 
 def test_lazy():
@@ -27,3 +28,17 @@ def test_rules():
     assert every_fizzbuzz_is_mod15
     all_numbers_correct = all(r == str(i + 1) for i, r in enumerate(results) if r not in ("fizz", "buzz", "fizzbuzz"))
     assert all_numbers_correct
+
+
+def test_string():
+    with pytest.raises(TypeError):
+        fizzbuzz("1")
+
+
+def test_float():
+    assert fizzbuzz(1.0) == "1"
+    assert fizzbuzz(3.0) == "fizz"
+
+
+def test_list():
+    assert fizzbuzz([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15]) == "1, 2, fizz, 4, buzz, fizz, 7, 8, fizz, buzz, fizzbuzz"
