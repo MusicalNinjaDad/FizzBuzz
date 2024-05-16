@@ -59,8 +59,7 @@ musllinux-x86_64-image = "ghcr.io/musicalninjas/quay.io/pypa/musllinux_1_2_x86_6
 musllinux-aarch64-image = "ghcr.io/musicalninjas/quay.io/pypa/musllinux_1_2_aarch64-rust"
 
 [tool.cibuildwheel.linux]
-before-all = "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal && cargo install just && just clean"
-environment = { PATH = "$HOME/.cargo/bin:$PATH" }
+before-all = "just clean"
 archs = "all"
 # `test-command` will FAIL if only passed `pytest {package}`
 # as this tries to resolve imports based on source files (where there is no `.so` for rust libraries), not installed wheel
