@@ -16,7 +16,6 @@ jobs:
             owner: context.repo.owner,
             repo: context.repo.repo,
             ref: 'refs/tags/PR${{ github.event.number }}',
-            
             sha: context.sha
           }).catch(err => {
             if (err.status !== 409) throw err;
