@@ -6,7 +6,7 @@ on:
   
 jobs:
   tag:
-    if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -19,11 +19,11 @@ jobs:
           github.rest.git.createTag({
             owner: context.repo.owner,
             repo: context.repo.repo,
-            tag: PR${{ github.event.number }}
-            message: ${{ github.event.pull_request.title }}
-            object: context.sha
-            type: commit
-            tagger.name: ${{ github.event.sender.name }}
+            tag: PR${{ github.event.number }},
+            message: ${{ github.event.pull_request.title }},
+            object: context.sha,
+            type: commit,
+            tagger.name: ${{ github.event.sender.name }},
             tagger.email: ${{ github.event.sender.email }}
           })
     - name: create tag git ref
