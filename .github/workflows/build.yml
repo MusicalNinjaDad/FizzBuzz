@@ -1,0 +1,87 @@
+name: Build Python Package
+on:
+  workflow_call:
+    inputs:
+      prefix:
+        description: 'The filename prefix for wheels and sdist, use this as the basis for `with: pattern:` in `actions/download-artifact`. Defaults to `cibw`'
+        default: cibw
+        required: false
+        type: string
+      wheels-location:
+        description: 'Where to temporarily store the wheels. Defaults to: `./wheelhouse`. You should not usually need to change this.'
+        default: './wheelhouse'
+        required: false
+        type: string
+      sdist-location:
+          description: 'Where to temporarily store the sdist. Defaults to: `./dist`. You should not usually need to change this.'
+          default: './dist'
+          required: false
+          type: string
+
+jobs:
+  wheels:
+    name: Build wheels on ${{ matrix.os }} - ${{ matrix.target }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        # macos-13 is an intel runner, macos-14 is apple silicon
+        os: [ubuntu-latest, windows-latest, macos-13, macos-14]
+        target: ['*']
+        include: # all the platforms supported by rustup
+        - os: ubuntu-latest
+          target: '*x86*' # run manylinux and musllinux sequentially as this is usually finished first anyway
+        - os: ubuntu-latest
+          target: '*manylinux_i686*'
+        - os: ubuntu-latest
+          target: '*manylinux_aarch64*' # run manylinux and musllinux separately under emulation
+        - os: ubuntu-latest
+          target: '*musllinux_aarch64*' # run manylinux and musllinux separately under emulation
+        - os: ubuntu-latest
+          target: '*manylinux_ppc64le*'
+        - os: ubuntu-latest
+          target: '*manylinux_s390x*'
+        exclude:
+        - os: ubuntu-latest
+          target: '*'
+    env: # use prebuilt images: latest pypa image plus rustc, cargo and just
+      MANYLINUX_X86_64_IMAGE: ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_x86_64-rust
+      MANYLINUX_I686_IMAGE: ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_i686-rust
+      MANYLINUX_AARCH64_IMAGE: ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_aarch64-rust
+      MANYLINUX_PPC64LE_IMAGE: ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_ppc64le-rust
+      MANYLINUX_S390X_IMAGE: ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_s390x-rust
+      MANYLINUX_PYPY_X86_64_IMAGE: ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_x86_64-rust
+      MANYLINUX_PYPY_I686_IMAGE: ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_i686-rust
+      MANYLINUX_PYPY_AARCH64_IMAGE: ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_aarch64-rust
+      MUSLLINUX_X86_64_IMAGE: ghcr.io/musicalninjas/quay.io/pypa/musllinux_1_2_x86_64-rust
+      MUSLLINUX_AARCH64_IMAGE: ghcr.io/musicalninjas/quay.io/pypa/musllinux_1_2_aarch64-rust
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up QEMU
+        if: runner.os == 'Linux'
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: all
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v2.18.0
+        env:
+          CIBW_BUILD: ${{ matrix.target }}
+        # with:
+        #   package-dir: .
+        #   output-dir: wheelhouse
+        #   config-file: "{package}/pyproject.toml"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.prefix }}-wheels-${{ matrix.os }}-${{ strategy.job-index }}
+          path: ${{ inputs.wheels-location }}/*.whl
+      
+  sdist:
+    name: Make SDist
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build SDist
+      run: pipx run build --sdist
+    - uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.prefix }}-sdist
+        path: ${{ inputs.sdist-location }}/*.tar.gz
