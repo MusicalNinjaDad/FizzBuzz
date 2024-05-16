@@ -22,7 +22,7 @@ jobs:
       run: cargo test --workspace
 
   wheels:
-    name: Build wheels on ${{ matrix.os }}
+    name: Build wheels on ${{ matrix.os }} - ${{ matrix.target }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
