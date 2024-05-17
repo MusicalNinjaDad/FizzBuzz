@@ -49,3 +49,15 @@ check: check-rust check-python
 # build and test a wheel (a suitable venv must already by active!)
 test-wheel: clean
   cibuildwheel --only cp312-manylinux_x86_64
+
+cov:
+  RUSTFLAGS="-Cinstrument-coverage" cargo build
+  RUSTFLAGS="-Cinstrument-coverage" LLVM_PROFILE_FILE="tests-%p-%m.profraw" cargo test
+  grcov . -s . --binary-path ./target/debug/ -t html,lcov --branch --ignore-not-existing --output-path ./rustcov
+  pytest --cov --cov-report html:pycov --cov-report term
+
+rust-cov:
+  python -m http.server -d ./rustcov/html
+
+python-cov:
+  python -m http.server -d ./pycov

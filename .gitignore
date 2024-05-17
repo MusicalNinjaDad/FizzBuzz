@@ -52,6 +52,8 @@ coverage.xml
 .pytest_cache/
 cover/
 *.profraw
+pycov/
+rustcov/
 
 # Translations
 *.mo

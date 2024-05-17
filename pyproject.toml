@@ -78,7 +78,8 @@ repair-wheel-command = "delvewheel repair -w {dest_dir} {wheel}"
 [project.optional-dependencies]
 lint = ["ruff"]
 test = ["pytest", "pytest-doctest-mkdocstrings"]
-dev = ["fizzbuzz[lint,test]"]
+cov = ["pytest-cov"]
+dev = ["fizzbuzz[lint,test,cov]"]
 
 [tool.pytest.ini_options]
 xfail_strict = true
