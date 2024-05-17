@@ -44,16 +44,16 @@ jobs:
         - os: ubuntu-latest
           target: '*'
     env: # use prebuilt images: latest pypa image plus rustc, cargo and just
-      MANYLINUX_X86_64_IMAGE: ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_x86_64-rust
-      MANYLINUX_I686_IMAGE: ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_i686-rust
-      MANYLINUX_AARCH64_IMAGE: ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_aarch64-rust
-      MANYLINUX_PPC64LE_IMAGE: ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_ppc64le-rust
-      MANYLINUX_S390X_IMAGE: ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_s390x-rust
-      MANYLINUX_PYPY_X86_64_IMAGE: ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_x86_64-rust
-      MANYLINUX_PYPY_I686_IMAGE: ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_i686-rust
-      MANYLINUX_PYPY_AARCH64_IMAGE: ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_aarch64-rust
-      MUSLLINUX_X86_64_IMAGE: ghcr.io/musicalninjas/quay.io/pypa/musllinux_1_2_x86_64-rust
-      MUSLLINUX_AARCH64_IMAGE: ghcr.io/musicalninjas/quay.io/pypa/musllinux_1_2_aarch64-rust
+      CIBW_MANYLINUX_X86_64_IMAGE: ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_x86_64-rust
+      CIBW_MANYLINUX_I686_IMAGE: ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_i686-rust
+      CIBW_MANYLINUX_AARCH64_IMAGE: ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_aarch64-rust
+      CIBW_MANYLINUX_PPC64LE_IMAGE: ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_ppc64le-rust
+      CIBW_MANYLINUX_S390X_IMAGE: ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_s390x-rust
+      CIBW_MANYLINUX_PYPY_X86_64_IMAGE: ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_x86_64-rust
+      CIBW_MANYLINUX_PYPY_I686_IMAGE: ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_i686-rust
+      CIBW_MANYLINUX_PYPY_AARCH64_IMAGE: ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_aarch64-rust
+      CIBW_MUSLLINUX_X86_64_IMAGE: ghcr.io/musicalninjas/quay.io/pypa/musllinux_1_2_x86_64-rust
+      CIBW_MUSLLINUX_AARCH64_IMAGE: ghcr.io/musicalninjas/quay.io/pypa/musllinux_1_2_aarch64-rust
     steps:
       - uses: actions/checkout@v4
       - name: Set up QEMU
