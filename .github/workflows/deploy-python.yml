@@ -22,6 +22,7 @@ jobs:
       run: cargo test --workspace
 
   builds:
+    name: Build
     uses: musicalninjas/cibuildwheel-rust@build_pypa
 
   publish:
