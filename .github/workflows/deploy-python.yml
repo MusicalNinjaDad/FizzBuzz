@@ -23,7 +23,7 @@ jobs:
 
   builds:
     name: Build-test
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
     - uses: musicalninjas/cibuildwheel-rust@build_pypa
 
