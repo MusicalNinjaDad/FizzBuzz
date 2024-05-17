@@ -64,5 +64,5 @@ cov:
 rust-cov:
   python -m http.server -d ./rustcov/html
 
-python-cov:
+py-cov:
   python -m http.server -d ./pycov
