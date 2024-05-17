@@ -22,7 +22,9 @@ jobs:
       run: cargo test --workspace
 
   builds:
-    uses: musicalninjas/cibuildwheel-rust/.github/workflows/build.yml@build_pypa
+    runs-on: ubuntu-latest
+    steps:
+    - uses: musicalninjas/cibuildwheel-rust@build_pypa
 
   publish:
     environment: ADO-Packages
