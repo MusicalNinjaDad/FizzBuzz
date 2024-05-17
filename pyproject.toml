@@ -96,7 +96,7 @@ testpaths = [
 
 [tool.coverage.run]
 branch = true
-omit = ["test_*"]
+omit = ["tests/*"]
 dynamic_context = "test_function"
 
 [tool.ruff]
