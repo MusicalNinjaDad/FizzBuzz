@@ -22,9 +22,7 @@ jobs:
       run: cargo test --workspace
 
   builds:
-    uses: ./.github/workflows/build.yml
-    with:
-      prefix: cibwru
+    uses: musicalninjas/cibuildwheel-rust@v0.1.0
 
   publish:
     environment: ADO-Packages
