@@ -22,7 +22,6 @@ jobs:
       run: cargo test --workspace
 
   builds:
-    name: Build-test
     runs-on: ubuntu-latest
     steps:
     - uses: musicalninjas/cibuildwheel-rust@build_pypa
