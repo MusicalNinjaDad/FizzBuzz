@@ -7,11 +7,12 @@ clean:
     - cargo clean
     find . -type f -name "*.profraw" -delete
     rm -rf .pytest_cache
+    rm -rf pycov
+    rm -rf rustcov
     find . -depth -type d -not -path "./.venv/*" -name "__pycache__" -exec rm -rf "{}" \;
     find . -depth -type d -path "*.egg-info" -exec rm -rf "{}" \;
     find . -type f -name "*.egg" -delete
     find . -type f -name "*.so" -delete
-
 
 # clean, remove existing .venv and rebuild the venv with pip install -e .[dev]
 reset: clean
