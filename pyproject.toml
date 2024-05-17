@@ -41,14 +41,14 @@ binding = "PyO3"                     # Default value, can be omitted
 features = ["pyo3/extension-module"]
 
 [tool.cibuildwheel]
-
-[tool.cibuildwheel.linux]
-before-all = "just clean"
-archs = "all"
 # `test-command` will FAIL if only passed `pytest {package}`
 # as this tries to resolve imports based on source files (where there is no `.so` for rust libraries), not installed wheel
 test-command = "pytest {package}/tests"
 test-extras = "test"
+
+[tool.cibuildwheel.linux]
+before-all = "just clean"
+archs = "all"
 
 [tool.cibuildwheel.macos]
 before-all = "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal"
