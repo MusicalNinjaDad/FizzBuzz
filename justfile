@@ -9,6 +9,10 @@ clean:
     rm -rf .pytest_cache
     rm -rf pycov
     rm -rf rustcov
+    rm -rf build
+    rm -rf dist
+    rm -rf wheelhouse
+    rm -rf .ruff_cache
     find . -depth -type d -not -path "./.venv/*" -name "__pycache__" -exec rm -rf "{}" \;
     find . -depth -type d -path "*.egg-info" -exec rm -rf "{}" \;
     find . -type f -name "*.egg" -delete
