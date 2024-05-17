@@ -23,7 +23,9 @@ jobs:
 
   builds:
     name: Build-test
-    uses: musicalninjas/cibuildwheel-rust/.github/actions/build.yml@build_pypa
+    runs-on: self-hosted
+    steps:
+    - uses: musicalninjas/cibuildwheel-rust@build_pypa
 
   publish:
     environment: ADO-Packages
