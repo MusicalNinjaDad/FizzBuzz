@@ -58,6 +58,7 @@ test-wheel: clean
 cov:
   RUSTFLAGS="-Cinstrument-coverage" cargo build
   RUSTFLAGS="-Cinstrument-coverage" LLVM_PROFILE_FILE="tests-%p-%m.profraw" cargo test
+  -mkdir rustcov
   grcov . -s . --binary-path ./target/debug/ -t html,lcov --branch --ignore-not-existing --output-path ./rustcov
   pytest --cov --cov-report html:pycov --cov-report term
 
