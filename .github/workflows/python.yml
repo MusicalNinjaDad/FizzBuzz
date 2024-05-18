@@ -4,16 +4,16 @@
 name: Python
 
 on:
-    push:
-      paths: 
-      - "**.py"
-      - "pyproject.toml"
-      - ".github/workflows/python.yml"
-      # tags-ignore:
-      # - "rust-v*"
-      # - "python-v*"
-    pull_request:
-    workflow_call:
+  push:
+    paths: 
+    - "**.py"
+    - "pyproject.toml"
+    - ".github/workflows/python.yml"
+    # tags-ignore:
+    # - "rust-v*"
+    # - "python-v*"
+  pull_request:
+  workflow_call:
 
 jobs:
   test:
