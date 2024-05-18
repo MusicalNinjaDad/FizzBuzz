@@ -1,0 +1,66 @@
+name: Coverage
+on:
+  pull_request: 
+  workflow_dispatch: 
+  push:
+    paths: 
+      - '.github/workflows/python.yml'
+
+permissions: 
+  id-token: write
+
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: |
+          python -m pip install -e .[cov]
+      - name: Test with pytest
+        run: |
+          pytest --cov
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          use_oidc: true
+          flags: python
+
+  rust:
+    name: ${{ matrix.package }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        package: [
+          fizzbuzz,
+          fizzbuzzo3
+        ]
+    steps:
+      - uses: actions/checkout@v4
+      - name: install tooling
+        run: |
+          rustup component add llvm-tools-preview
+          cargo install grcov
+      - name: coverage build
+        run: cargo build -p ${{ matrix.package }}
+        env: 
+          RUSTFLAGS: -Cinstrument-coverage
+      - name: coverage test
+        run: cargo test -p ${{ matrix.package }}
+        env:
+          RUSTFLAGS: -Cinstrument-coverage
+          LLVM_PROFILE_FILE: tests-%p-%m.profraw
+      - name: analyse coverage
+        run: |
+          grcov . -s . --binary-path ./target/debug/ -t cobertura --branch --ignore-not-existing --output-path .
+          pwd
+          ls -al
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          use_oidc: true
+          flags: ${{ matrix.package }}
