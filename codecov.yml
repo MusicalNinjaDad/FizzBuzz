@@ -6,9 +6,11 @@ coverage:
     patch:
       default:
         informational: true
+
 ignore:
   - "**/tests/*" # all `tests` folders
   - "target"
+
 comment:
   layout: "condensed_header, condensed_files, flags, condensed_footer"
   require_changes: true
