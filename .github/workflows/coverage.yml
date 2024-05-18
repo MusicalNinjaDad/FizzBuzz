@@ -5,6 +5,7 @@ on:
   push:
     paths: 
       - '.github/workflows/python.yml'
+      - 'codecov.yml'
 
 permissions:
   id-token: write
