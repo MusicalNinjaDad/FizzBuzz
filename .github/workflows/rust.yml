@@ -47,7 +47,11 @@ jobs:
       - name: coverage test
         run: RUSTFLAGS="-Cinstrument-coverage" LLVM_PROFILE_FILE="tests-%p-%m.profraw" cargo test
       - name: analyse coverage
-        run: grcov . -s . --binary-path ./target/debug/ -t lcov --branch --ignore-not-existing --output-path ./rustcov
+        run: |
+          grcov . -s . --binary-path ./target/debug/ -t lcov --branch --ignore-not-existing --output-path .
+          pwd
+          ls -al
+          find . -type f -name "*.lcov"
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4
         with:
