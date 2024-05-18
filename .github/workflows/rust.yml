@@ -38,6 +38,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: install tooling
+        run: |
+          rustup component add llvm-tools-preview
+          cargo install grcov
       - name: coverage build
         run: RUSTFLAGS="-Cinstrument-coverage" cargo build
       - name: coverage test
