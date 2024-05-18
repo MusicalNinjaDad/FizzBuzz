@@ -43,15 +43,19 @@ jobs:
           rustup component add llvm-tools-preview
           cargo install grcov
       - name: coverage build
-        run: RUSTFLAGS="-Cinstrument-coverage" cargo build
+        run: cargo build
+        env: 
+          RUSTFLAGS: -Cinstrument-coverage
       - name: coverage test
-        run: RUSTFLAGS="-Cinstrument-coverage" LLVM_PROFILE_FILE="tests-%p-%m.profraw" cargo test
+        run: cargo test
+        env:
+          RUSTFLAGS: -Cinstrument-coverage
+          LLVM_PROFILE_FILE: tests-%p-%m.profraw
       - name: analyse coverage
         run: |
-          grcov . -s . --binary-path ./target/debug/ -t lcov --branch --ignore-not-existing --output-path .
+          grcov . -s . --binary-path ./target/debug/ -t cobertura --branch --ignore-not-existing --output-path .
           pwd
           ls -al
-          find . -type f -name "*.lcov"
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4
         env:
