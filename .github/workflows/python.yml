@@ -17,6 +17,8 @@ on:
 
 jobs:
   test:
+    permissions: 
+      id-token: write
 
     runs-on: ubuntu-latest
     strategy:
