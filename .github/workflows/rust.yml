@@ -6,9 +6,6 @@ on:
     - "**.rs"
     - "Cargo.toml"
     - ".github/workflows/rust.yml"
-    # tags-ignore:
-    # - "rust-v*"
-    # - "python-v*"
   pull_request:
   workflow_call:
 
