@@ -3,12 +3,9 @@ list:
   @just --list --justfile {{justfile()}}
   
 # remove pre-built rust and python libraries (excluding .venv)
-clean:
+clean: clean-cov
     - cargo clean
-    find . -type f -name "*.profraw" -delete
     rm -rf .pytest_cache
-    rm -rf pycov
-    rm -rf rustcov
     rm -rf build
     rm -rf dist
     rm -rf wheelhouse
@@ -17,6 +14,12 @@ clean:
     find . -depth -type d -path "*.egg-info" -exec rm -rf "{}" \;
     find . -type f -name "*.egg" -delete
     find . -type f -name "*.so" -delete
+
+# clean out coverage files
+clean-cov:
+    find . -type f -name "*.profraw" -delete
+    rm -rf pycov
+    rm -rf rustcov
 
 # clean, remove existing .venv and rebuild the venv with pip install -e .[dev]
 reset: clean
