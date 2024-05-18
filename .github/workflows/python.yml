@@ -1,19 +1,13 @@
-# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
-
 name: Python
 
 on:
-    push:
-      paths: 
-      - "**.py"
-      - "pyproject.toml"
-      - ".github/workflows/python.yml"
-      # tags-ignore:
-      # - "rust-v*"
-      # - "python-v*"
-    pull_request:
-    workflow_call:
+  push:
+    paths: 
+    - "**.py"
+    - "pyproject.toml"
+    - ".github/workflows/python.yml"
+  pull_request:
+  workflow_call:
 
 jobs:
   test:
@@ -39,14 +33,11 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        python -m pip install -e .[dev]
-        python -m pip install pytest-cov
+        python -m pip install -e .[test]
     - name: Test with pytest
       run: |
-        pytest --cov
-    - name: Upload coverage reports to Codecov
-      uses: codecov/codecov-action@v3
-
+        pytest
+        
   lint:
     runs-on: ubuntu-latest
     steps:
