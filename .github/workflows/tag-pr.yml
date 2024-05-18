@@ -6,6 +6,7 @@ on:
   
 jobs:
   tag:
+    # This could be flaky for forks - need to check both repos are the same but PR11 skipped with that check and YAGNI right now
     if: github.event.pull_request.merged
     runs-on: ubuntu-latest
     permissions:
@@ -18,14 +19,14 @@ jobs:
           github.rest.git.createRef({
             owner: context.repo.owner,
             repo: context.repo.repo,
-            ref: 'refs/tags/PR${{ github.event.number }}',
-            sha: context.sha
+            ref: 'refs/tags/pr${{ github.event.number }}',
+            sha: '${{ github.event.pull_request.head.sha }}'
           }).catch(err => {
             if (err.status !== 409) throw err;
             github.rest.git.updateRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: 'refs/tags/PR${{ github.event.number }}',
-              sha: context.sha
+              ref: 'refs/tags/pr${{ github.event.number }}',
+              sha: '${{ github.event.pull_request.head.sha }}'
             });
           })
