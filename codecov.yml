@@ -7,5 +7,5 @@ coverage:
       default:
         informational: true
 ignore:
-  - "**/tests/**/*" # all `tests` folders
+  - "**/tests" # all `tests` folders
   - "target"
