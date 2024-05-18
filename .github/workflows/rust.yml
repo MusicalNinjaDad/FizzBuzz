@@ -54,5 +54,5 @@ jobs:
           find . -type f -name "*.lcov"
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
