@@ -3,7 +3,7 @@ list:
   @just --list --justfile {{justfile()}}
   
 # remove pre-built rust and python libraries (excluding .venv)
-clean: clean-cov
+clean:
     - cargo clean
     rm -rf .pytest_cache
     rm -rf build
@@ -22,7 +22,7 @@ clean-cov:
     rm -rf rustcov
 
 # clean, remove existing .venv and rebuild the venv with pip install -e .[dev]
-reset: clean
+reset: clean clean-cov
     rm -rf .venv
     python -m venv .venv
     .venv/bin/python -m pip install --upgrade pip 
