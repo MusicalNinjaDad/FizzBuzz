@@ -58,6 +58,7 @@ check: check-rust check-python
 test-wheel: clean
   cibuildwheel --only cp312-manylinux_x86_64
 
+#run coverage analysis on rust & python code
 cov:
   RUSTFLAGS="-Cinstrument-coverage" cargo build
   RUSTFLAGS="-Cinstrument-coverage" LLVM_PROFILE_FILE="tests-%p-%m.profraw" cargo test
@@ -65,8 +66,10 @@ cov:
   grcov . -s . --binary-path ./target/debug/ -t html,lcov --branch --ignore-not-existing --output-path ./rustcov
   pytest --cov --cov-report html:pycov --cov-report term
 
+# serve rust coverage results on localhost:8000 (doesn't run coverage analysis)
 rust-cov:
   python -m http.server -d ./rustcov/html
 
+# serve python coverage results on localhost:8000 (doesn't run coverage analysis)
 py-cov:
   python -m http.server -d ./pycov
