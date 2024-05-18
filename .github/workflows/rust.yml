@@ -33,4 +33,18 @@ jobs:
       run: cargo fmt --check
     - name: clippy
       run: cargo clippy
-    
+
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: coverage build
+        run: RUSTFLAGS="-Cinstrument-coverage" cargo build
+      - name: coverage test
+        run: RUSTFLAGS="-Cinstrument-coverage" LLVM_PROFILE_FILE="tests-%p-%m.profraw" cargo test
+      - name: analyse coverage
+        run: grcov . -s . --binary-path ./target/debug/ -t lcov --branch --ignore-not-existing --output-path ./rustcov
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
