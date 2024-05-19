@@ -29,6 +29,7 @@ theme:
     - navigation.path
     - navigation.tabs
     - toc.integrate
+    - navigation.indexes
 
 plugins:
 - search
@@ -60,4 +61,6 @@ markdown_extensions:
       format: !!python/name:pymdownx.superfences.fence_code_format
 
 nav:
-  - index.md
+  - Combining python & rust:
+    - index.md
+    - structure.md
