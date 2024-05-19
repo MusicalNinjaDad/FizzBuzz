@@ -5,7 +5,6 @@
             "extensions": [
                 // rust
                 "rust-lang.rust-analyzer",
-                "andrewbrey.rust-test-highlight",
                 // python
                 "ms-python.python",
                 "ms-python.vscode-pylance",

@@ -25,7 +25,6 @@ You can grab a pre-build image for either linux/amd64 or linux/arm64 via `docker
 I like to use fedora for my dev environment base as it provides the most up-to-date versions of tools via the package manager dnf, I also like to keep the environment as clean as possible, with only the tools that the project needs. You'll find similiarly named packages in most distros.
 
 ??? abstract "The full Dockerfile"
-
     ```Docker
     FROM docker.io/library/fedora:40
 
@@ -146,3 +145,29 @@ In addition to the core language components I also found the following tools use
 - [`cargo-expand`](https://github.com/dtolnay/cargo-expand) is invaluable if you end up writing rust proc-macros
 
 ## IDE extensions and settings (json)
+
+I use VSCode and love language-agnostic approach it takes. Devcontainers will run in IntelliJ as well (I've tried it with a colleague) and in neoVIM (I've read), many of these tips will probably translate to those IDEs too without too much google-ing.
+
+??? abstract "The full devcontainer.json"
+    ```json
+    --8<-- ".devcontainer/devcontainer.json"
+    ```
+
+!!! python
+    Extensions:
+
+    - `ms-python.python` & `ms-python.vscode-pylance` give you language services, hints and intellisense
+    - `charliermarsh.ruff` integrates `ruff` as your linter (It's written in rust!)
+    
+    Settings:
+    - `"python.defaultInterpreterPath": "./.venv/bin/python3"` sets VSCode to use the interpreter your virtual environment
+    - `"python.testing.pytestEnabled": true` sets VSCode to use [`pytest`](https://https://pytest.org/) and integrates the tests into the Test Explorer
+
+!!! rust
+    Extensions:
+
+    - `rust-lang.rust-analyzer` the only extension you need is the official LSP implementation for rust. This handles everything including testing
+
+    Settings:
+     - `"rust-analyzer.interpret.tests": true` & `"rust-analyzer.testExplorer": true` enable integrating tests into VSCode
+    - `"[rust]": {"editor.rulers": [100]}`: rust has a _standard_ formatter which is as opinionated as `black`! You're going to want a ruler at 100 chars!
