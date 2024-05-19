@@ -31,6 +31,11 @@
                         120
                     ]
                 },
+                // docs
+                "markdownlint.config": {
+                    "MD013": false, // let the editor wrap lines not the author
+                    "MD046": false // collides with multi-paragraph admonitions in mkdocs-material 
+                },
                 // shell
                 "terminal.integrated.defaultProfile.linux": "bash",
                 "terminal.integrated.profiles.linux": {
