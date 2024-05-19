@@ -57,7 +57,8 @@ plugins:
 markdown_extensions:
 - admonition
 - pymdownx.details
-- pymdownx.snippets
+- pymdownx.snippets:
+    url_download: true
 - pymdownx.superfences:
     custom_fences:
     - name: mermaid
