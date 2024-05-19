@@ -1,0 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/DavidAnson/markdownlint/main/schema/markdownlint-config-schema.json
+
+MD013: false # let the editor wrap lines not the author
+MD046: false # collides with multi-paragraph admonitions in mkdocs-material
