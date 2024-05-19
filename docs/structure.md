@@ -41,3 +41,69 @@
 1. You will want to test your code at each stage of integration: core rust, wrapped rust, final python result; so that you can easily track down bugs
 1. Context switching between two languages is hard, even if you know both parts of the codebase well. Keeping it structured by language boundary helps when coding. For much larger projects you may want to provide a higher-level structure by domain and _then_ structure each domain as above ... but that's outside the scope of a simple starter how-to :wink:
 1. Your underlying code probably does something useful - so you could also publish it to the rust eco-system as a dedicated crate for others to use directly in rust. Those users don't want the extra code wrapping your function for python!
+
+## Configuration files (pyproject.toml & Cargo.toml)
+
+!!! python "./pyproject.toml"
+    We'll be using `setuptools` as the main build agent and `pyproject.toml` to manage all the config and tooling - that way we keep the number of files to a minimum and stick to as few languages as possible.
+
+    The important section is:
+
+    ```toml
+    [tool.setuptools.packages.find]
+      where = ["python"]
+    ```
+
+!!! rust "./Cargo.toml"
+    You need to set up a cargo workspace
+
+    ```toml
+    [workspace]
+
+      members = [
+          "rust/*"
+      ]
+
+      resolver = "2"
+    ```
+
+!!! rust "rust/fizzbuzzo3/Cargo.toml"
+    In the `Cargo.toml` for your wrapped code you need to specify the core rust code as a path dependency:
+
+    ```toml
+    ...
+    [dependencies]
+      fizzbuzz = { path = "../fizzbuzz" }
+    ...
+    ```
+
+!!! success "key points to note"
+    1. Point setuptools explicity to look in `python` - this helps avoid implicit/explicit namespace errors later
+    1. Use a cargo workspace to avoid occaisional strange errors from rust-analyzer in your IDE and to make running tests, lints etc. easier from the root directory
+    1. Use a path dependency to your core code in the wrapped-code `Cargo.toml` so you are always using the latest changes. Without a version tag, any attempts to upload the wrapped code as a crate to fail - but you don't want to do that anyway and this is another safety measure to make sure you never do.
+    1. You don't need anything special in your core-code `Cargo.toml` but don't forget to add one!
+
+!!! abstract "The location of all config files"
+    The root has a `pyproject.toml` and `Cargo.toml`, each folder under `rust` also has a `Cargo.toml`
+
+    ```text
+    FizzBuzz
+    - rust
+      - fizzbuzz
+        - src
+          ... core rust code goes here
+        - tests
+          ... tests for core rust code go here
+        - Cargo.toml
+      - fizzbuzzo3
+        - src
+          ... pyo3 code goes here
+        - Cargo.toml
+    - python
+      - fizzbuzz
+        ... additional python code goes here
+    - tests
+      ... python tests go here
+    - Cargo.toml
+    - pyproject.toml
+    ```
