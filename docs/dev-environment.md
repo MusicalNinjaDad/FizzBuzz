@@ -13,16 +13,18 @@ Think of it like this: you wouldn't develop a python project without a virtual e
 
 ## Quick-Start
 
-1. Install docker (any set up will do but docker desktop works easiest in my experience if you're starting from scratch)
-1. Install the `ms-vscode-remote.remote-containers` extension in VSCode
-1. Copy `.devcontainer/devcontainer.json` from [MusicalNinjaDad/FizzBuzz](https://github.com/MusicalNinjaDad/FizzBuzz) into your project (keeping the location and filename)
-1. Select `Reopen in container`from the toastie or the command bar
+!!! abstract "Getting up and running fast"
+    1. Install docker (any set up will do but docker desktop works easiest in my experience if you're starting from scratch)
+    1. Install the `ms-vscode-remote.remote-containers` extension in VSCode
+    1. Copy `.devcontainer/devcontainer.json` from [MusicalNinjaDad/FizzBuzz](https://github.com/MusicalNinjaDad/FizzBuzz) into your project (keeping the location and filename)
+    1. Select `Reopen in container`from the toastie or the command bar
 
 ## Packages and tools (Dockerfile)
 
-You can grab a pre-build image for either linux/amd64 or linux/arm64 via `docker pull ghcr.io/musicalninjas/pyo3-devcontainer:latest`. The source is at [MusicalNinjas/devcontainers-pyo3](https://github.com/MusicalNinjas/devcontainers-pyo3)
+!!! abstract "Pre-Build Docker Image"
+    You can grab a pre-build image for either linux/amd64 or linux/arm64 via `docker pull ghcr.io/musicalninjas/pyo3-devcontainer:latest`. The source is at [MusicalNinjas/devcontainers-pyo3](https://github.com/MusicalNinjas/devcontainers-pyo3)
 
-I like to use fedora for my dev environment base as it provides the most up-to-date versions of tools via the package manager dnf, I also like to keep the environment as clean as possible, with only the tools that the project needs. You'll find similiarly named packages in most distros.
+    I like to use fedora for my dev environment base as it provides the most up-to-date versions of tools via the package manager dnf, I also like to keep the environment as clean as possible, with only the tools that the project needs. You'll find similiarly named packages in most distros.
 
 ??? abstract "The full Dockerfile"
     ```Docker
@@ -58,12 +60,13 @@ I like to use fedora for my dev environment base as it provides the most up-to-d
 
     Unlike python installing tools up-front via cargo can save quite some time when rebuilding / creating the dev environment as rust tools are compiled from source when you install them. Getting this done once when you build the container rather than every time you create an environment saves a significant number of minutes.
 
-In addition to the core language components I also found the following tools useful (they're in the `Dockerfile`):
+!!! abstract "Other useful tools"
+    In addition to the core language components I also found the following tools useful (they're in the `Dockerfile`):
 
-- [`just`](https://github.com/casey/just): You're going to be running a few multi-step commands. I came across it for the first time during this project and liked the simple approach. I guess you could use `nox`, but that means mentally translating from shell to python and context swtiching from rust to python if you're in the middle of rust-ing. `make` would be another option, but again, overly complicated for this use case, in my view
-- `llvm-tools-preview` and [`grcov`](https://github.com/mozilla/grcov) for getting test coverage of your rust code. There are a few different ways to get rust coverage, after much research and a few unsuccessful starts I found grcov, from mozilla, which pretty much just worked, gave the best quality results and sounds to me like it works in a way that makes most sense
-- [`mdbook`](https://github.com/rust-lang/mdBook) is what to use if you want to create rust-style manuals rather than python-style manuals
-- [`cargo-expand`](https://github.com/dtolnay/cargo-expand) is invaluable if you end up writing rust proc-macros
+    - [`just`](https://github.com/casey/just): You're going to be running a few multi-step commands. I came across it for the first time during this project and liked the simple approach. I guess you could use `nox`, but that means mentally translating from shell to python and context swtiching from rust to python if you're in the middle of rust-ing. `make` would be another option, but again, overly complicated for this use case, in my view
+    - `llvm-tools-preview` and [`grcov`](https://github.com/mozilla/grcov) for getting test coverage of your rust code. There are a few different ways to get rust coverage, after much research and a few unsuccessful starts I found grcov, from mozilla, which pretty much just worked, gave the best quality results and sounds to me like it works in a way that makes most sense
+    - [`mdbook`](https://github.com/rust-lang/mdBook) is what to use if you want to create rust-style manuals rather than python-style manuals
+    - [`cargo-expand`](https://github.com/dtolnay/cargo-expand) is invaluable if you end up writing rust proc-macros
 
 ## IDE extensions and settings (json)
 
