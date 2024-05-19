@@ -1,6 +1,6 @@
 # Development Environment
 
-To work with both python and rust you're going to need a toolchain in place for both eco-systems.
+To work with both python and rust you're going to need a toolchain in place for both eco-systems and be on a Linux(-like) system. I've done all this on Windows with WSL and it's simply awesome!
 
 I, personally, like to keep my working machine free of the range of different packages and tools that I need for all the different projects I look at. I also like to be able to rebuild a reproducable working environment easily, and let others know which tools they need if they want to contribute.
 
@@ -10,6 +10,13 @@ I, personally, like to keep my working machine free of the range of different pa
 1. a json file with IDE settings, extensions and project specific build scripts
 
 Think of it like this: you wouldn't develop a python project without a virtual environment ...
+
+## Quick-Start
+
+1. Install docker (any set up will do but docker desktop works easiest in my experience if you're starting from scratch)
+1. Install the `ms-vscode-remote.remote-containers` extension in VSCode
+1. Copy `.devcontainer/devcontainer.json` from [MusicalNinjaDad/FizzBuzz](https://github.com/MusicalNinjaDad/FizzBuzz) into your project (keeping the location and filename)
+1. Select `Reopen in container`from the toastie or the command bar
 
 ## Packages and tools (Dockerfile)
 
