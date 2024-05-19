@@ -73,3 +73,8 @@ rust-cov:
 # serve python coverage results on localhost:8000 (doesn't run coverage analysis)
 py-cov:
   python -m http.server -d ./pycov
+
+#build and serve rust API docs on localhost:8000
+rust-docs:
+  cargo doc
+  python -m http.server -d target/doc
