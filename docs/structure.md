@@ -1,47 +1,40 @@
 # Structuring the codebase
 
+## Basic structure
+
+Keep your rust, wrapped-rust and python code separate:
+
 ```text
 FizzBuzz
-- Cargo.toml
-- pyproject.toml
-- MANIFEST.in
 - rust
   - fizzbuzz
-    - Cargo.toml
     - src
       ... core rust code goes here
     - tests
       ... tests for core rust code go here
   - fizzbuzzo3
-    Cargo.toml
     - src
       ... pyo3 code goes here
 - python
   - fizzbuzz
-    - __init__.py
     ... additional python code goes here
 - tests
   ... python tests go here
 ```
 
-If your code contains anything more than the most basic logic, you will probably want to test that it
-functions correctly. This is best done as close the the code as possible in the Rust eco-system. Depending on
+## Considerations
 
-- whether you want to provide your library for use in rust (via crates.io)
-- the overall complexity of your code base
+1. When you distribute the final python library as source the primary audience are python-coders, make it understandable for them without a lot of extra explanation by putting your rust code in a clearly marked location
+1. You will want to test your code at each stage of integration: core rust, wrapped rust, final python result; so that you can easily track down bugs
+1. Context switching between two languages is hard, even if you know both parts of the codebase well. Keeping it structured by language boundary helps when coding. For much larger projects you may want to provide a higher-level structure by domain and _then_ structure each domain as above ... but that's outside the scope of a simple starter how-to :wink:
+1. Your underlying code probably does something useful - so you could also publish it to the rust eco-system as a dedicated crate for others to use directly in rust. Those users don't want the extra code wrapping your function for python!
 
-you have two options:
+!!! warning
+    Having any top-level directories with names that match your package leads to all kinds of fun import errors. Depending on the exact context python can decide that you have implicit namespace packages which collide with your explicit package names.
 
-1. For more complex libraries, or where you wish to provide a rust library as well as your Python
-package: you should create a dedicated crate for your rust library and a second crate for the PyO3
-bindings.
-1. For simpler cases, or where your code is only destined to be used in Python: you should create your
-basic functionality as rust modules and functions, without wrapping them using `[#pyo3...]`
+    I ran into problems twice:
 
-In the first case: you can create both unit- and integration tests as defined and described in
-["The Book"](https://doc.rust-lang.org/stable/book/ch11-00-testing.html) to validate your functionality.
-
-In the second case: you are restricted to "unit tests" within the same source file as the code itself.
-This can be perfectly adequate, as you will test integration with Python later...
-
-For the remainder of this guide we will focus on the second case.
+    - firstly, I had a time where my tests ran fine but I couldn't import my code in repl;
+    - later, the final wheels were unusable but sdist was fine.  
+    
+    This is also the reason for keeping your final level of python tests in a separate top-level directory: you can be sure they are using the right import logic.
