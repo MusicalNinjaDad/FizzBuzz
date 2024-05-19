@@ -31,6 +31,9 @@ theme:
     - toc.integrate
     - navigation.indexes
 
+extra_css:
+  - stylesheets/admonitions.css
+
 plugins:
 - search
 - mkdocstrings:
@@ -67,4 +70,5 @@ markdown_extensions:
 nav:
   - Combining python & rust:
     - index.md
+    - dev-environment.md
     - structure.md
