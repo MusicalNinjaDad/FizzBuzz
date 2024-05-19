@@ -74,6 +74,10 @@ rust-cov:
 py-cov:
   python -m http.server -d ./pycov
 
+# serve python docs on localhost:8000
+py-docs:
+  mkdocs serve
+
 #build and serve rust API docs on localhost:8000
 rust-docs:
   cargo doc

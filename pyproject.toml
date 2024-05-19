@@ -36,7 +36,7 @@ where = ["python"]
 # Private Rust extension module to be nested into the Python package
 target = "fizzbuzz.fizzbuzzo3" # The last part of the name (e.g. "_lib") has to match lib.name in Cargo.toml,
 # but you can add a prefix to nest it inside of a Python package.
-path = "rust/fizzbuzzo3/Cargo.toml"       # Default value, can be omitted
+path = "rust/fizzbuzzo3/Cargo.toml"  # Default value, can be omitted
 binding = "PyO3"                     # Default value, can be omitted
 features = ["pyo3/extension-module"]
 
@@ -78,8 +78,9 @@ repair-wheel-command = "delvewheel repair -w {dest_dir} {wheel}"
 [project.optional-dependencies]
 lint = ["ruff"]
 test = ["pytest", "pytest-doctest-mkdocstrings"]
-cov = ["fizzbuzz[test]","pytest-cov"]
-dev = ["fizzbuzz[lint,test,cov]"]
+cov = ["fizzbuzz[test]", "pytest-cov"]
+doc = ["black", "mkdocs", "mkdocstrings[python]", "mkdocs-material"]
+dev = ["fizzbuzz[lint,test,cov,doc]"]
 
 [tool.pytest.ini_options]
 xfail_strict = true
@@ -89,10 +90,7 @@ addopts = [
     "--doctest-glob=*.pyi",
     "--doctest-glob=*.md",
 ]
-testpaths = [
-    "tests",
-    "python"
-]
+testpaths = ["tests", "python"]
 
 [tool.coverage.run]
 branch = true
