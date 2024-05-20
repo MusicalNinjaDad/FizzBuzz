@@ -55,6 +55,10 @@ The [relevant section of the pyo3 book](https://pyo3.rs/latest/rust-from-python)
     Add the following to **`./pyproject.toml`**
     ```toml
     ...
+    [build-system]
+        requires = ["setuptools", "setuptools-rust"]
+        build-backend = "setuptools.build_meta"
+    ...
     [[tool.setuptools-rust.ext-modules]]
       # The last part of the name (e.g. "_lib") has to match lib.name in Cargo.toml,
       # but you can add a prefix to nest it inside of a Python package.
