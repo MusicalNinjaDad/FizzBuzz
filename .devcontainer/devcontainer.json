@@ -41,7 +41,7 @@
                     // - https://github.com/DavidAnson/vscode-markdownlint/issues/180
                     // - https://github.com/DavidAnson/vscode-markdownlint/issues/302
                     // - https://github.com/DavidAnson/markdownlint/issues/209
-                    "MD046": {"style": "fenced"}
+                    "MD046": false // {"style": "fenced"} leads to errors on codeblocks in admonitions
                 },
                 // DISABLE spell checking for now as exclusions not working ... TODO
                 // "cSpell.language": "en",
