@@ -58,7 +58,5 @@
             }
         }
     },
-    "updateContentCommand": {
-        "reset-check": "just reset check"
-    }
+    "updateContentCommand": "just reset check"
 }
