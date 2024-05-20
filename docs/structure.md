@@ -54,8 +54,10 @@
       where = ["python"]
     ```
 
+    More info on `pyproject.toml` is available from both [pypa -  the python packaging authority](https://packaging.python.org/en/latest/guides/writing-pyproject-toml/) and [pip - python's package manager](https://pip.pypa.io/en/stable/reference/build-system/pyproject-toml/)
+
 !!! rust "./Cargo.toml"
-    You need to set up a cargo workspace
+    You need to set up a [cargo workspace](https://doc.rust-lang.org/book/ch14-03-cargo-workspaces.html)
 
     ```toml
     [workspace]
@@ -76,6 +78,8 @@
       fizzbuzz = { path = "../fizzbuzz" }
     ...
     ```
+
+    Full details on `Cargo.toml` in [the Cargo book](https://doc.rust-lang.org/cargo/reference/manifest.html)
 
 !!! success "key points to note"
     1. Point setuptools explicity to look in `python` - this helps avoid implicit/explicit namespace errors later
@@ -106,4 +110,24 @@
       ... python tests go here
     - Cargo.toml
     - pyproject.toml
+    ```
+
+??? abstract "pyproject.toml - full source"
+    ```toml
+    --8<-- "pyproject.toml"
+    ```
+
+??? abstract "./Cargo.toml - full source"
+    ```toml
+    --8<-- "Cargo.toml"
+    ```
+
+??? abstract "rust/fizzbuzz/Cargo.toml - full source"
+    ```toml
+    --8<-- "rust/fizzbuzz/Cargo.toml"
+    ```
+
+??? abstract "rust/fizzbuzzo3/Cargo.toml - full source"
+    ```toml
+    --8<-- "rust/fizzbuzzo3/Cargo.toml"
     ```
