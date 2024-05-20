@@ -12,6 +12,9 @@
                 // configs, docs, etc.
                 "DavidAnson.vscode-markdownlint",
                 "tamasfe.even-better-toml"
+                // DISABLE spell checking for now as exclusions not working ... TODO
+                // "streetsidesoftware.code-spell-checker",
+                // "streetsidesoftware.code-spell-checker-british-english"
             ],
             "settings": {
                 // rust
@@ -40,6 +43,11 @@
                     // - https://github.com/DavidAnson/markdownlint/issues/209
                     "MD046": {"style": "fenced"}
                 },
+                // DISABLE spell checking for now as exclusions not working ... TODO
+                // "cSpell.language": "en",
+                // "cSpell.checkOnlyEnabledFileTypes": true,
+                // "cSpell.enabledFileTypes": {"markdown": true, "json": false},
+                
                 // shell
                 "terminal.integrated.defaultProfile.linux": "bash",
                 "terminal.integrated.profiles.linux": {
