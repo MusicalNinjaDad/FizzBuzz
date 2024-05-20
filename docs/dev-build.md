@@ -148,7 +148,7 @@ I like to keep things as simple as possible. Python has many virtual environment
 
     **Or just use `just clean` from the `./justfile`**
 
-??? abstract "`./justfile` - full source
+??? abstract "`./justfile` - full source"
     ```justfile
     --8<-- "./justfile"
     ```
