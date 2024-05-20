@@ -72,17 +72,6 @@ mod tests {
 
     #[pyo3test]
     #[pyo3import(py_fizzbuzzo3: from fizzbuzzo3 import fizzbuzz)]
-    fn test_fizzbuzz_string() {
-        let result: PyResult<bool> = match fizzbuzz.call1(("one",)) {
-            Ok(_) => Ok(false),
-            Err(error) if error.is_instance_of::<PyTypeError>(py) => Ok(true),
-            Err(e) => Err(e),
-        };
-        assert!(result.unwrap());
-    }
-
-    #[pyo3test]
-    #[pyo3import(py_fizzbuzzo3: from fizzbuzzo3 import fizzbuzz)]
     fn test_fizzbuzz_float() {
         let result: PyResult<String> = match fizzbuzz.call1((1f32,)) {
             Ok(r) => r.extract(),
@@ -104,5 +93,16 @@ mod tests {
         let result = result.unwrap();
         let expected_result = "1, 2, fizz, 4, buzz";
         assert_eq!(result, expected_result);
+    }
+
+    #[pyo3test]
+    #[pyo3import(py_fizzbuzzo3: from fizzbuzzo3 import fizzbuzz)]
+    fn test_fizzbuzz_string() {
+        let result: PyResult<bool> = match fizzbuzz.call1(("one",)) {
+            Ok(_) => Ok(false),
+            Err(error) if error.is_instance_of::<PyTypeError>(py) => Ok(true),
+            Err(e) => Err(e),
+        };
+        assert!(result.unwrap());
     }
 }
