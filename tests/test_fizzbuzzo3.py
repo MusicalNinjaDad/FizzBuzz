@@ -23,7 +23,7 @@ def test_string():
     with pytest.raises(TypeError):
         fizzbuzz("1")
 
-def test_rules():
+def test_1_to_100():
     results = [fizzbuzz(i) for i in range(1, 101)]
     every_3rd_has_fizz = all("fizz" in r for r in results[2::3])
     assert every_3rd_has_fizz
