@@ -54,149 +54,74 @@ not in your wrapping, importing or use in Python.
     --8<-- "rust/fizzbuzz/tests/test_vec.rs"
     ```
 
-## Testing Rust code wrapped for use in Python
+## Code wrapped by pyo3
 
-Testing that the Rust code you have created works, and works in Python can be simple. PyO3 includes
-some helper macros to make this task easier when coupled with a few good practices.
+Given that you have tested the core code functionality well, you don't need to repeat a full suite of functional tests on the wrapped code. Instead you can focus on the wrapping and any type and error handling you implemented.
 
-This chapter of the Guide explains:
+!!! rocket "The `pyo3-testing` crate"
+    The `pyo3-testing` crate is designed to make this step simple. It is currently available on a forked version of pyo3, I'll release it separately as a dedicated crate ASAP unless [PR pyo3/#4099](https://github.com/PyO3/pyo3/pull/4099) lands in the meantime.
 
-- [How to structure your code to make testing easier](#structuring-for-testability)
-- [How to test your functionality](#testing-your-functionality-in-rust)
-- [Testing your wrapping with `#[pyo3test]`](#testing-your-wrapped-functions-in-rust)
-- [Final integration testing in Python](#testing-the-final-integration-in-python)
-- [Compatibility with older Python versions (CI)](#compatibility-with-older-python-versions)
+    Use it by importing pyo3 from the fork in **rust/fizzbuzzo3/Cargo.toml**:
+    ```toml
+    ...
+    [dependencies]
+      pyo3 = { git = "https://github.com/MusicalNinjaDad/pyo3.git", branch = "pyo3-testing" }
+    ...
+    ```
 
-## Structuring for testability
+??? warning "Testing without the `pyo3-testing` crate"
+    If you chose to test without the `pyo3-testing` crate you will need to make use of the guidance in [Chapter 3 of the pyo3 book](https://pyo3.rs/latest/python-from-rust) and also be willing to accept random failures due to mistimed interpreter initialisation.
 
-If your code contains anything more than the most basic logic, you will probably want to test that it
-functions correctly. This is best done in the Rust eco-system. Depending on
+    You can take a look at [an example case from pyo3-testing](https://github.com/MusicalNinjaDad/pyo3/blob/pyo3-testing/tests/test_pyo3test.rs) to see how I worked around these issues.
 
-- whether you want to provide your library for use in rust (via crates.io)
-- the overall complexity of your code base
+!!! pyo3 "Testing the wrapping once for each supported argument type"
+    Use pyo3's capability to embed a python interpreter and call python code from rust to create one test per type to check that you get the right result when you call the resulting python function:
 
-you have two options:
-
-1. For more complex libraries, or where you wish to provide a rust library as well as your Python
-package: you should create a dedicated crate for your rust library and a second crate for the PyO3
-bindings.
-1. For simpler cases, or where your code is only destined to be used in Python: you should create your
-basic functionality as rust modules and functions, without wrapping them using `[#pyo3...]`
-
-In the first case: you can create both unit- and integration tests as defined and described in
-["The Book"](https://doc.rust-lang.org/stable/book/ch11-00-testing.html) to validate your functionality.
-
-In the second case: you are restricted to "unit tests" within the same source file as the code itself.
-This can be perfectly adequate, as you will test integration with Python later...
-
-For the remainder of this guide we will focus on the second case.
-
-## Testing your wrapped functions in Rust
-
-Once you are confident that your functionality is sound, you can wrap it for Python with a simple
-one-liner:
-
-```rust
-#[pyfunction]
-#[pyo3(name = "addone")]
-fn py_addone(num: isize) -> isize {
-    o3_addone(num)
-}
-```
-
-and then create a Python module which can be imported:
-
-```rust
-#[pymodule]
-#[pyo3(name = "adders")]
-fn py_adders(module: &Bound<'_, PyModule>) -> PyResult<()> {
-    module.add_function(wrap_pyfunction!(py_addone, module)?)?;
-    Ok(())
-}
-```
-
-Still in Rust, you can test that the wrapped functionality can be executed by the Python interpreter.
-PyO3 provides the `#[pyo3test]` proc-macro and associated `#[pyo3import(...)]` attribute to make this
-simpler:
-
-```rust
-#[pyo3test]
-#[pyo3import(py_adders: from adders import addone)]
-fn test_one_plus_one_wrapped() {
-    let result: PyResult<isize> = match addone.call1((1_isize,)) {
-        Ok(r) => r.extract(),
-        Err(e) => Err(e),
-    };
-    let result = result.unwrap();
-    let expected_result = 2_isize;
-    assert_eq!(result, expected_result);
-}
-```
-
-`#[pyo3test]` takes care of wrapping the whole test case in `Python::with_gil(|py| {...})` and making
-`addone` available in Rust.
-
-> **Note:** running multiple tests which `#[pyo3import]` the same wrapped module requires _at least python3.9_.
->
-> This does not affect which systems you can build and release for, only the interpreter used for these tests.
-
-In a non-trivial case, you will likely have Type conversions and Error handling which you wish to
-validate at this point.
-
-## The full example in Rust
-
-The full code then looks like this:
-
-```rust
-use pyo3::prelude::*;
-
-/// Add one to an isize
-fn o3_addone(num: isize) -> isize {
-    num + 1
-}
-
-/// Rust function for use in Python which adds one to a given int
-#[pyfunction]
-#[pyo3(name = "addone")]
-fn py_addone(num: isize) -> isize {
-    o3_addone(num)
-}
-
-/// A module containing various "adders", written in Rust, for use in Python.
-#[pymodule]
-#[pyo3(name = "adders")]
-fn py_adders(module: &Bound<'_, PyModule>) -> PyResult<()> {
-    module.add_function(wrap_pyfunction!(py_addone, module)?)?;
-    Ok(())
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    /// Check that the `o3_addone` function correctly adds one to 1_isize
-    #[test]
-    fn test_one_plus_one () {
-        let result = o3_addone(1_isize);
-        asserteq!(result, 2_isize)
-    }
-
-    /// Check that the Python function `adders.addone` can be run in Python
+    Example from **`rust/fizzbuzzo3/src.rs`**:
+    ```rust
     #[pyo3test]
-    #[pyo3import(py_adders: from adders import addone)]
-    fn test_one_plus_one_wrapped() {
-        let result: PyResult<isize> = match addone.call1((1_isize,)) {
+    #[pyo3import(py_fizzbuzzo3: from fizzbuzzo3 import fizzbuzz)]
+    fn test_fizzbuzz() {
+        let result: PyResult<String> = match fizzbuzz.call1((1i32,)) {
             Ok(r) => r.extract(),
             Err(e) => Err(e),
         };
         let result = result.unwrap();
-        let expected_result = 2_isize;
+        let expected_result = "1";
         assert_eq!(result, expected_result);
     }
-}
-```
+    ```
 
-## Testing the final integration in Python
+!!! pyo3 "Testing error cases"
+    Again using pyo3's ablity to embed python in rust, check that you get the expected python Exception type from bad input.
+
+    Example from **`rust/fizzbuzzo3/src.rs`**:
+    ```rust
+    #[pyo3test]
+    #[pyo3import(py_fizzbuzzo3: from fizzbuzzo3 import fizzbuzz)]
+    fn test_fizzbuzz_string() {
+        let result: PyResult<bool> = match fizzbuzz.call1(("one",)) {
+            Ok(_) => Ok(false),
+            Err(error) if error.is_instance_of::<PyTypeError>(py) => Ok(true),
+            Err(e) => Err(e),
+        };
+        assert!(result.unwrap());
+    }
+    ```
+
+!!! warning "Only unit tests possible"
+    You can only create tests directly in the source file along side your wrappings. This should be fine, as your integration tests will be run natively by pytest.
+
+    If for some reason you did want to create external rust tests you need to change the library type in `rust/fizzbuzzo3/Cargo.toml` to `crate-type = ["cdylib, lib"]`
+
+??? pyo3 "`rust/fizzbuzzo3/src.rs` - full source (tests at the end)"
+    ```rust
+    --8<-- "rust/fizzbuzzo3/src.rs"
+    ```
+
+## Integration testing with pytest
+
+
 
 Now that you are confident that your functionality is correct and your wrappings work, you can create
 your final tests in Python, using either pytest or unittest. In this guide we will use pytest for the
