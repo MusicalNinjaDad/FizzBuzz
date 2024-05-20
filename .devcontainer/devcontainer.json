@@ -43,6 +43,9 @@
                     // - https://github.com/DavidAnson/markdownlint/issues/209
                     "MD046": false // {"style": "fenced"} leads to errors on codeblocks in admonitions
                 },
+                "[markdown]": {
+                    "editor.tabSize": 2
+                },
                 // DISABLE spell checking for now as exclusions not working ... TODO
                 // "cSpell.language": "en",
                 // "cSpell.checkOnlyEnabledFileTypes": true,
