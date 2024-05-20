@@ -54,10 +54,6 @@ check-python: lint-python test-python
 # lint and test both rust and python
 check: check-rust check-python
 
-# build and test a wheel (a suitable venv must already by active!)
-test-wheel: clean
-  cibuildwheel --only cp312-manylinux_x86_64
-
 #run coverage analysis on rust & python code
 cov:
   RUSTFLAGS="-Cinstrument-coverage" cargo build
@@ -82,3 +78,7 @@ py-docs:
 rust-docs:
   cargo doc
   python -m http.server -d target/doc
+
+# build and test a wheel (a suitable venv must already by active!)
+test-wheel: clean
+  cibuildwheel --only cp312-manylinux_x86_64
