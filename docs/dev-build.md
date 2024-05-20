@@ -153,4 +153,88 @@ I like to keep things as simple as possible. Python has many virtual environment
     --8<-- "./justfile"
     ```
 
-## performance / API design
+## API design
+
+There are a few things to consider when designing your API for python users.
+
+### Performance
+
+Assuming part of the reason you are doing this is to provide a performance over native python, you will want to consider the (small but noticeable) performance cost each time you cross the python-rust boundary. [Discussion pyo3/#4085](https://github.com/PyO3/pyo3/discussions/4085) covers this topic.
+
+!!! pyo3 "Pass `Container`s, don't make multiple calls"
+    One simple way to avoid crossing the boundary often is to pass a `list` or similar rather than making multiple individual calls. The performance difference can be seen below:
+
+    ```text
+    Rust: [1 calls of 10 runs fizzbuzzing up to 1_000_000]
+    [12.454665303001093]
+    Python: [1 calls of 10 runs fizzbuzzing up to 1_000_000]
+    [39.32552230800138]
+    Rust vector: [1 calls of 10 runs fizzbuzzing a list of numbers up to 1_000_000]
+    [6.319926773001498]
+    ```
+
+!!! rust "Use the `rayon` crate to break the GIL and run parallel calculations"
+    Adding parallel processing to a rust iterator is _insanely simple_. My impression of rust is "easy things are hard, hard things are easy!"
+
+    I simply added the following to my core rust code **`/rust/fizzbuzz/src/lib.rs`**:
+
+    ```rust hl_lines="2-3 7 10 12-14"
+    ...
+    use rayon::prelude::*;
+    static BIG_VECTOR: usize = 300_000; // Size from which parallelisation makes sense
+    ...
+    impl<Num> MultiFizzBuzz for Vec<Num>
+    where
+        Num: FizzBuzz + Sync,
+    {
+        fn fizzbuzz(&self) -> FizzBuzzAnswer {
+            if self.len() < BIG_VECTOR {
+                FizzBuzzAnswer::Many(self.iter().map(|n| n.fizzbuzz().into()).collect())
+            } else {
+                FizzBuzzAnswer::Many(self.par_iter().map(|n| n.fizzbuzz().into()).collect())
+            }
+        }
+    }
+    
+    ```
+
+    !!! tip "Check it makes sense"
+        Adding parallel processing doesn't always make sense as it adds overhead ramping and managing a threadpool. You will want to do some benchmarking to find the sweet-spot. Benchmarking and performance testing is a topic for itself, so I'll add a dedicated section ...
+
+??? rust "`/rust/fizzbuzz/src/lib.rs` - full source"
+    ```rust
+    --8<-- "/rust/fizzbuzz/src/lib.rs"
+    ```
+
+### Ducktyping & `Union` types
+
+Remember your primary users are python coders who are used to duck typing :duck:. They will expect `fizzbuzz(3.0)`to return `'3.0'` and `fizzbuzz(3.1)` to return `'3.1'` unless something is documented regarding rounding to the nearest integer or similar. (Leaving aside any discussion on [why floats are inaccurate](https://0.30000000000000004.com/)).
+
+Python also often provides single functions which can recieve multiple significantly different types for a single argument: e.g. `fizzbuzz([1,2,3])` __and__ `fizzbuzz(3)` could easily both work. The function signature would be `#!python def fizzbuzz(n: int | list[int]) -> str:`.
+
+!!! pyo3 "Use a custom enum and match to allow multiple types"
+    This is best done directly in your wrapping library as it is part of the rust-python interface not the core functionality.
+
+    In **`rust/fizzbuzzo3/src/lib.rs`** I used this pattern:
+    ```rust
+    ...
+    #[derive(FromPyObject)]
+    enum FizzBuzzable {
+        Int(isize),
+        Float(f64),
+        Vec(Vec<isize>),
+    }
+    ...
+    #[pyfunction]
+    #[pyo3(name = "fizzbuzz", text_signature = "(n)")]
+    fn py_fizzbuzz(num: FizzBuzzable) -> String {
+        match num {
+            FizzBuzzable::Int(n) => n.fizzbuzz().into(),
+            FizzBuzzable::Float(n) => n.fizzbuzz().into(),
+            FizzBuzzable::Vec(v) => v.fizzbuzz().into(),
+        }
+    }
+    ```
+
+!!! warning "`Union` type returns"
+    If you want to create something like: `#!python def fizzbuzz(n: int | list[int]) -> str | list[str]:` [Issue pyo3/#1637](https://github.com/PyO3/pyo3/issues/1637) suggests you may be able to do something with the `IntoPy` trait but I haven't tried (yet)

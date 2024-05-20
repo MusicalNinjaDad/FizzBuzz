@@ -57,6 +57,8 @@ plugins:
 markdown_extensions:
 - admonition
 - pymdownx.details
+- pymdownx.highlight
+- pymdownx.inlinehilite
 - pymdownx.snippets:
     url_download: true
 - pymdownx.superfences:

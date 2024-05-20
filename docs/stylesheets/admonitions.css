@@ -66,3 +66,19 @@
   -webkit-mask-image: var(--md-admonition-icon--warning);
           mask-image: var(--md-admonition-icon--warning);
 }
+
+
+.md-typeset .admonition.tip,
+.md-typeset details.tip {
+  border-color: rgb(158, 158, 158);
+}
+.md-typeset .tip > .admonition-title,
+.md-typeset .tip > summary {
+  background-color: rgba(158, 158, 158, 0.1);
+}
+.md-typeset .tip > .admonition-title::before,
+.md-typeset .tip > summary::before {
+  background-color: rgb(158, 158, 158);
+  -webkit-mask-image: var(--md-admonition-icon--tip);
+          mask-image: var(--md-admonition-icon--tip);
+}
