@@ -1,6 +1,6 @@
 # Testing
 
-If you have structured your code into three sections as suggested in [Structuring the codebase](structure.md) then testing will be simplest.
+If you have structured your code into three sections as suggested in [structuring the codebase](structure.md) then testing will be simplest.
 
 ## Core functionality in rust
 
@@ -59,7 +59,9 @@ not in your wrapping, importing or use in Python.
 Given that you have tested the core code functionality well, you don't need to repeat a full suite of functional tests on the wrapped code. Instead you can focus on the wrapping and any type and error handling you implemented.
 
 !!! rocket "The `pyo3-testing` crate"
-    The `pyo3-testing` crate is designed to make this step simple. It is currently available on a forked version of pyo3, I'll release it separately as a dedicated crate ASAP unless [PR pyo3/#4099](https://github.com/PyO3/pyo3/pull/4099) lands in the meantime.
+    The `pyo3-testing` crate is designed to make this step simple.
+
+    It is currently available on a forked version of pyo3, I'll release it separately as a dedicated crate ASAP unless [PR pyo3/#4099](https://github.com/PyO3/pyo3/pull/4099) lands in the meantime.
 
     Use it by importing pyo3 from the fork in **rust/fizzbuzzo3/Cargo.toml**:
     ```toml
@@ -121,43 +123,123 @@ Given that you have tested the core code functionality well, you don't need to r
 
 ## Integration testing with pytest
 
+Now that you are confident that your functionality is correct and your wrappings work, you can create your final tests in Python to validate that the wrapped functionality imports and really does what you expect when called from python.
 
+??? python "pytest vs. unittest"
+    Python offers testing via the [`unittest` module](https://docs.python.org/3/library/unittest.html) in the standard library. [pytest](https://docs.pytest.org/) is a central part of the python ecosystem which removes a lot of the boilerplate and provides a lot of additional features. You will find it used in an overwhelmingly large number of libraries.
 
-Now that you are confident that your functionality is correct and your wrappings work, you can create
-your final tests in Python, using either pytest or unittest. In this guide we will use pytest for the
-examples.
+!!! python "Testing that you can import your module"
+    Testing the import mechanics is as simple as adding the import statement to the top of your test case.
 
-```python
-from adders import addone
+    From **`tests/test_fizbuzzo3.py`**:
+    ```python
+    from fizzbuzz.fizzbuzzo3 import fizzbuzz
+    ```
 
-def test_one_plus_one ():
-    assert addone(1) == 2
-```
+    If this doesn't work, you'll recieve an `ModuleNotFoundError` when running your tests
 
-Before you can execute this test, you need to compile and install your rust library.
+    !!! tip "Don't forget to recompile your wrapped functions"
+        You'll need to (re)compile wrapped functions after changing them and before testing from python:
+        ```sh
+        (.venv)/projectroot$ pip install -e .
+        ```
 
-The easiest way to do this, with both maturin and setuptools-rust is to run `pip install -e .` in the
-root of your Python package. This will build and install the package in editable mode.
+    !!! warning "Import and namespace errors"
+        It's easy to end up in a situation where your pytests pass when you run them locally but imports fail at other times. See the warning in [Structuring the Codebase](structure.md#basic-structure) for more details.
 
-Note: If you have additional dependencies for development, e.g.: pytest, then you will need to install
-these manually, or include them as optional dependencies in `pyproject.toml` e.g.:
+        Avoid this problem by:
+        1. Following the guidance on project structure
+        1. **Not** placing any `__init__.py` files in your `tests` directory. Rely on `pip install -e .` to properly place your packing into `globals`
 
-```toml
-[project.optional-dependencies]
-dev = [
-    "pytest",
+!!! python "Testing functionality for each type"
+    Similar to how you focussed your tests in rust on the wrapped code, you want to also focus here on ensuring you cover all the possible types you can pass to your function. You probably also want to check the functionality a bit more as well, but not to the extent you did in the core rust code.
+
+    From **`tests/test_fizbuzzo3.py`**:
+    ```python
+    ...
+    def test_list():
+      assert fizzbuzz([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15]) == "1, 2, fizz, 4, buzz, fizz, 7, 8, fizz, buzz, fizzbuzz"
+    ...
+    ```
+
+!!! python "Testing error cases"
+    pytest offers an easy way to check that an Exception is raised using `raises`:
+
+    From **`tests/test_fizbuzzo3.py`**:
+    ```python
+    import pytest
+    ...
+    def test_string():
+    with pytest.raises(TypeError):
+        fizzbuzz("1")
+    ```
+
+??? python "`tests/test_fizbuzzo3.py` - full source:"
+    ```python
+    --8<-- "tests/test_fizbuzzo3.py"
+    ```
+
+!!! python "Doctests"
+    If you've followed the guidance on type hinting (later) you can also run [doctests](https://docs.python.org/3/library/doctest.html) on the docstrings attached to your wrapped functions.
+
+    Add the following to **`./pyproject.toml`**:
+    ```toml
+    [tool.pytest.ini_options]
+    ...
+    addopts = [
+        ...
+        "--doctest-modules",
+        "--doctest-glob=*.pyi",
+        ...
     ]
-```
+    testpaths = ["tests", "python"]
+    ...
+    ```
 
-and then run `pip install -e .[dev]`
+??? python "`./pyproject.toml` - full source"
+    ```toml
+    --8<-- "./pyproject.toml"
+    ```
 
-## Compatibility with older Python versions
+## Running the tests
 
-Due to limitations in older Python interpreters the `#[pyo3test]` macro can only be used with cPython >= 3.9,
-it is also not compatible with PyPy or GraalPy. This is because the macro attempts to (re-)initialise your
-wrapped `PyModule` for each test case and this is not handled well in older versions if done in the same
-interpreter instance.
+!!! rust "Running all rust tests (unit, integration, doc)"
+    ```sh
+    /projectroot$ cargo test -p fizzbuzz
+    ```
 
-Your wrapped code can still be built for, and used in, other versions of Python as per standard Pyo3 compatibility.
-You should ensure that any automated CI tasks which run on multiple versions of Python skip these tests where
-applicable and only execute the rust unit tests and python-side integration tests.
+    or
+
+    ```sh
+    /projectroot/rust/fizzbuzz$ cargo test
+    ```
+
+!!! pyo3 "Running all tests on wrapped code"
+    ```sh
+    /projectroot$ cargo test -p fizzbuzzo3
+    ```
+
+    or
+
+    ```sh
+    /projectroot/rust/fizzbuzzo3$ cargo test
+    ```
+
+!!! python "Running all python tests"
+    ```sh
+    (.venv)/projectroot$ pytest
+    ```
+
+    !!! warning "Don't forget to recompile your wrapped functions"
+    You'll need to (re)compile wrapped functions after changing them and before testing from python:
+    ```sh
+    (.venv)/projectroot$ pip install -e .
+    ```
+
+!!! abstract "Running all tests _and lints_ with just"
+    Just run `just check` or `just reset check` to also clean and recompile first
+
+??? abstract "`./justfile` - full source"
+    ```justfile
+    --8<-- "justfile"
+    ```
