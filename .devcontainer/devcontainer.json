@@ -33,7 +33,12 @@
                 // docs
                 "markdownlint.config": {
                     "MD013": false, // let the editor wrap lines not the author
-                    "MD046": false // collides with multi-paragraph admonitions in mkdocs-material 
+                    // multi-paragraph admonitions in mkdocs-material are considered indented code blocks
+                    // see also ... for possible improvements via a plugin:
+                    // - https://github.com/DavidAnson/vscode-markdownlint/issues/180
+                    // - https://github.com/DavidAnson/vscode-markdownlint/issues/302
+                    // - https://github.com/DavidAnson/markdownlint/issues/209
+                    "MD046": {"style": "fenced"}
                 },
                 // shell
                 "terminal.integrated.defaultProfile.linux": "bash",
