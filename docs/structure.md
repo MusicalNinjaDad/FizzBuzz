@@ -69,7 +69,7 @@
       resolver = "2"
     ```
 
-!!! rust "rust/fizzbuzzo3/Cargo.toml"
+!!! pyo3 "rust/fizzbuzzo3/Cargo.toml"
     In the `Cargo.toml` for your wrapped code you need to specify the core rust code as a path dependency:
 
     ```toml
