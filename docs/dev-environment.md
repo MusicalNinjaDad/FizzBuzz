@@ -22,7 +22,14 @@ Think of it like this: you wouldn't develop a python project without a virtual e
 ## Packages and tools (Dockerfile)
 
 !!! rocket "Pre-Build Docker Image"
-    You can grab a pre-build image for either linux/amd64 or linux/arm64 via `docker pull ghcr.io/musicalninjas/pyo3-devcontainer:latest`. The source is at [MusicalNinjas/devcontainers-pyo3](https://github.com/MusicalNinjas/devcontainers-pyo3)
+    You can grab a pre-build image to use in your devcontainer for either linux/amd64 or linux/arm64
+
+    Add to **`.devcontainer/devcontainer.json`**:
+    ```json
+    "image": "ghcr.io/musicalninjas/pyo3-devcontainer"
+    ```
+
+    If you want to run it directly `docker run -it ghcr.io/musicalninjas/pyo3-devcontainer:latest`. The source is at [MusicalNinjas/devcontainers-pyo3](https://github.com/MusicalNinjas/devcontainers-pyo3)
 
     I like to use fedora for my dev environment base as it provides the most up-to-date versions of tools via the package manager dnf, I also like to keep the environment as clean as possible, with only the tools that the project needs. You'll find similiarly named packages in most distros.
 
