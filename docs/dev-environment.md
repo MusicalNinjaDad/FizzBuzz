@@ -84,6 +84,7 @@ I use VSCode and love language-agnostic approach it takes. Devcontainers will ru
     - `charliermarsh.ruff` integrates `ruff` as your linter (It's written in rust!)
     
     Settings:
+
     - `"python.defaultInterpreterPath": "./.venv/bin/python3"` sets VSCode to use the interpreter your virtual environment
     - `"python.testing.pytestEnabled": true` sets VSCode to use [`pytest`](https://https://pytest.org/) and integrates the tests into the Test Explorer
 
@@ -93,5 +94,6 @@ I use VSCode and love language-agnostic approach it takes. Devcontainers will ru
     - `rust-lang.rust-analyzer` the only extension you need is the official LSP implementation for rust. This handles everything including testing
 
     Settings:
-     - `"rust-analyzer.interpret.tests": true` & `"rust-analyzer.testExplorer": true` enable integrating tests into VSCode
+
+    - `"rust-analyzer.interpret.tests": true` & `"rust-analyzer.testExplorer": true` enable integrating tests into VSCode
     - `"[rust]": {"editor.rulers": [100]}`: rust has a _standard_ formatter which is as opinionated as `black`! You're going to want a ruler at 100 chars!
