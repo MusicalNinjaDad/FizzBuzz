@@ -27,6 +27,12 @@ I'll assume you are happy publishing via github actions _in general_ and may add
     --8<-- ".github/workflows/deploy-rust.yml"
     ```
 
+??? rust "TODO - publishing to ADO"
+    **`.cargo/config.toml`**
+    ```yaml
+    --8<-- ".cargo/config.toml"
+    ```
+
 ## Pypi
 
 The python distribution is significantly more tricky than the rust one in this situation.

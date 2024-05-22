@@ -104,3 +104,5 @@ I use VSCode and love language-agnostic approach it takes. Devcontainers will ru
 
     - `"rust-analyzer.interpret.tests": true` & `"rust-analyzer.testExplorer": true` enable integrating tests into VSCode
     - `"[rust]": {"editor.rulers": [100]}`: rust has a _standard_ formatter which is as opinionated as `black`! You're going to want a ruler at 100 chars!
+
+## TODO - .gitignore
