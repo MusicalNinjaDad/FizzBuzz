@@ -85,12 +85,90 @@ Here's how to successfully provide both and support the widest range of users po
           ]
           ...
       ```
-    1. Set up a build pipeline with a job to run cibuildwheel for you on Windows, Macos & Linux and create a source distribution.
+    1. Set up a build pipeline with a job to run cibuildwheel for you on Windows, Macos & Linux and create a source distribution. Run the various linux builds using a matrix strategy to reduce your build time significantly.
+    
     ??? python "**`.github/workflows/deploy-python.yml`** - full source"
         ```yaml
         --8<-- ".github/workflows/deploy-python.yml"
         ```
+    
     ??? python "**`./pyproject.toml`** - full source"
         ```toml
         --8<-- "./pyproject.toml"
+        ```
+
+!!! rocket "Saving hours by using pre-built images"
+    If you are wondering why there is no "install rust" command for the linux builds; I created dedicated container images for of pypa's base images with rust, just etc. pre-installed. This saves a load of time during the build, as installing rust and compiling the various components can be very slow under emulation.
+
+    The dockerfile and build process are at [MusicalNinjas/cibuildwheel-rust](https://github.com/MusicalNinjas/cibuildwheel-rust) the images can be used by including the following in your **`./pyproject.toml`**:
+    ```toml
+    [tool.cibuildwheel]
+        ...
+        # Use prebuilt copies of pypa images with rust and just ready compiled (saves up to 25 mins on emulated archs)
+        manylinux-x86_64-image = "ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_x86_64-rust"
+        manylinux-i686-image = "ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_i686-rust"
+        manylinux-aarch64-image = "ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_aarch64-rust"
+        manylinux-ppc64le-image = "ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_ppc64le-rust"
+        manylinux-s390x-image = "ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_s390x-rust"
+        manylinux-pypy_x86_64-image = "ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_x86_64-rust"
+        manylinux-pypy_i686-image = "ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_i686-rust"
+        manylinux-pypy_aarch64-image = "ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_aarch64-rust"
+        musllinux-x86_64-image = "ghcr.io/musicalninjas/quay.io/pypa/musllinux_1_2_x86_64-rust"
+        musllinux-aarch64-image = "ghcr.io/musicalninjas/quay.io/pypa/musllinux_1_2_aarch64-rust"
+        ...
+    ```
+
+    ??? abstract "**`MusicalNinjas/cibuildwheel-rust/Dockerfile`** - full source"
+        ```Docker
+        --8<-- "https://raw.githubusercontent.com/MusicalNinjas/cibuildwheel-rust/main/Dockerfile"
+        ```
+    
+    ??? abstract "**`MusicalNinjas/cibuildwheel-rust/.github/workflows/publish_docker.yml`** - full source"
+        ```yaml
+        --8<-- "https://raw.githubusercontent.com/MusicalNinjas/cibuildwheel-rust/main/.github/workflows/publish_docker.yml"
+        ```
+
+!!! warning "avoiding a 6 hour build"
+    At one point I had a build run for nearly 6 hours before I cancelled it. The problem was that I use `ruff` for linting, and ruff doesn't provide pre-built wheels for some manylinux architectures. That meant that I was building ruff _from scratch_, _under emulation_ for _each wheel_ I build on these architectures when installing the test dependencies.
+
+    Separating the test, lint, doc and coverage dependencies solved this, after a lot of searching I also found the way to provide a single [dev] set of dependencies combing them all.
+    
+    In **`./pyproject.toml`**:
+    ```toml
+    ...
+    [tool.cibuildwheel]
+        ...
+        test-extras = "test"
+    ...
+    [project.optional-dependencies]
+        lint = ["ruff"]
+        test = ["pytest", "pytest-doctest-mkdocstrings"]
+        cov = ["fizzbuzz[test]", "pytest-cov"]
+        doc = ["black", "mkdocs", "mkdocstrings[python]", "mkdocs-material"]
+        dev = ["fizzbuzz[lint,test,cov,doc]"]
+    ...
+    ```
+
+!!! warning "failing wheel tests due to namespace collisions"
+    I lost over half a day at one point trying to track down the reason that my wheel builds were failing final testing. There were two problems:
+
+    1. Make sure you clean any pre-compiled `.so` files before building a wheel, otherwise `pip wheel` may decide that you already have a valid `.so` and use that, with the wrong versions of the C-libraries. This is only a problem when doing local wheel builds for debugging, because you're not checking the `.so` files into git are you? (I created a `just clean` command for this)
+    1. Make sure you directly specify the test path for wheel tests in **`./pyproject.toml`**:
+      ```toml
+      ...
+      [tool.cibuildwheel]
+          # `test-command` will FAIL if only passed `pytest {package}`
+          # as this tries to resolve imports based on source files (where there is no `.so` for rust libraries), not installed wheel
+          test-command = "pytest {package}/tests"
+      ...
+      ```
+      otherwise the directive `tool.pytest.ini_options.testpaths = ["tests", "python"]` will cause pytest to look in `python`, find your namespace, and ignore the installed wheel!
+
+    ??? python "**`./pyproject.toml`** - full source:"
+        ```toml
+        --8<-- "./pyproject.toml"
+        ```
+    ??? python "**`./justfile`** - full source:"
+        ```justfile
+        --8<-- "./justfile"
         ```
