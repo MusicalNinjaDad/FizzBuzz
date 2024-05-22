@@ -33,12 +33,12 @@ Think of it like this: you wouldn't develop a python project without a virtual e
 
     I like to use fedora for my dev environment base as it provides the most up-to-date versions of tools via the package manager dnf, I also like to keep the environment as clean as possible, with only the tools that the project needs. You'll find similiarly named packages in most distros.
 
-??? abstract "The full Dockerfile"
-    ```Docker
-    --8<-- "https://github.com/MusicalNinjas/devcontainers-pyo3/raw/main/Dockerfile"
-    ```
+    ??? abstract "**`MusicalNinjas/devcontainers-pyo3/Dockerfile`** - full source"
+        ```Docker
+        --8<-- "https://github.com/MusicalNinjas/devcontainers-pyo3/raw/main/Dockerfile"
+        ```
 
-    If you are putting together an environment for yourself the important things to note are the packages in the `# Python` and `# Rust (and python headers)` sections. As well as the usual tools for developing in each language you will also need the python headers for pyo3 to use - in the case of fedora that's `python3-devel`.
+  If you are putting together an environment for yourself the important things to note are the packages in the `# Python` and `# Rust (and python headers)` sections. As well as the usual tools for developing in each language you will also need the python headers for pyo3 to use - in the case of fedora that's `python3-devel`.
 
 !!! python
     Most distributions need you to install the python package manager `pip` with a dedicated package. Python is so embedded into the OS that you really don't wan't to go installing a load of packages and a different version of python at the system level.
@@ -79,7 +79,7 @@ Think of it like this: you wouldn't develop a python project without a virtual e
 
 I use VSCode and love language-agnostic approach it takes. Devcontainers will run in IntelliJ as well (I've tried it with a colleague) and in neoVIM (I've read), many of these tips will probably translate to those IDEs too without too much google-ing.
 
-??? abstract "The full devcontainer.json"
+??? abstract "**`.devcontainer/devcontainer.json`** - full source"
     ```json
     --8<-- ".devcontainer/devcontainer.json"
     ```

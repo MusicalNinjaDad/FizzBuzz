@@ -40,10 +40,10 @@ The [relevant section of the pyo3 book](https://pyo3.rs/latest/rust-from-python)
     ImportError: dynamic module does not define module export function (PyInit_fizzbuzzo3lib)
     ```
 
-??? pyo3 "Full source: rust/fizzbuzzo3/Cargo.toml"
-    ```toml
-    --8<-- "rust/fizzbuzzo3/Cargo.toml"
-    ```
+    ??? pyo3 "**`rust/fizzbuzzo3/Cargo.toml`** - full source"
+        ```toml
+        --8<-- "rust/fizzbuzzo3/Cargo.toml"
+        ```
 
 !!! python "Adding the wrapped module to your project"
     I chose to use `setuptools` & `setuptools-rust` as my build backend. Pyo3 offer two backends [`setuptools-rust`](https://github.com/PyO3/setuptools-rust) and [`maturin`](https://github.com/PyO3/maturin). I prefered to try the first because:
@@ -74,22 +74,22 @@ The [relevant section of the pyo3 book](https://pyo3.rs/latest/rust-from-python)
 
     Background is available by combining the [pyo3 FAQ](https://pyo3.rs/latest/faq#i-cant-run-cargo-test-or-i-cant-build-in-a-cargo-workspace-im-having-linker-issues-like-symbol-not-found-or-undefined-reference-to-_pyexc_systemerror) and [manylinux specification](https://github.com/pypa/manylinux)
 
-??? python "`./pyproject.toml` - full source"
-    ```toml
-    --8>-- "./pyproject.toml"
-    ```
+    ??? python "**`./pyproject.toml`** - full source"
+        ```toml
+        --8<-- "./pyproject.toml"
+        ```
 
 ## Python virtual environment & build
 
 I like to keep things as simple as possible. Python has many virtual environment managers, `venv` is part of the core library and does everything we need while leaving us in control of the entire build and integration process.
 
 !!! abstract "Quick start with justfile"
-    The justfile `./justfile` handles all of this for you. Feel free to copy it
+    The justfile `./justfile` handles all of this for you. Feel free to copy it.
 
-??? abstract "`./justfile` - full source"
-    ```justfile
-    --8<-- "./justfile"
-    ```
+    ??? abstract "**`./justfile`** - full source"
+        ```justfile
+        --8<-- "./justfile"
+        ```
 
 ??? python "Creating a virtual environment with venv"
     If you are unfamiliar with venv here are the [docs](https://docs.python.org/3/library/venv.html)
@@ -117,10 +117,10 @@ I like to keep things as simple as possible. Python has many virtual environment
     ...
     ```
 
-??? python "`./pyproject.toml` - full source"
-    ```toml
-    --8>-- "./pyproject.toml"
-    ```
+    ??? python "**`./pyproject.toml`** - full source"
+        ```toml
+        --8<-- "./pyproject.toml"
+        ```
 
 !!! python "Building and installing the wrapped rust code for use in python development"
     Before you can use the wrapped rust code you need to build the equivalent of `python/fizzbuzz/fizzbuzzo3.cpython-312-x86_64-linux-gnu.so`:
@@ -152,10 +152,10 @@ I like to keep things as simple as possible. Python has many virtual environment
 
     **Or just use `just clean` from the `./justfile`**
 
-??? abstract "`./justfile` - full source"
-    ```justfile
-    --8<-- "./justfile"
-    ```
+    ??? abstract "**`./justfile`** - full source"
+        ```justfile
+        --8<-- "./justfile"
+        ```
 
 ## API design
 
@@ -163,7 +163,7 @@ There are a few things to consider when designing your API for python users.
 
 ### Performance
 
-Assuming part of the reason you are doing this is to provide a performance over native python, you will want to consider the (small but noticeable) performance cost each time you cross the python-rust boundary. [Discussion pyo3/#4085](https://github.com/PyO3/pyo3/discussions/4085) covers this topic.
+Assuming part of the reason you are doing this is to provide a performance over native python, you will want to consider the (small but noticeable) performance cost each time you cross the python-rust boundary. [Discussion pyo3/#4085](https://github.com/PyO3/pyo3/discussions/4085) covers this topic, further improvements are promised for the next versions of pyo3.
 
 !!! pyo3 "Pass `Container`s, don't make multiple calls"
     One simple way to avoid crossing the boundary often is to pass a `list` or similar rather than making multiple individual calls. The performance difference can be seen below:
@@ -205,6 +205,11 @@ Assuming part of the reason you are doing this is to provide a performance over 
     !!! tip "Check it makes sense"
         Adding parallel processing doesn't always make sense as it adds overhead ramping and managing a threadpool. You will want to do some benchmarking to find the sweet-spot. Benchmarking and performance testing is a topic for itself, so I'll add a dedicated section ...
 
+??? pyo3 "**`rust/fizzbuzzo3/src/lib.rs`** - full source"
+    ```rust
+    --8<-- "rust/fizzbuzzo3/src/lib.rs"
+    ```
+
 ??? rust "`rust/fizzbuzz/src/lib.rs` - full source"
     ```rust
     --8<-- "rust/fizzbuzz/src/lib.rs"
@@ -214,7 +219,7 @@ Assuming part of the reason you are doing this is to provide a performance over 
 
 Remember your primary users are python coders who are used to duck typing :duck:. They will expect `fizzbuzz(3.0)`to return `'3.0'` and `fizzbuzz(3.1)` to return `'3.1'` unless something is documented regarding rounding to the nearest integer or similar. (Leaving aside any discussion on [why floats are inaccurate](https://0.30000000000000004.com/)).
 
-Python also often provides single functions which can recieve multiple significantly different types for a single argument: e.g. `fizzbuzz([1,2,3])` __and__ `fizzbuzz(3)` could easily both work. The function signature would be `#!python def fizzbuzz(n: int | list[int]) -> str:`.
+Python also often provides single functions which can recieve multiple significantly different types for a single argument: e.g. `fizzbuzz([1,2,3])` _and_ `fizzbuzz(3)` could easily both work. The function signature would be `#!python def fizzbuzz(n: int | list[int]) -> str:`.
 
 !!! pyo3 "Use a custom enum and match to allow multiple types"
     This is best done directly in your wrapping library as it is part of the rust-python interface not the core functionality.
@@ -239,6 +244,11 @@ Python also often provides single functions which can recieve multiple significa
         }
     }
     ```
+
+    ??? pyo3 "**`rust/fizzbuzzo3/src/lib.rs`** - full source"
+        ```rust
+        --8<-- "rust/fizzbuzzo3/src/lib.rs"
+        ```
 
 !!! warning "`Union` type returns"
     If you want to create something like: `#!python def fizzbuzz(n: int | list[int]) -> str | list[str]:` [Issue pyo3/#1637](https://github.com/PyO3/pyo3/issues/1637) suggests you may be able to do something with the `IntoPy` trait but I haven't tried (yet)

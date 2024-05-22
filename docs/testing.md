@@ -44,15 +44,15 @@ not in your wrapping, importing or use in Python.
   
     [Chapter 11 of the rust book](https://doc.rust-lang.org/book/ch11-00-testing.html) contains more details
 
-??? rust "`rust/fizzbuzz/src/lib.rs` - full source with unit tests at the end"
-    ```rust
-    --8<-- "rust/fizzbuzz/src/lib.rs"
-    ```
+    ??? rust "**`rust/fizzbuzz/src/lib.rs`** - full source with unit tests at the end"
+        ```rust
+        --8<-- "rust/fizzbuzz/src/lib.rs"
+        ```
 
-??? rust "`rust/fizzbuzz/tests/test_vec.rs`" (simple example) - full source"
-    ```rust
-    --8<-- "rust/fizzbuzz/tests/test_vec.rs"
-    ```
+    ??? rust "**`rust/fizzbuzz/tests/test_vec.rs`** (simple example of an integration test) - full source"
+        ```rust
+        --8<-- "rust/fizzbuzz/tests/test_vec.rs"
+        ```
 
 ## Code wrapped by pyo3
 
@@ -116,7 +116,7 @@ Given that you have tested the core code functionality well, you don't need to r
 
     If for some reason you did want to create external rust tests you need to change the library type in `rust/fizzbuzzo3/Cargo.toml` to `crate-type = ["cdylib, lib"]`
 
-??? pyo3 "`rust/fizzbuzzo3/src/lib.rs` - full source (tests at the end)"
+??? pyo3 "**`rust/fizzbuzzo3/src/lib.rs`** - full source (tests at the end)"
     ```rust
     --8<-- "rust/fizzbuzzo3/src/lib.rs"
     ```
@@ -174,7 +174,7 @@ Now that you are confident that your functionality is correct and your wrappings
         fizzbuzz("1")
     ```
 
-??? python "`tests/test_fizzbuzzo3.py` - full source:"
+??? python "**`tests/test_fizzbuzzo3.py`** - full source:"
     ```python
     --8<-- "tests/test_fizzbuzzo3.py"
     ```
@@ -196,10 +196,10 @@ Now that you are confident that your functionality is correct and your wrappings
     ...
     ```
 
-??? python "`./pyproject.toml` - full source"
-    ```toml
-    --8<-- "./pyproject.toml"
-    ```
+    ??? python "**`./pyproject.toml`** - full source"
+        ```toml
+        --8<-- "./pyproject.toml"
+        ```
 
 ## Running the tests
 
@@ -239,7 +239,7 @@ Now that you are confident that your functionality is correct and your wrappings
 !!! abstract "Running all tests _and lints_ with just"
     Just run `just check` or `just reset check` to also clean and recompile first
 
-??? abstract "`./justfile` - full source"
-    ```justfile
-    --8<-- "justfile"
-    ```
+    ??? abstract "**`./justfile`** - full source"
+        ```justfile
+        --8<-- "justfile"
+        ```

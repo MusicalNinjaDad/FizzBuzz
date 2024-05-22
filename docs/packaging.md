@@ -166,11 +166,11 @@ Here's how to successfully provide both and support the widest range of users po
       ```
       otherwise the directive `tool.pytest.ini_options.testpaths = ["tests", "python"]` will cause pytest to look in `python`, find your namespace, and ignore the installed wheel!
 
-    ??? python "**`./pyproject.toml`** - full source:"
+    ??? python "**`./pyproject.toml`** - full source"
         ```toml
         --8<-- "./pyproject.toml"
         ```
-    ??? python "**`./justfile`** - full source:"
+    ??? python "**`./justfile`** - full source"
         ```justfile
         --8<-- "./justfile"
         ```
