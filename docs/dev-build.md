@@ -252,3 +252,44 @@ Python also often provides single functions which can recieve multiple significa
 
 !!! warning "`Union` type returns"
     If you want to create something like: `#!python def fizzbuzz(n: int | list[int]) -> str | list[str]:` [Issue pyo3/#1637](https://github.com/PyO3/pyo3/issues/1637) suggests you may be able to do something with the `IntoPy` trait but I haven't tried (yet)
+
+## IDE type & doc hinting
+
+Pyo3 does a great job automatically exporting inline rust documentation (using `/// ...`) as python docstrings. It also creates [a simple attribute](https://pyo3.rs/latest/function/signature#making-the-function-signature-available-to-python) detailling the function signature, which you can manually adjust.
+
+IDEs, linters, etc. don't actually import your code to read the docstrings and signatures, they parse the source-code; and with the source in rust, they can't do this directly for your wrapped modules.
+
+!!! rocket "Autogenerating hints"
+    Because I hate copy-pasting stuff I created [pyo3-stubgen](https://github.com/MusicalNinjas/pyo3-stubgen) to auto-generate the information. It is available on pypi: `pip install pyo3-stubgen`, has a simple command line interface and can also be called from python if you prefer.
+
+!!! python "Create a `.pyi` file"
+    1. Create a [stub file](https://peps.python.org/pep-0484/#stub-files) with:
+        - the same name as your exported module
+        - the extension `.pyi`
+        - in the location you would otherwise have placed the `module.py` file
+    1. Add function definitions with type hints and docstrings but no code
+      - For functions with no docstrings enter `...` as the function body
+    1. Add the `.pyi` extension to the files checked by doctest:
+      **`./pyproject.toml`**:
+      ```toml
+      [tool.pytest.ini_options]
+        ...
+        addopts = [
+            "--doctest-modules",
+            ...
+            "--doctest-glob=*.pyi",
+            ...
+        ]
+      ```
+
+    ??? python "**`python/fizzbuzz/fizzbuzzo3.pyi`** - full source"
+        ```python
+        --8<-- "python/fizzbuzz/fizzbuzzo3.pyi"
+        ```
+
+    ??? python "**`./pyproject.toml`** - full source"
+        ```toml
+        --8<-- "pyproject.toml"
+        ```
+
+Pyo3 discusses this topic in [Appendix C](https://pyo3.rs/latest/python-typing-hints).
