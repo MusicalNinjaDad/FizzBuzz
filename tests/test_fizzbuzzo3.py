@@ -15,7 +15,6 @@ def test_float():
     assert fizzbuzz(1.0) == "1"
     assert fizzbuzz(3.0) == "fizz"
 
-
 def test_list():
     assert fizzbuzz([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15]) == "1, 2, fizz, 4, buzz, fizz, 7, 8, fizz, buzz, fizzbuzz"
 
