@@ -5,7 +5,7 @@ Publishing your core rust code to crates.io is pretty straightforward, ensuring 
 I'll assume you are happy publishing via github actions _in general_ and may add an excursion with more detail later.
 
 !!! tip "Note:"
-    I've used azure devops in the place of PyPi and crates.io to host the final packages (the world _really_ doesn't need another fizzbuzz implementation spamming public pacakge repositories!), publishing to the main package stores is easier.
+    I've used azure devops in the place of PyPi and crates.io to host the final packages (the world _really_ doesn't need another fizzbuzz implementation spamming public package repositories!), publishing to the main package stores is easier.
 
 ## Crates.io
 

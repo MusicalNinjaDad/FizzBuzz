@@ -9,7 +9,7 @@ I will walk you through the whole process from an empty repo to having packaged,
 
     Alternatively you should also be able to dive directly into whichever topic you're looking for guidance on right now, without needing to read everything else first.
 
-I've used github for hosting the repo, CI pipeline and documentation and azure devops in the place of PyPi and crates.io to host the final packages (the world _really_ doesn't need another fizzbuzz implementation spamming public pacakge repositories!). You can view, fork or clone the repo from [github: MusicalNinjaDad/FizzBuzz](https://github.com/MusicalNinjaDad/FizzBuzz) and get the packages from [ADO: MusicalNinjas/FizzBuzz](https://dev.azure.com/MusicalNinjas/FizzBuzz/_artifacts/feed/FizzBuzz).
+I've used github for hosting the repo, CI pipeline and documentation and azure devops in the place of PyPi and crates.io to host the final packages (the world _really_ doesn't need another fizzbuzz implementation spamming public package repositories!). You can view, fork or clone the repo from [github: MusicalNinjaDad/FizzBuzz](https://github.com/MusicalNinjaDad/FizzBuzz) and get the packages from [ADO: MusicalNinjas/FizzBuzz](https://dev.azure.com/MusicalNinjas/FizzBuzz/_artifacts/feed/FizzBuzz).
 
 The whole process took me a few months from start to finish, working on this in my spare time, with a few excursions along the way - there is a separate section on those (above). See the excursions section at the top (once I start writing them) for info ...
 

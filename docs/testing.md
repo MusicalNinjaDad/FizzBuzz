@@ -95,7 +95,7 @@ Given that you have tested the core code functionality well, you don't need to r
     ```
 
 !!! pyo3 "Testing error cases"
-    Again using pyo3's ablity to embed python in rust, check that you get the expected python Exception type from bad input.
+    Again using pyo3's ability to embed python in rust, check that you get the expected python Exception type from bad input.
 
     Example from **`rust/fizzbuzzo3/src.rs`**:
     ```rust
@@ -136,7 +136,7 @@ Now that you are confident that your functionality is correct and your wrappings
     from fizzbuzz.fizzbuzzo3 import fizzbuzz
     ```
 
-    If this doesn't work, you'll recieve an `ModuleNotFoundError` when running your tests
+    If this doesn't work, you'll receive an `ModuleNotFoundError` when running your tests
 
     !!! tip "Don't forget to recompile your wrapped functions"
         You'll need to (re)compile wrapped functions after changing them and before testing from python:

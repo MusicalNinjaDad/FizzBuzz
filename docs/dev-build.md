@@ -46,7 +46,7 @@ The [relevant section of the pyo3 book](https://pyo3.rs/latest/rust-from-python)
         ```
 
 !!! python "Adding the wrapped module to your project"
-    I chose to use `setuptools` & `setuptools-rust` as my build backend. Pyo3 offer two backends [`setuptools-rust`](https://github.com/PyO3/setuptools-rust) and [`maturin`](https://github.com/PyO3/maturin). I prefered to try the first because:
+    I chose to use `setuptools` & `setuptools-rust` as my build backend. Pyo3 offer two backends [`setuptools-rust`](https://github.com/PyO3/setuptools-rust) and [`maturin`](https://github.com/PyO3/maturin). I preferred to try the first because:
 
     - I am already used to using `setuptools` and didn't want to change out a working system for something else
     - I found `setuptools-rust`to be very easy to use
@@ -125,7 +125,7 @@ I like to keep things as simple as possible. Python has many virtual environment
 !!! python "Building and installing the wrapped rust code for use in python development"
     Before you can use the wrapped rust code you need to build the equivalent of `python/fizzbuzz/fizzbuzzo3.cpython-312-x86_64-linux-gnu.so`:
 
-    1. Make sure your virtual environment is actived. If not run `. .venv/bin/activate` (note the leading dot, which is easier than typing `source` all the time)
+    1. Make sure your virtual environment is active. If not run `. .venv/bin/activate` (note the leading dot, which is easier than typing `source` all the time)
     1. Then simply use `pip` to create an editable installation of your codebase:
         ```sh
         (.venv)/projectroot$ pip -e.[dev]
@@ -219,7 +219,7 @@ Assuming part of the reason you are doing this is to provide a performance over 
 
 Remember your primary users are python coders who are used to duck typing :duck:. They will expect `fizzbuzz(3.0)`to return `'3.0'` and `fizzbuzz(3.1)` to return `'3.1'` unless something is documented regarding rounding to the nearest integer or similar. (Leaving aside any discussion on [why floats are inaccurate](https://0.30000000000000004.com/)).
 
-Python also often provides single functions which can recieve multiple significantly different types for a single argument: e.g. `fizzbuzz([1,2,3])` _and_ `fizzbuzz(3)` could easily both work. The function signature would be `#!python def fizzbuzz(n: int | list[int]) -> str:`.
+Python also often provides single functions which can receive multiple significantly different types for a single argument: e.g. `fizzbuzz([1,2,3])` _and_ `fizzbuzz(3)` could easily both work. The function signature would be `#!python def fizzbuzz(n: int | list[int]) -> str:`.
 
 !!! pyo3 "Use a custom enum and match to allow multiple types"
     This is best done directly in your wrapping library as it is part of the rust-python interface not the core functionality.

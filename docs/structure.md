@@ -82,8 +82,8 @@
     Full details on `Cargo.toml` in [the Cargo book](https://doc.rust-lang.org/cargo/reference/manifest.html)
 
 !!! warning "Avoiding namespace, plug-in and publishing issues"
-    1. Point setuptools explicity to look in `python` - this helps avoid implicit/explicit namespace errors later
-    1. Use a cargo workspace to avoid occaisional strange errors from rust-analyzer in your IDE and to make running tests, lints etc. easier from the root directory
+    1. Point setuptools explicitly to look in `python` - this helps avoid implicit/explicit namespace errors later
+    1. Use a cargo workspace to avoid occasional strange errors from rust-analyzer in your IDE and to make running tests, lints etc. easier from the root directory
     1. Use a path dependency to your core code in the wrapped-code `Cargo.toml` so you are always using the latest changes. Without a version tag, any attempts to upload the wrapped code as a crate to fail - but you don't want to do that anyway and this is another safety measure to make sure you never do.
     1. You don't need anything special in your core-code `Cargo.toml` but don't forget to add one!
 

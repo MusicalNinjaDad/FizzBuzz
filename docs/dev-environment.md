@@ -2,7 +2,7 @@
 
 To work with both python and rust you're going to need a toolchain in place for both eco-systems and be on a Linux(-like) system. I've done all this on Windows with WSL and it's simply awesome!
 
-I, personally, like to keep my working machine free of the range of different packages and tools that I need for all the different projects I look at. I also like to be able to rebuild a reproducable working environment easily, and let others know which tools they need if they want to contribute.
+I, personally, like to keep my working machine free of the range of different packages and tools that I need for all the different projects I look at. I also like to be able to rebuild a reproducible working environment easily, and let others know which tools they need if they want to contribute.
 
 [Dev Containers](https://containers.dev/) make this easy, they consist of:
 
@@ -31,7 +31,7 @@ Think of it like this: you wouldn't develop a python project without a virtual e
 
     If you want to run it directly `docker run -it ghcr.io/musicalninjas/pyo3-devcontainer:latest`. The source is at [MusicalNinjas/devcontainers-pyo3](https://github.com/MusicalNinjas/devcontainers-pyo3)
 
-    I like to use fedora for my dev environment base as it provides the most up-to-date versions of tools via the package manager dnf, I also like to keep the environment as clean as possible, with only the tools that the project needs. You'll find similiarly named packages in most distros.
+    I like to use fedora for my dev environment base as it provides the most up-to-date versions of tools via the package manager dnf, I also like to keep the environment as clean as possible, with only the tools that the project needs. You'll find similarly named packages in most distros.
 
     ??? abstract "**`MusicalNinjas/devcontainers-pyo3/Dockerfile`** - full source"
         ```Docker
@@ -70,7 +70,7 @@ Think of it like this: you wouldn't develop a python project without a virtual e
 !!! abstract "Other useful tools"
     In addition to the core language components I also found the following tools useful (they're in the `Dockerfile`):
 
-    - [`just`](https://github.com/casey/just): You're going to be running a few multi-step commands. I came across it for the first time during this project and liked the simple approach. I guess you could use `nox`, but that means mentally translating from shell to python and context swtiching from rust to python if you're in the middle of rust-ing. `make` would be another option, but again, overly complicated for this use case, in my view
+    - [`just`](https://github.com/casey/just): You're going to be running a few multi-step commands. I came across it for the first time during this project and liked the simple approach. I guess you could use `nox`, but that means mentally translating from shell to python and context switching from rust to python if you're in the middle of rust-ing. `make` would be another option, but again, overly complicated for this use case, in my view
     - `llvm-tools-preview` and [`grcov`](https://github.com/mozilla/grcov) for getting test coverage of your rust code. There are a few different ways to get rust coverage, after much research and a few unsuccessful starts I found grcov, from mozilla, which pretty much just worked, gave the best quality results and sounds to me like it works in a way that makes most sense
     - [`mdbook`](https://github.com/rust-lang/mdBook) is what to use if you want to create rust-style manuals rather than python-style manuals
     - [`cargo-expand`](https://github.com/dtolnay/cargo-expand) is invaluable if you end up writing rust proc-macros
