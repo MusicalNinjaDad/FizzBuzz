@@ -116,9 +116,9 @@ Given that you have tested the core code functionality well, you don't need to r
 
     If for some reason you did want to create external rust tests you need to change the library type in `rust/fizzbuzzo3/Cargo.toml` to `crate-type = ["cdylib, lib"]`
 
-??? pyo3 "`rust/fizzbuzzo3/src.rs` - full source (tests at the end)"
+??? pyo3 "`rust/fizzbuzzo3/src/lib.rs` - full source (tests at the end)"
     ```rust
-    --8<-- "rust/fizzbuzzo3/src.rs"
+    --8<-- "rust/fizzbuzzo3/src/lib.rs"
     ```
 
 ## Integration testing with pytest
@@ -174,9 +174,9 @@ Now that you are confident that your functionality is correct and your wrappings
         fizzbuzz("1")
     ```
 
-??? python "`tests/test_fizbuzzo3.py` - full source:"
+??? python "`tests/test_fizzbuzzo3.py` - full source:"
     ```python
-    --8<-- "tests/test_fizbuzzo3.py"
+    --8<-- "tests/test_fizzbuzzo3.py"
     ```
 
 !!! python "Doctests"

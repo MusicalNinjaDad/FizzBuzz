@@ -205,9 +205,9 @@ Assuming part of the reason you are doing this is to provide a performance over 
     !!! tip "Check it makes sense"
         Adding parallel processing doesn't always make sense as it adds overhead ramping and managing a threadpool. You will want to do some benchmarking to find the sweet-spot. Benchmarking and performance testing is a topic for itself, so I'll add a dedicated section ...
 
-??? rust "`/rust/fizzbuzz/src/lib.rs` - full source"
+??? rust "`rust/fizzbuzz/src/lib.rs` - full source"
     ```rust
-    --8<-- "/rust/fizzbuzz/src/lib.rs"
+    --8<-- "rust/fizzbuzz/src/lib.rs"
     ```
 
 ### Ducktyping & `Union` types

@@ -2,7 +2,7 @@
 
 Publishing your core rust code to crates.io is pretty straightforward, ensuring that your python code can be used by people on different systems and with multiple versions of python needs more work.
 
-I'll assume you are happy publishing via github actions _in general_ and may an an excursion with more detail later.
+I'll assume you are happy publishing via github actions _in general_ and may add an excursion with more detail later.
 
 !!! tip "Note:"
     I've used azure devops in the place of PyPi and crates.io to host the final packages (the world _really_ doesn't need another fizzbuzz implementation spamming public pacakge repositories!), publishing to the main package stores is easier.
@@ -37,10 +37,10 @@ The python distribution is significantly more tricky than the rust one in this s
     - [Source distributions](https://packaging.python.org/en/latest/specifications/source-distribution-format/) which require the user to have a rust toolchain in place and to compile your code themselves when they install it.
     - [Binary distributions](https://packaging.python.org/en/latest/specifications/binary-distribution-format/) which require you to compile your code for a specific combination of operating system, architecture and python version.
 
-Here's how to successfully provide both and support the widest range of users possible.
+Here's how to successfully provide both and support the widest range of users possible:
 
 !!! warning "Supporting many linux distros"
-    Each version of each linux distro has different standard libraries available. To ensure compatibility with as many as possible PyPa defined [`manylinux`](https://github.com/pypa/manylinux) with clear restrictions on build environments. `Cibuildhweel`, detailled below, makes it easy to meet these requirements.
+    Each version of each linux distro has different standard libraries available. To ensure compatibility with as many as possible PyPa defined [`manylinux`](https://github.com/pypa/manylinux) with clear restrictions on build environments. `cibuildhweel` (see below)makes it easy to meet these requirements.
 
 !!! python "Use `cibuildwheel` from PyPa"
     PyPA provide [`cibuildwheel`](https://github.com/pypa/cibuildwheel) to make the process of building wheels for different versions of python and different OS & architectures reasonably simple.
@@ -85,7 +85,7 @@ Here's how to successfully provide both and support the widest range of users po
           ]
           ...
       ```
-    1. Set up a build pipeline with a job to run cibuildwheel for you on Windows, Macos & Linux and create a source distribution. Run the various linux builds using a matrix strategy to reduce your build time significantly.
+    1. Set up a build pipeline with a job to run cibuildwheel for you on Windows, Macos & Linux and to create a source distribution. Run the various linux builds using a matrix strategy to reduce your build time significantly.
     
     ??? python "**`.github/workflows/deploy-python.yml`** - full source"
         ```yaml
@@ -100,7 +100,9 @@ Here's how to successfully provide both and support the widest range of users po
 !!! rocket "Saving hours by using pre-built images"
     If you are wondering why there is no "install rust" command for the linux builds; I created dedicated container images for of pypa's base images with rust, just etc. pre-installed. This saves a load of time during the build, as installing rust and compiling the various components can be very slow under emulation.
 
-    The dockerfile and build process are at [MusicalNinjas/cibuildwheel-rust](https://github.com/MusicalNinjas/cibuildwheel-rust) the images can be used by including the following in your **`./pyproject.toml`**:
+    The dockerfile and build process are at [MusicalNinjas/cibuildwheel-rust](https://github.com/MusicalNinjas/cibuildwheel-rust), They get bumped by dependabot every time pypa release a new image for `manylinux2014_x86_64` so should be nice and up to date.
+    
+    The images can be used by including the following in your **`./pyproject.toml`**:
     ```toml
     [tool.cibuildwheel]
         ...
@@ -129,9 +131,9 @@ Here's how to successfully provide both and support the widest range of users po
         ```
 
 !!! warning "avoiding a 6 hour build"
-    At one point I had a build run for nearly 6 hours before I cancelled it. The problem was that I use `ruff` for linting, and ruff doesn't provide pre-built wheels for some manylinux architectures. That meant that I was building ruff _from scratch_, _under emulation_ for _each wheel_ I build on these architectures when installing the test dependencies.
+    At one point I had a build run for nearly 6 hours before I cancelled it. The problem was that I use `ruff` for linting, and ruff doesn't provide pre-built wheels for some manylinux architectures. That meant that I was building ruff _from scratch_, _under emulation_ for _each wheel_ I built on these architectures!
 
-    Separating the test, lint, doc and coverage dependencies solved this, after a lot of searching I also found the way to provide a single [dev] set of dependencies combing them all.
+    Separating the `[test]`, `[lint]`, `[doc]` and `[cov]`erage dependencies solved this; after a lot of searching I also found the way to provide a single `[dev]` set of dependencies combing them all.
     
     In **`./pyproject.toml`**:
     ```toml
