@@ -1,144 +1,152 @@
-[build-system]
-requires = ["setuptools", "setuptools-rust"]
-build-backend = "setuptools.build_meta"
-
 [project]
-name = "fizzbuzz"
-description = "An implementation of the traditional fizzbuzz kata"
-# readme = "README.md"
-license = { text = "MIT" }
-authors = [{ name = "Mike Foster" }]
-dynamic = ["version"]
-requires-python = ">=3.8"
-classifiers = [
-    "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
-    "Topic :: Software Development :: Libraries :: Python Modules",
-    "Intended Audience :: Developers",
-    "Natural Language :: English",
-]
+    name = "fizzbuzz"
+    description = "An implementation of the traditional fizzbuzz kata"
+    # readme = "README.md"
+    license = { text = "MIT" }
+    authors = [{ name = "Mike Foster" }]
+    dynamic = ["version"]
+    requires-python = ">=3.8"
+    classifiers = [
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
+        "Topic :: Software Development :: Libraries :: Python Modules",
+        "Intended Audience :: Developers",
+        "Natural Language :: English",
+    ]
 
 [project.urls]
-# Homepage = "https://github.com/MusicalNinjaDad/recurtools"
-# Documentation = "https://musicalninjadad.github.io/recurtools/"
-Repository = "https://github.com/MusicalNinjaDad/fizzbuzz"
-Issues = "https://github.com/MusicalNinjaDad/fizzbuzz/issues"
-# Changelog = "https://github.com/MusicalNinjaDad/recurtools/blob/main/CHANGELOG.md"
+    # Homepage = ""
+    # Documentation = ""
+    Repository = "https://github.com/MusicalNinjaDad/fizzbuzz"
+    Issues = "https://github.com/MusicalNinjaDad/fizzbuzz/issues"
+    # Changelog = ""
 
 [tool.setuptools.dynamic]
-version = { file = "__pyversion__" }
+    version = { file = "__pyversion__" }
+
+
+# ===========================
+#       Build, package
+# ===========================
+
+[build-system]
+    requires = ["setuptools", "setuptools-rust"]
+    build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
-where = ["python"]
+    where = ["python"]
 
 [[tool.setuptools-rust.ext-modules]]
-# Private Rust extension module to be nested into the Python package
-target = "fizzbuzz.fizzbuzzo3" # The last part of the name (e.g. "_lib") has to match lib.name in Cargo.toml,
-# but you can add a prefix to nest it inside of a Python package.
-path = "rust/fizzbuzzo3/Cargo.toml"       # Default value, can be omitted
-binding = "PyO3"                     # Default value, can be omitted
-features = ["pyo3/extension-module"]
+    # The last part of the name (e.g. "_lib") has to match lib.name in Cargo.toml,
+    # but you can add a prefix to nest it inside of a Python package.
+    target = "fizzbuzz.fizzbuzzo3"
+    path = "rust/fizzbuzzo3/Cargo.toml"
+    binding = "PyO3"
+    features = ["pyo3/extension-module"] # IMPORTANT!!!
 
 [tool.cibuildwheel]
-skip = [
-    "*-musllinux_i686",    # No musllinux-i686 rust compiler available.
-    "*-musllinux_ppc64le", # no rust target available.
-    "*-musllinux_s390x",   # no rust target available.
-]
-# Use prebuilt copies of pypa images with rust and just ready compiled (saves up to 25 mins on emulated archs)
-manylinux-x86_64-image = "ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_x86_64-rust"
-manylinux-i686-image = "ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_i686-rust"
-manylinux-aarch64-image = "ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_aarch64-rust"
-manylinux-ppc64le-image = "ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_ppc64le-rust"
-manylinux-s390x-image = "ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_s390x-rust"
-manylinux-pypy_x86_64-image = "ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_x86_64-rust"
-manylinux-pypy_i686-image = "ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_i686-rust"
-manylinux-pypy_aarch64-image = "ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_aarch64-rust"
-musllinux-x86_64-image = "ghcr.io/musicalninjas/quay.io/pypa/musllinux_1_2_x86_64-rust"
-musllinux-aarch64-image = "ghcr.io/musicalninjas/quay.io/pypa/musllinux_1_2_aarch64-rust"
+    skip = [
+        "*-musllinux_i686",    # No musllinux-i686 rust compiler available.
+        "*-musllinux_ppc64le", # no rust target available.
+        "*-musllinux_s390x",   # no rust target available.
+    ]
+    # Use prebuilt copies of pypa images with rust and just ready compiled (saves up to 25 mins on emulated archs)
+    manylinux-x86_64-image = "ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_x86_64-rust"
+    manylinux-i686-image = "ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_i686-rust"
+    manylinux-aarch64-image = "ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_aarch64-rust"
+    manylinux-ppc64le-image = "ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_ppc64le-rust"
+    manylinux-s390x-image = "ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_s390x-rust"
+    manylinux-pypy_x86_64-image = "ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_x86_64-rust"
+    manylinux-pypy_i686-image = "ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_i686-rust"
+    manylinux-pypy_aarch64-image = "ghcr.io/musicalninjas/quay.io/pypa/manylinux2014_aarch64-rust"
+    musllinux-x86_64-image = "ghcr.io/musicalninjas/quay.io/pypa/musllinux_1_2_x86_64-rust"
+    musllinux-aarch64-image = "ghcr.io/musicalninjas/quay.io/pypa/musllinux_1_2_aarch64-rust"
 
-# `test-command` will FAIL if only passed `pytest {package}`
-# as this tries to resolve imports based on source files (where there is no `.so` for rust libraries), not installed wheel
-test-command = "pytest {package}/tests"
-test-extras = "test"
+    # `test-command` will FAIL if only passed `pytest {package}`
+    # as this tries to resolve imports based on source files (where there is no `.so` for rust libraries), not installed wheel
+    test-command = "pytest {package}/tests"
+    test-extras = "test"
 
-[tool.cibuildwheel.linux]
-before-all = "just clean"
-archs = "all"
+    [tool.cibuildwheel.linux]
+        before-all = "just clean"
+        archs = "all"
 
-[tool.cibuildwheel.macos]
-before-all = "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal && cargo install just && just clean"
+    [tool.cibuildwheel.macos]
+        before-all = "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal && cargo install just && just clean"
 
-[tool.cibuildwheel.windows]
-before-all = "rustup target add aarch64-pc-windows-msvc i586-pc-windows-msvc i686-pc-windows-msvc x86_64-pc-windows-msvc && cargo install just && just clean"
-before-build = "pip install delvewheel"
-repair-wheel-command = "delvewheel repair -w {dest_dir} {wheel}"
+    [tool.cibuildwheel.windows]
+        before-all = "rustup target add aarch64-pc-windows-msvc i586-pc-windows-msvc i686-pc-windows-msvc x86_64-pc-windows-msvc && cargo install just && just clean"
+        before-build = "pip install delvewheel"
+        repair-wheel-command = "delvewheel repair -w {dest_dir} {wheel}"
+
+
+# ===========================
+#  Test, lint, documentation
+# ===========================
 
 [project.optional-dependencies]
-lint = ["ruff"]
-test = ["pytest", "pytest-doctest-mkdocstrings"]
-cov = ["fizzbuzz[test]","pytest-cov"]
-dev = ["fizzbuzz[lint,test,cov]"]
+    lint = ["ruff"]
+    test = ["pytest", "pytest-doctest-mkdocstrings"]
+    cov = ["fizzbuzz[test]", "pytest-cov"]
+    doc = ["black", "mkdocs", "mkdocstrings[python]", "mkdocs-material"]
+    dev = ["fizzbuzz[lint,test,cov,doc]"]
 
 [tool.pytest.ini_options]
-xfail_strict = true
-addopts = [
-    "--doctest-modules",
-    "--doctest-mdcodeblocks",
-    "--doctest-glob=*.pyi",
-    "--doctest-glob=*.md",
-]
-testpaths = [
-    "tests",
-    "python"
-]
+    xfail_strict = true
+    addopts = [
+        "--doctest-modules",
+        "--doctest-mdcodeblocks",
+        "--doctest-glob=*.pyi",
+        "--doctest-glob=*.md",
+    ]
+    testpaths = ["tests", "python"]
 
 [tool.coverage.run]
-branch = true
-omit = ["tests/*"]
-dynamic_context = "test_function"
+    branch = true
+    omit = ["tests/*"]
+    dynamic_context = "test_function"
 
 [tool.ruff]
-line-length = 120
-format.skip-magic-trailing-comma = false
-format.quote-style = "double"
+    line-length = 120
+    format.skip-magic-trailing-comma = false
+    format.quote-style = "double"
 
 [tool.ruff.lint]
-select = ["ALL"]
-flake8-pytest-style.fixture-parentheses = false
-flake8-annotations.mypy-init-return = true
-extend-ignore = [
-    "E701",   # One-line ifs are not great, one-liners with suppression are worse
-    "ANN101", # Type annotation for `self`
-    "ANN202", # Return type annotation for private functions
-    "ANN401", # Using Any often enough that supressing individually is pointless
-    "W291",   # Double space at EOL is linebreak in md-docstring
-    "W292",   # Too much typing to add newline at end of each file
-    "W293",   # Whitespace only lines are OK for us
-    "D401",   # First line of docstring should be in imperative mood ("Returns ..." is OK, for example)
-    "D203",   # 1 blank line required before class docstring (No thank you, only after the class docstring)
-    "D212",   # Multi-line docstring summary should start at the first line (We start on new line, D209)
-    "D215",   # Section underline is over-indented (No underlines)
-    "D400",   # First line should end with a period (We allow any punctuation, D415)
-    "D406",   # Section name should end with a newline (We use a colon, D416)
-    "D407",   # Missing dashed underline after section (No underlines)
-    "D408",   # Section underline should be in the line following the section's name (No underlines)
-    "D409",   # Section underline should match the length of its name (No underlines)
-    "D413",   # Missing blank line after last section (Not required)
-]
+    select = ["ALL"]
+    flake8-pytest-style.fixture-parentheses = false
+    flake8-annotations.mypy-init-return = true
+    extend-ignore = [
+        "E701",   # One-line ifs are not great, one-liners with suppression are worse
+        "ANN101", # Type annotation for `self`
+        "ANN202", # Return type annotation for private functions
+        "ANN401", # Using Any often enough that supressing individually is pointless
+        "W291",   # Double space at EOL is linebreak in md-docstring
+        "W292",   # Too much typing to add newline at end of each file
+        "W293",   # Whitespace only lines are OK for us
+        "D401",   # First line of docstring should be in imperative mood ("Returns ..." is OK, for example)
+        "D203",   # 1 blank line required before class docstring (No thank you, only after the class docstring)
+        "D212",   # Multi-line docstring summary should start at the first line (We start on new line, D209)
+        "D215",   # Section underline is over-indented (No underlines)
+        "D400",   # First line should end with a period (We allow any punctuation, D415)
+        "D406",   # Section name should end with a newline (We use a colon, D416)
+        "D407",   # Missing dashed underline after section (No underlines)
+        "D408",   # Section underline should be in the line following the section's name (No underlines)
+        "D409",   # Section underline should match the length of its name (No underlines)
+        "D413",   # Missing blank line after last section (Not required)
+    ]
 
 [tool.ruff.lint.per-file-ignores]
-# Additional ignores for tests 
-"**/test_*.py" = [
-    "INP001",  # Missing __init__.py
-    "ANN",     # Missing type annotations
-    "S101",    # Use of `assert`
-    "PLR2004", # Magic number comparisons are OK in tests
-    "D1",      # Don't REQUIRE docstrings for tests - but they are nice
-]
+    # Additional ignores for tests 
+    "**/test_*.py" = [
+        "INP001",  # Missing __init__.py
+        "ANN",     # Missing type annotations
+        "S101",    # Use of `assert`
+        "PLR2004", # Magic number comparisons are OK in tests
+        "D1",      # Don't REQUIRE docstrings for tests - but they are nice
+    ]
 
-"**/__init__.py" = [
-    "D104", # Don't require module docstring in __init__.py
-    "F401", # Unused imports are fine: using __init__.py to expose them with implicit __ALL__ 
-]
+    "**/__init__.py" = [
+        "D104", # Don't require module docstring in __init__.py
+        "F401", # Unused imports are fine: using __init__.py to expose them with implicit __ALL__ 
+    ]
