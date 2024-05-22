@@ -75,3 +75,5 @@ nav:
     - dev-build.md
     - testing.md
     - packaging.md
+    - coverage.md
+    - documentation.md
