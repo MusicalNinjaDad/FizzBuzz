@@ -55,6 +55,7 @@ fn py_fizzbuzzo3(module: &Bound<'_, PyModule>) -> PyResult<()> {
 mod tests {
     use pyo3::exceptions::PyTypeError;
     use pyo3::types::PyDict;
+    use pyo3_testing::pyo3test;
 
     use super::*;
 
