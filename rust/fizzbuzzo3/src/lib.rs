@@ -62,11 +62,7 @@ mod tests {
     #[pyo3test]
     #[pyo3import(py_fizzbuzzo3: from fizzbuzzo3 import fizzbuzz)]
     fn test_fizzbuzz() {
-        let result: PyResult<String> = match fizzbuzz.call1((1i32,)) {
-            Ok(r) => r.extract(),
-            Err(e) => Err(e),
-        };
-        let result = result.unwrap();
+        let result: String = fizzbuzz!(1i32);
         let expected_result = "1";
         assert_eq!(result, expected_result);
     }
@@ -74,11 +70,7 @@ mod tests {
     #[pyo3test]
     #[pyo3import(py_fizzbuzzo3: from fizzbuzzo3 import fizzbuzz)]
     fn test_fizzbuzz_float() {
-        let result: PyResult<String> = match fizzbuzz.call1((1f32,)) {
-            Ok(r) => r.extract(),
-            Err(e) => Err(e),
-        };
-        let result = result.unwrap();
+        let result: String = fizzbuzz!(1f32);
         let expected_result = "1";
         assert_eq!(result, expected_result);
     }
@@ -87,11 +79,7 @@ mod tests {
     #[pyo3import(py_fizzbuzzo3: from fizzbuzzo3 import fizzbuzz)]
     fn test_fizzbuzz_vec() {
         let input = vec![1, 2, 3, 4, 5];
-        let result: PyResult<String> = match fizzbuzz.call1((input,)) {
-            Ok(r) => r.extract(),
-            Err(e) => Err(e),
-        };
-        let result = result.unwrap();
+        let result: String = fizzbuzz!(input);
         let expected_result = "1, 2, fizz, 4, buzz";
         assert_eq!(result, expected_result);
     }
