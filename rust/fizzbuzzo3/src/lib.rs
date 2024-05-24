@@ -63,16 +63,14 @@ mod tests {
     #[pyo3import(py_fizzbuzzo3: from fizzbuzzo3 import fizzbuzz)]
     fn test_fizzbuzz() {
         let result: String = fizzbuzz!(1i32);
-        let expected_result = "1";
-        assert_eq!(result, expected_result);
+        assert_eq!(result, "1");
     }
 
     #[pyo3test]
     #[pyo3import(py_fizzbuzzo3: from fizzbuzzo3 import fizzbuzz)]
     fn test_fizzbuzz_float() {
         let result: String = fizzbuzz!(1f32);
-        let expected_result = "1";
-        assert_eq!(result, expected_result);
+        assert_eq!(result, "1");
     }
 
     #[pyo3test]
@@ -80,8 +78,7 @@ mod tests {
     fn test_fizzbuzz_vec() {
         let input = vec![1, 2, 3, 4, 5];
         let result: String = fizzbuzz!(input);
-        let expected_result = "1, 2, fizz, 4, buzz";
-        assert_eq!(result, expected_result);
+        assert_eq!(result, "1, 2, fizz, 4, buzz");
     }
 
     #[pyo3test]
