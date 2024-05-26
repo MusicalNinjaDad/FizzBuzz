@@ -67,7 +67,7 @@ Given that you have tested the core code functionality well, you don't need to r
     ```toml
     ...
     [dependencies]
-      pyo3-testing = "0.2.0"
+      pyo3-testing = "0.3.1"
     ...
     ```
 
@@ -95,14 +95,10 @@ Given that you have tested the core code functionality well, you don't need to r
     Example from **`rust/fizzbuzzo3/src.rs`**:
     ```rust
     #[pyo3test]
+    #[allow(unused_macros)]
     #[pyo3import(py_fizzbuzzo3: from fizzbuzzo3 import fizzbuzz)]
     fn test_fizzbuzz_string() {
-        let result: PyResult<bool> = match fizzbuzz.call1(("one",)) {
-            Ok(_) => Ok(false),
-            Err(error) if error.is_instance_of::<PyTypeError>(py) => Ok(true),
-            Err(e) => Err(e),
-        };
-        assert!(result.unwrap());
+        with_py_raises!(PyTypeError, { fizzbuzz.call1(("4",)) })
     }
     ```
 
