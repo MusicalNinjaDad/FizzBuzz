@@ -55,55 +55,36 @@ fn py_fizzbuzzo3(module: &Bound<'_, PyModule>) -> PyResult<()> {
 mod tests {
     use pyo3::exceptions::PyTypeError;
     use pyo3::types::PyDict;
-    use pyo3_testing::pyo3test;
+    use pyo3_testing::{pyo3test, with_py_raises};
 
     use super::*;
 
     #[pyo3test]
     #[pyo3import(py_fizzbuzzo3: from fizzbuzzo3 import fizzbuzz)]
     fn test_fizzbuzz() {
-        let result: PyResult<String> = match fizzbuzz.call1((1i32,)) {
-            Ok(r) => r.extract(),
-            Err(e) => Err(e),
-        };
-        let result = result.unwrap();
-        let expected_result = "1";
-        assert_eq!(result, expected_result);
+        let result: String = fizzbuzz!(1i32);
+        assert_eq!(result, "1");
     }
 
     #[pyo3test]
     #[pyo3import(py_fizzbuzzo3: from fizzbuzzo3 import fizzbuzz)]
     fn test_fizzbuzz_float() {
-        let result: PyResult<String> = match fizzbuzz.call1((1f32,)) {
-            Ok(r) => r.extract(),
-            Err(e) => Err(e),
-        };
-        let result = result.unwrap();
-        let expected_result = "1";
-        assert_eq!(result, expected_result);
+        let result: String = fizzbuzz!(1f32);
+        assert_eq!(result, "1");
     }
 
     #[pyo3test]
     #[pyo3import(py_fizzbuzzo3: from fizzbuzzo3 import fizzbuzz)]
     fn test_fizzbuzz_vec() {
         let input = vec![1, 2, 3, 4, 5];
-        let result: PyResult<String> = match fizzbuzz.call1((input,)) {
-            Ok(r) => r.extract(),
-            Err(e) => Err(e),
-        };
-        let result = result.unwrap();
-        let expected_result = "1, 2, fizz, 4, buzz";
-        assert_eq!(result, expected_result);
+        let result: String = fizzbuzz!(input);
+        assert_eq!(result, "1, 2, fizz, 4, buzz");
     }
 
     #[pyo3test]
+    #[allow(unused_macros)]
     #[pyo3import(py_fizzbuzzo3: from fizzbuzzo3 import fizzbuzz)]
     fn test_fizzbuzz_string() {
-        let result: PyResult<bool> = match fizzbuzz.call1(("one",)) {
-            Ok(_) => Ok(false),
-            Err(error) if error.is_instance_of::<PyTypeError>(py) => Ok(true),
-            Err(e) => Err(e),
-        };
-        assert!(result.unwrap());
+        with_py_raises!(PyTypeError, { fizzbuzz.call1(("4",)) })
     }
 }

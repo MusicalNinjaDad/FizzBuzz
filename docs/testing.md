@@ -61,13 +61,13 @@ Given that you have tested the core code functionality well, you don't need to r
 !!! rocket "The `pyo3-testing` crate"
     The `pyo3-testing` crate is designed to make this step simple.
 
-    It is currently available on a forked version of pyo3, I'll release it separately as a dedicated crate ASAP unless [PR pyo3/#4099](https://github.com/PyO3/pyo3/pull/4099) lands in the meantime.
+    It is currently available as an independent crate until [PR pyo3/#4099](https://github.com/PyO3/pyo3/pull/4099) lands.
 
-    Use it by importing pyo3 from the fork in **rust/fizzbuzzo3/Cargo.toml**:
+    Use it by adding a dependency in **rust/fizzbuzzo3/Cargo.toml**:
     ```toml
     ...
     [dependencies]
-      pyo3 = { git = "https://github.com/MusicalNinjaDad/pyo3.git", branch = "pyo3-testing" }
+      pyo3-testing = "0.3.1"
     ...
     ```
 
@@ -84,13 +84,8 @@ Given that you have tested the core code functionality well, you don't need to r
     #[pyo3test]
     #[pyo3import(py_fizzbuzzo3: from fizzbuzzo3 import fizzbuzz)]
     fn test_fizzbuzz() {
-        let result: PyResult<String> = match fizzbuzz.call1((1i32,)) {
-            Ok(r) => r.extract(),
-            Err(e) => Err(e),
-        };
-        let result = result.unwrap();
-        let expected_result = "1";
-        assert_eq!(result, expected_result);
+        let result: String = fizzbuzz!(1i32);
+        assert_eq!(result, "1");
     }
     ```
 
@@ -100,14 +95,10 @@ Given that you have tested the core code functionality well, you don't need to r
     Example from **`rust/fizzbuzzo3/src.rs`**:
     ```rust
     #[pyo3test]
+    #[allow(unused_macros)]
     #[pyo3import(py_fizzbuzzo3: from fizzbuzzo3 import fizzbuzz)]
     fn test_fizzbuzz_string() {
-        let result: PyResult<bool> = match fizzbuzz.call1(("one",)) {
-            Ok(_) => Ok(false),
-            Err(error) if error.is_instance_of::<PyTypeError>(py) => Ok(true),
-            Err(e) => Err(e),
-        };
-        assert!(result.unwrap());
+        with_py_raises!(PyTypeError, { fizzbuzz.call1(("4",)) })
     }
     ```
 
