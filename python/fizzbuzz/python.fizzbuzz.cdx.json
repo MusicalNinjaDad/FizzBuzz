@@ -1,0 +1,49 @@
+{
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "spdxVersion": "SPDX-2.3",
+  "creationInfo": {
+    "comment": "This document has been automatically generated.",
+    "creators": [
+      "Tool: sbom4python-0.10.4"
+    ],
+    "created": "2024-05-29T05:17:30Z",
+    "licenseListVersion": "3.22"
+  },
+  "name": "Python-fizzbuzz",
+  "dataLicense": "CC0-1.0",
+  "documentNamespace": "http://spdx.org/spdxdocs/Python-fizzbuzz-03e4d86b-d6a4-4bc1-a79c-24cbfe545f39",
+  "packages": [
+    {
+      "SPDXID": "SPDXRef-Package-1-fizzbuzz",
+      "name": "fizzbuzz",
+      "versionInfo": "2.0.0",
+      "primaryPackagePurpose": "APPLICATION",
+      "supplier": "Person: Mike Foster",
+      "downloadLocation": "https://pypi.org/project/fizzbuzz/2.0.0",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "summary": "An implementation of the traditional fizzbuzz kata",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE_MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:pypi/fizzbuzz@2.0.0"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:mike_foster:fizzbuzz:2.0.0:*:*:*:*:*:*:*"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "spdxElementId": "SPDXRef-DOCUMENT",
+      "relatedSpdxElement": "SPDXRef-Package-1-fizzbuzz",
+      "relationshipType": "DESCRIBES"
+    }
+  ]
+}
