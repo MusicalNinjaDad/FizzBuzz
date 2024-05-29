@@ -1,0 +1,21 @@
+name: CycloneDX SBOM
+on:
+  pull_request:
+  push:
+    branches: main
+
+jobs:
+  sbom:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: install tools
+      run: |
+        cargo install cargo-cyclonedx
+        pip install sbom4python
+    - name: Generate
+      run: |
+        cargo cyclonedx -f json
+        sbom4python -m fizzbuzz -o python/fizzbuzz/python.fizzbuzz.cdx.json --format json
+    - name: upload
+      uses: 
