@@ -103,16 +103,13 @@ pub trait MultiFizzBuzz {
     fn fizzbuzz(&self) -> FizzBuzzAnswer;
 }
 
-impl<Num> MultiFizzBuzz for Vec<Num>
+impl<Iterable: ?Sized, Num> MultiFizzBuzz for Iterable
 where
-    Num: FizzBuzz + Sync,
+    for <'data> &'data Iterable: rayon::iter::IntoParallelIterator<Item = &'data Num>,
+    Num: FizzBuzz + Sync + Send,
 {
     fn fizzbuzz(&self) -> FizzBuzzAnswer {
-        if self.len() < BIG_VECTOR {
-            FizzBuzzAnswer::Many(self.iter().map(|n| n.fizzbuzz().into()).collect())
-        } else {
             FizzBuzzAnswer::Many(self.par_iter().map(|n| n.fizzbuzz().into()).collect())
-        }
     }
 }
 
