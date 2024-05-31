@@ -106,7 +106,7 @@ pub trait MultiFizzBuzz {
 impl<Iterable, Num> MultiFizzBuzz for Iterable
 where
     for <'data> &'data Iterable: rayon::iter::IntoParallelIterator<Item = &'data Num>,
-    Num: FizzBuzz + Sync + Send,
+    Num: FizzBuzz + Sync,
 {
     fn fizzbuzz(&self) -> FizzBuzzAnswer {
             FizzBuzzAnswer::Many(self.par_iter().map(|n| n.fizzbuzz().into()).collect())
