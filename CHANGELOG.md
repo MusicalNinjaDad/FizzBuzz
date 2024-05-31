@@ -1,5 +1,9 @@
 # FizzBuzz Changelog
 
+## Python 2.0.1
+
+- Update pyo3testing framework used for rust exports to v0.3.4
+
 ## Python 2.0.0
 
 - Python and rust variants are now under single fizzbuzz namespace as `fizzbuzz.fizzbuzzpy` and `fizzbuzz.fizzbuzzo3`
