@@ -105,11 +105,21 @@ pub trait MultiFizzBuzz {
 
 impl<Iterable, Num> MultiFizzBuzz for Iterable
 where
-    for <'data> &'data Iterable: rayon::iter::IntoParallelIterator<Item = &'data Num>,
+    for<'data> &'data Iterable: rayon::iter::IntoParallelIterator<Item = &'data Num>
+        + std::iter::IntoIterator<Item = &'data Num>,
     Num: FizzBuzz,
 {
     fn fizzbuzz(&self) -> FizzBuzzAnswer {
+        let sizehint = self.into_iter().size_hint();
+        let sizehint = match sizehint.1 {
+            None => sizehint.0,
+            Some(size) => (size + sizehint.0) / 2,
+        };
+        if sizehint < BIG_VECTOR {
+            FizzBuzzAnswer::Many(self.into_iter().map(|n| n.fizzbuzz().into()).collect())
+        } else {
             FizzBuzzAnswer::Many(self.par_iter().map(|n| n.fizzbuzz().into()).collect())
+        }
     }
 }
 
