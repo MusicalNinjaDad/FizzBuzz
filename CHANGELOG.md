@@ -2,7 +2,7 @@
 
 ## Python 2.0.1
 
-- Update pyo3testing framework used for rust exports to v0.3.4
+- Update pyo3testing framework used for rust exports to v0.3.4 (Simplifies unit tests in rust source)
 
 ## Python 2.0.0
 
