@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# set API Key with `set-key` first
+# set API Key with `. set-key` first
 # then call upload PROJECT-UUID FILE
 
 curl -X "PUT" "http://localhost:8081/api/v1/bom" \
