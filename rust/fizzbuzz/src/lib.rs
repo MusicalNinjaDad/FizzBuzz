@@ -114,7 +114,7 @@ where
         if par_iter.len() < BIG_VECTOR {
             FizzBuzzAnswer::Many(
                 par_iter
-                    .with_min_len(BIG_VECTOR)
+                    .with_min_len(BIG_VECTOR) //Don't parallelise when small
                     .map(|n| n.fizzbuzz().into())
                     .collect(),
             )
