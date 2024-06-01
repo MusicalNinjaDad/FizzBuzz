@@ -54,6 +54,19 @@ fn multifizzbuzz_trait_as_string() {
     let _: String = inputs.fizzbuzz().into();
 }
 
+#[inline]
+fn multifizzbuzz_trait_from_vec_as_answer() {
+    let inputs: Vec<_> = (1..TEST_SIZE).collect();
+    let _ = inputs.fizzbuzz();
+}
+
+#[inline]
+fn multifizzbuzz_trait_from_range_as_answer() {
+    let inputs= (1..TEST_SIZE);
+    let _ = inputs.fizzbuzz();
+}
+
+
 fn criterion_benchmark(c: &mut Criterion) {
     // c.bench_function("for_loop", |b| b.iter(|| for_loop()));
     // c.bench_function("for_loop_with_vec_overhead", |b| {
@@ -65,6 +78,12 @@ fn criterion_benchmark(c: &mut Criterion) {
     c.bench_function("multifizzbuzz_trait", |b| b.iter(|| multifizzbuzz_trait()));
     c.bench_function("multifizzbuzz_trait_as_string", |b| {
         b.iter(|| multifizzbuzz_trait_as_string())
+    });
+    c.bench_function("multifizzbuzz_trait_from_vec_as_answer", |b| {
+        b.iter(|| multifizzbuzz_trait_from_vec_as_answer())
+    });
+    c.bench_function("multifizzbuzz_trait_from_range_as_answer", |b| {
+        b.iter(|| multifizzbuzz_trait_from_range_as_answer())
     });
 }
 
