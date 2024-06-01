@@ -106,6 +106,7 @@ pub trait MultiFizzBuzz {
 impl<Iterable, Num> MultiFizzBuzz for Iterable
 where
     Iterable: rayon::iter::IntoParallelIterator<Item = Num>,
+    <Iterable as IntoParallelIterator>::Iter: IndexedParallelIterator,
     Num: FizzBuzz,
 {
     fn fizzbuzz(self) -> FizzBuzzAnswer {
