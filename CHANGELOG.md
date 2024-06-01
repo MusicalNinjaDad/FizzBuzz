@@ -1,5 +1,10 @@
 # FizzBuzz Changelog
 
+## Rust 3.0.0
+
+- **BREAKING CHANGE**: MultiFizzBuzz will consume the input.
+- MultiFizzBuzz can accept any type of input which will provide a `rayon::iter::IndexedParallelIterator` via `rayon::iter::IntoParallelIterator`. Specifically this is tested to also accept `Range<i32>` (but not `RangeInclusive<i32>` or Ranges of larger types).
+
 ## Python 2.0.1
 
 - Update pyo3testing framework used for rust exports to v0.3.4 (Simplifies unit tests in rust source)
