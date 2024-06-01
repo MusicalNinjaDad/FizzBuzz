@@ -15,7 +15,7 @@ macro_rules! test_this {
                 let threes: Vec<$t> = (0u8..=127).step_by(3).map(|i| {<$t>::try_from(i).unwrap()}).collect();
 
                 for num in allnums {
-                    let result: String = num.fizzbuzz().into();
+                    let result: String = num.clone().fizzbuzz().into();
                     if fifteens.contains(&num) {
                         expect_that!(&result, eq("fizzbuzz"), "for {num}")
                     } else if fives.contains(&num) {
@@ -73,7 +73,7 @@ mod custom_types {
 
     use super::*;
 
-    #[derive(PartialEq)]
+    #[derive(PartialEq, Clone)]
     struct Myint(i16);
 
     impl Rem<Myint> for &Myint {
