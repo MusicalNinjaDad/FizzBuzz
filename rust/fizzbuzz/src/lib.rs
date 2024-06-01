@@ -110,7 +110,11 @@ where
     Num: FizzBuzz,
 {
     fn fizzbuzz(self) -> FizzBuzzAnswer {
-            FizzBuzzAnswer::Many(self.into_par_iter().map(|n| n.fizzbuzz().into()).collect())
+        let par_iter = self.into_par_iter();
+        if par_iter.len() < BIG_VECTOR {
+            FizzBuzzAnswer::Many(par_iter.with_min_len(BIG_VECTOR).map(|n| n.fizzbuzz().into()).collect())
+        } else {
+        FizzBuzzAnswer::Many(par_iter.map(|n| n.fizzbuzz().into()).collect())}
     }
 }
 
