@@ -63,7 +63,7 @@ pub trait FizzBuzz {
     /// - `std::fmt::Display`: Allows `Num` to be formatted as a `String`.
     /// - `PartialEq`: Enables comparison operations for `Num`.
     /// - `<&Num>::Rem<Num, Output = Num>`: Allows `&Num % Num`.
-    fn fizzbuzz(&self) -> FizzBuzzAnswer;
+    fn fizzbuzz(self) -> FizzBuzzAnswer;
 }
 
 /// Implements the FizzBuzz trait for any type `<T>` which supports `<T>::from(<u8>)`
@@ -73,7 +73,7 @@ where
     Num: TryFrom<u8> + std::fmt::Display + PartialEq,
     for<'a> &'a Num: std::ops::Rem<Num, Output = Num>,
 {
-    fn fizzbuzz(&self) -> FizzBuzzAnswer {
+    fn fizzbuzz(self) -> FizzBuzzAnswer {
         let three = match <Num>::try_from(3_u8) {
             Ok(three) => three,
             Err(_) => return FizzBuzzAnswer::One(self.to_string()),
@@ -86,7 +86,7 @@ where
             Ok(zero) => zero,
             Err(_) => return FizzBuzzAnswer::One(self.to_string()),
         };
-        match (self % three == zero, self % five == zero) {
+        match (&self % three == zero, &self % five == zero) {
             (true, true) => FizzBuzzAnswer::One("fizzbuzz".to_string()),
             (true, false) => FizzBuzzAnswer::One("fizz".to_string()),
             (false, true) => FizzBuzzAnswer::One("buzz".to_string()),
@@ -105,20 +105,21 @@ pub trait MultiFizzBuzz {
 
 impl<Iterable, Num> MultiFizzBuzz for Iterable
 where
-    for<'data> &'data Iterable: rayon::iter::IntoParallelIterator<Item = &'data Num>
-        + std::iter::IntoIterator<Item = &'data Num>,
+    Iterable: std::iter::IntoIterator<Item = Num>,
+    <Iterable as IntoIterator>::IntoIter: rayon::iter::IntoParallelIterator<Item = Num>,
     Num: FizzBuzz,
 {
     fn fizzbuzz(self) -> FizzBuzzAnswer {
-        let sizehint = &self.into_iter().size_hint();
+        let iter = self.into_iter();
+        let sizehint = &iter.size_hint();
         let sizehint = match sizehint.1 {
             None => sizehint.0,
             Some(size) => (size + sizehint.0) / 2,
         };
         if sizehint < BIG_VECTOR {
-            FizzBuzzAnswer::Many(self.into_iter().map(|n| n.fizzbuzz().into()).collect())
+            FizzBuzzAnswer::Many(iter.into_iter().map(|n| n.fizzbuzz().into()).collect())
         } else {
-            FizzBuzzAnswer::Many(self.par_iter().map(|n| n.fizzbuzz().into()).collect())
+            FizzBuzzAnswer::Many(iter.into_par_iter().map(|n| n.fizzbuzz().into()).collect())
         }
     }
 }
