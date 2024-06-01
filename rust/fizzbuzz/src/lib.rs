@@ -110,7 +110,9 @@ where
     Num: FizzBuzz,
 {
     fn fizzbuzz(self) -> FizzBuzzAnswer {
-            FizzBuzzAnswer::Many(self.into_iter().map(|n| n.fizzbuzz().into()).collect())
+        let iter = self.into_iter();
+        let size = &iter.size_hint();
+        FizzBuzzAnswer::Many(iter.map(|n| n.fizzbuzz().into()).collect())
     }
 }
 
