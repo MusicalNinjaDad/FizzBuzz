@@ -112,9 +112,15 @@ where
     fn fizzbuzz(self) -> FizzBuzzAnswer {
         let par_iter = self.into_par_iter();
         if par_iter.len() < BIG_VECTOR {
-            FizzBuzzAnswer::Many(par_iter.with_min_len(BIG_VECTOR).map(|n| n.fizzbuzz().into()).collect())
+            FizzBuzzAnswer::Many(
+                par_iter
+                    .with_min_len(BIG_VECTOR)
+                    .map(|n| n.fizzbuzz().into())
+                    .collect(),
+            )
         } else {
-        FizzBuzzAnswer::Many(par_iter.map(|n| n.fizzbuzz().into()).collect())}
+            FizzBuzzAnswer::Many(par_iter.map(|n| n.fizzbuzz().into()).collect())
+        }
     }
 }
 
@@ -157,5 +163,4 @@ mod test {
         let output: Vec<String> = input.fizzbuzz().into();
         assert_eq!(output, expected)
     }
-
 }

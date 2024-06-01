@@ -62,10 +62,9 @@ fn multifizzbuzz_trait_from_vec_as_answer() {
 
 #[inline]
 fn multifizzbuzz_trait_from_range_as_answer() {
-    let inputs= (1..TEST_SIZE);
+    let inputs = 1..TEST_SIZE;
     let _ = inputs.fizzbuzz();
 }
-
 
 fn criterion_benchmark(c: &mut Criterion) {
     // c.bench_function("for_loop", |b| b.iter(|| for_loop()));

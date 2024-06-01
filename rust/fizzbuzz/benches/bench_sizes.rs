@@ -12,12 +12,12 @@ fn range_20() {
 fn range_200_000() {
     const TEST_SIZE: i32 = 200_000;
     let _ = (1..TEST_SIZE).fizzbuzz();
-}   
+}
 #[inline]
 fn range_300_000() {
     const TEST_SIZE: i32 = 300_000;
     let _ = (1..TEST_SIZE).fizzbuzz();
-}   
+}
 #[inline]
 fn range_1_000_000() {
     const TEST_SIZE: i32 = 1_000_000;
