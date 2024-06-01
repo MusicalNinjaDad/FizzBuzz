@@ -100,26 +100,17 @@ where
 /// ### Required:
 /// - fn fizzbuzz(self) -> FizzBuzzAnswer
 pub trait MultiFizzBuzz {
-    fn fizzbuzz(&self) -> FizzBuzzAnswer;
+    fn fizzbuzz(self) -> FizzBuzzAnswer;
 }
 
 impl<Iterable, Num> MultiFizzBuzz for Iterable
 where
-    for<'data> &'data Iterable: rayon::iter::IntoParallelIterator<Item = &'data Num>
-        + std::iter::IntoIterator<Item = &'data Num>,
+    Iterable: rayon::iter::IntoParallelIterator<Item = Num>
+        + std::iter::IntoIterator<Item = Num>,
     Num: FizzBuzz,
 {
-    fn fizzbuzz(&self) -> FizzBuzzAnswer {
-        let sizehint = self.into_iter().size_hint();
-        let sizehint = match sizehint.1 {
-            None => sizehint.0,
-            Some(size) => (size + sizehint.0) / 2,
-        };
-        if sizehint < BIG_VECTOR {
+    fn fizzbuzz(self) -> FizzBuzzAnswer {
             FizzBuzzAnswer::Many(self.into_iter().map(|n| n.fizzbuzz().into()).collect())
-        } else {
-            FizzBuzzAnswer::Many(self.par_iter().map(|n| n.fizzbuzz().into()).collect())
-        }
     }
 }
 
@@ -144,7 +135,7 @@ mod test {
     #[test]
     fn big_vector_is_well_ordered() {
         let input: Vec<_> = (1..BIG_VECTOR + 1).collect();
-        let output: Vec<_> = input.fizzbuzz().into();
+        let output: Vec<_> = input.clone().fizzbuzz().into();
         let mut expected: Vec<String> = vec![];
         for i in input.iter() {
             expected.push(i.fizzbuzz().into())
