@@ -105,12 +105,11 @@ pub trait MultiFizzBuzz {
 
 impl<Iterable, Num> MultiFizzBuzz for Iterable
 where
-    Iterable: rayon::iter::IntoParallelIterator<Item = Num>
-        + std::iter::IntoIterator<Item = Num>,
+    Iterable: rayon::iter::IntoParallelIterator<Item = Num>,
     Num: FizzBuzz,
 {
     fn fizzbuzz(self) -> FizzBuzzAnswer {
-            FizzBuzzAnswer::Many(self.into_iter().map(|n| n.fizzbuzz().into()).collect())
+            FizzBuzzAnswer::Many(self.into_par_iter().map(|n| n.fizzbuzz().into()).collect())
     }
 }
 
