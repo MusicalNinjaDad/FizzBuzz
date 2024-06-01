@@ -150,12 +150,11 @@ mod test {
     #[test]
     fn fizzbuzz_range() {
         let input = 1..20;
-        let iter = input.into_iter();
         let mut expected: Vec<String> = vec![];
         for i in 1..20 {
             expected.push(i.fizzbuzz().into())
         }
-        let output: Vec<String> = iter.fizzbuzz().into();
+        let output: Vec<String> = input.fizzbuzz().into();
         assert_eq!(output, expected)
     }
 
