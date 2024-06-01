@@ -111,7 +111,10 @@ where
 {
     fn fizzbuzz(self) -> FizzBuzzAnswer {
         let iter = self.into_iter();
-        let size = &iter.size_hint();
+        let size = match &iter.size_hint().1{
+            Some(size) => size,
+            None => &BIG_VECTOR, // Safer to assume big if no upper limit to size_hint
+        };
         FizzBuzzAnswer::Many(iter.map(|n| n.fizzbuzz().into()).collect())
     }
 }
