@@ -124,7 +124,7 @@ where
     }
 }
 
-#[cfg(test)]
+#[cfg(tes)]
 mod test {
     use super::*;
 

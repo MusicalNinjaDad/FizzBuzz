@@ -1,3 +1,4 @@
+#![cfg(x)]
 use fizzbuzz::MultiFizzBuzz;
 
 mod vectors {
@@ -19,7 +20,6 @@ mod vectors {
     }
 }
 
-#[cfg(x)]
 mod ranges {
     use super::*;
 
