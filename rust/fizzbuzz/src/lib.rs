@@ -103,23 +103,21 @@ pub trait MultiFizzBuzz {
     fn fizzbuzz(self) -> FizzBuzzAnswer;
 }
 
-impl<Iterable, Num> MultiFizzBuzz for Iterable
+impl<Iterator, Num> MultiFizzBuzz for Iterator
 where
-    Iterable: std::iter::IntoIterator<Item = Num>,
-    <Iterable as IntoIterator>::IntoIter: rayon::iter::IntoParallelIterator<Item = Num>,
+Iterator: std::iter::Iterator<Item = Num> + rayon::iter::IntoParallelIterator<Item = Num>,
     Num: FizzBuzz,
 {
     fn fizzbuzz(self) -> FizzBuzzAnswer {
-        let iter = self.into_iter();
-        let sizehint = &iter.size_hint();
+        let sizehint = &self.size_hint();
         let sizehint = match sizehint.1 {
             None => sizehint.0,
             Some(size) => (size + sizehint.0) / 2,
         };
         if sizehint < BIG_VECTOR {
-            FizzBuzzAnswer::Many(iter.into_iter().map(|n| n.fizzbuzz().into()).collect())
+            FizzBuzzAnswer::Many(self.map(|n| n.fizzbuzz().into()).collect())
         } else {
-            FizzBuzzAnswer::Many(iter.into_par_iter().map(|n| n.fizzbuzz().into()).collect())
+            FizzBuzzAnswer::Many(self.into_par_iter().map(|n| n.fizzbuzz().into()).collect())
         }
     }
 }
