@@ -1,11 +1,25 @@
 use fizzbuzz::{FizzBuzz, MultiFizzBuzz};
-use pyo3::prelude::*;
+use pyo3::{prelude::*, types::PySlice};
 
 #[derive(FromPyObject)]
 enum FizzBuzzable {
     Int(isize),
     Float(f64),
     Vec(Vec<isize>),
+    Slice(MySlice),
+}
+
+#[derive(FromPyObject)]
+struct MySlice {
+    start: isize,
+    stop: isize,
+    step: isize,
+}
+
+impl IntoPy<Py<PyAny>> for MySlice {
+    fn into_py(self, py: Python<'_>) -> Py<PyAny> {
+        PySlice::new_bound(py, self.start, self.stop, self.step).into_py(py)
+    }
 }
 
 /// Returns the correct fizzbuzz answer for any number or list of numbers.
@@ -41,6 +55,8 @@ fn py_fizzbuzz(num: FizzBuzzable) -> String {
         FizzBuzzable::Int(n) => n.fizzbuzz().into(),
         FizzBuzzable::Float(n) => n.fizzbuzz().into(),
         FizzBuzzable::Vec(v) => v.fizzbuzz().into(),
+        FizzBuzzable::Slice(s) => {(s.start..s.stop).fizzbuzz().into()
+        }
     }
 }
 
@@ -85,5 +101,13 @@ mod tests {
     #[pyo3import(py_fizzbuzzo3: from fizzbuzzo3 import fizzbuzz)]
     fn test_fizzbuzz_string() {
         with_py_raises!(PyTypeError, { fizzbuzz.call1(("4",)) })
+    }
+
+    #[pyo3test]
+    #[pyo3import(py_fizzbuzzo3: from fizzbuzzo3 import fizzbuzz)]
+    fn test_fizbuzz_slice() {
+        let input = MySlice{start:1,stop:6,step: 1};
+        let result: String = fizzbuzz!(input);
+        assert_eq!(result, "1, 2, fizz, 4, buzz");
     }
 }
