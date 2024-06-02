@@ -38,3 +38,6 @@ def test_1_to_100():
     assert every_fizzbuzz_is_mod15
     all_numbers_correct = all(r == str(i + 1) for i, r in enumerate(results) if r not in ("fizz", "buzz", "fizzbuzz"))
     assert all_numbers_correct
+
+def test_slice():
+     assert fizzbuzz(slice(1,16,1)) == "1, 2, fizz, 4, buzz, fizz, 7, 8, fizz, buzz, 11, fizz, 13, 14, fizzbuzz"
