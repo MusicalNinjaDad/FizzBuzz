@@ -1,4 +1,4 @@
 #!/bin/bash
 
 read -s -p "Enter API KEY: " key
-export $DEP_TRACK_KEY="$key"
+export DEP_TRACK_KEY="$key"
