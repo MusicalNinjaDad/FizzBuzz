@@ -13,12 +13,16 @@ enum FizzBuzzable {
 struct MySlice {
     start: isize,
     stop: isize,
-    step: isize,
+    step: Option<isize>,
 }
 
 impl IntoPy<Py<PyAny>> for MySlice {
     fn into_py(self, py: Python<'_>) -> Py<PyAny> {
-        PySlice::new_bound(py, self.start, self.stop, self.step).into_py(py)
+        PySlice::new_bound(py, self.start, self.stop, match self.step {
+            Some(s) => s,
+            None => 1,
+        }
+        ).into_py(py)
     }
 }
 
