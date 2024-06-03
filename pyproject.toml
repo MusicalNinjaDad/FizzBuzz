@@ -44,7 +44,7 @@
     path = "rust/fizzbuzzo3/Cargo.toml"
     binding = "PyO3"
     features = ["pyo3/extension-module"] # IMPORTANT!!!
-    debug = false # Adds --release to `pip install -e .` builds - needed for perf testing 
+    debug = false # Adds `--release` to `pip install -e .` builds - needed for perf testing
 
 [tool.cibuildwheel]
     skip = [
