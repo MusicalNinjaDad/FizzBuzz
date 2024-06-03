@@ -43,12 +43,12 @@ mod ranges {
         let answer: Vec<String> = input.fizzbuzz().into();
         let expected = vec![
             "fizzbuzz".to_string(), // 0
-            "fizz".to_string(), // 3
-            "fizz".to_string(), // 6
-            "fizz".to_string(), // 9
-            "fizz".to_string(), // 12
+            "fizz".to_string(),     // 3
+            "fizz".to_string(),     // 6
+            "fizz".to_string(),     // 9
+            "fizz".to_string(),     // 12
             "fizzbuzz".to_string(), //15
-            ];
+        ];
         assert_eq!(answer, expected)
     }
 }
