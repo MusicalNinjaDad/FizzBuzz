@@ -209,9 +209,11 @@ mod tests {
     #[allow(unused_macros)]
     #[pyo3import(py_fizzbuzzo3: from fizzbuzzo3 import fizzbuzz)]
     fn test_fizbuzz_slice_zero_step() {
-        let slice: MySlice = py.eval_bound("slice(1,2,0)", None, None).unwrap().extract().unwrap();
-        with_py_raises!(PyValueError, {
-            fizzbuzz.call1((slice,))
-        });
+        let slice: MySlice = py
+            .eval_bound("slice(1,2,0)", None, None)
+            .unwrap()
+            .extract()
+            .unwrap();
+        with_py_raises!(PyValueError, { fizzbuzz.call1((slice,)) });
     }
 }
