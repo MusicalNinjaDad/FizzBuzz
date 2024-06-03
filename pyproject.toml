@@ -74,7 +74,7 @@
         archs = "all"
 
     [tool.cibuildwheel.macos]
-        before-all = "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal && cargo install just && just clean"
+        before-all = "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal && cargo install just && just clean && mkdir wheelhouse"
 
     [tool.cibuildwheel.windows]
         before-all = "rustup target add aarch64-pc-windows-msvc i586-pc-windows-msvc i686-pc-windows-msvc x86_64-pc-windows-msvc && cargo install just && just clean"
