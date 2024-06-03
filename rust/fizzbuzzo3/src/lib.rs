@@ -138,7 +138,7 @@ mod tests {
 
     #[pyo3test]
     #[pyo3import(py_fizzbuzzo3: from fizzbuzzo3 import fizzbuzz)]
-    fn test_fizbuzz_slice() {
+    fn test_fizzbuzz_slice() {
         let input = MySlice {
             start: 1,
             stop: 6,
@@ -150,7 +150,7 @@ mod tests {
 
     #[pyo3test]
     #[pyo3import(py_fizzbuzzo3: from fizzbuzzo3 import fizzbuzz)]
-    fn test_fizbuzz_slice_no_step() {
+    fn test_fizzbuzz_slice_no_step() {
         let input = MySlice {
             start: 1,
             stop: 6,
@@ -162,7 +162,7 @@ mod tests {
 
     #[pyo3test]
     #[pyo3import(py_fizzbuzzo3: from fizzbuzzo3 import fizzbuzz)]
-    fn test_fizbuzz_slice_step() {
+    fn test_fizzbuzz_slice_step() {
         let input = MySlice {
             start: 1,
             stop: 6,
@@ -174,7 +174,7 @@ mod tests {
 
     #[pyo3test]
     #[pyo3import(py_fizzbuzzo3: from fizzbuzzo3 import fizzbuzz)]
-    fn test_fizbuzz_slice_backwards() {
+    fn test_fizzbuzz_slice_backwards() {
         let input = MySlice {
             start: 5,
             stop: 0,
@@ -186,7 +186,7 @@ mod tests {
 
     #[pyo3test]
     #[pyo3import(py_fizzbuzzo3: from fizzbuzzo3 import fizzbuzz)]
-    fn test_fizbuzz_slice_negative_step() {
+    fn test_fizzbuzz_slice_negative_step() {
         let input = MySlice {
             start: 5,
             stop: 0,
@@ -198,7 +198,7 @@ mod tests {
 
     #[pyo3test]
     #[pyo3import(py_fizzbuzzo3: from fizzbuzzo3 import fizzbuzz)]
-    fn test_fizbuzz_slice_negative_step_boundaries() {
+    fn test_fizzbuzz_slice_negative_step_boundaries() {
         let input = MySlice {
             start: 5,
             stop: 1,
@@ -210,7 +210,7 @@ mod tests {
 
     #[pyo3test]
     #[pyo3import(py_fizzbuzzo3: from fizzbuzzo3 import fizzbuzz)]
-    fn test_fizbuzz_slice_negative_step_boundaries_2() {
+    fn test_fizzbuzz_slice_negative_step_boundaries_2() {
         let input = MySlice {
             start: 6,
             stop: 0,
@@ -222,7 +222,7 @@ mod tests {
     #[pyo3test]
     #[allow(unused_macros)]
     #[pyo3import(py_fizzbuzzo3: from fizzbuzzo3 import fizzbuzz)]
-    fn test_fizbuzz_slice_zero_step() {
+    fn test_fizzbuzz_slice_zero_step() {
         let slice: MySlice = py
             .eval_bound("slice(1,2,0)", None, None)
             .unwrap()
