@@ -67,7 +67,21 @@ fn py_fizzbuzz(num: FizzBuzzable) -> PyResult<String> {
                     .step_by(step.try_into().unwrap())
                     .fizzbuzz()
                     .into()),
+
+                //  ```python
+                //  >>> foo[1:5:0]
+                //  Traceback (most recent call last):
+                //    File "<stdin>", line 1, in <module>
+                //  ValueError: slice step cannot be zero
+                //  ```
                 0 => Err(PyValueError::new_err("step cannot be zero")),
+
+                //  ```python
+                //  >>> foo=[0,1,2,3,4,5,6]
+                //  >>> foo[6:0:-2]
+                //  [6, 4, 2]
+                //  ```
+                // Rust doesn't accept step < 0 or stop < start so need some trickery
                 _ => Ok((s.start.neg()..s.stop.neg())
                     .into_par_iter()
                     .step_by(step.neg().try_into().unwrap())
