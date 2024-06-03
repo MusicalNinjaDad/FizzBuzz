@@ -82,7 +82,7 @@ fn py_fizzbuzz(num: FizzBuzzable) -> PyResult<String> {
                 //  [6, 4, 2]
                 //  ```
                 // Rust doesn't accept step < 0 or stop < start so need some trickery
-                _ => Ok((s.start.neg()..s.stop.neg())
+                ..=-1 => Ok((s.start.neg()..s.stop.neg())
                     .into_par_iter()
                     .step_by(step.neg().try_into().unwrap())
                     .map(|x| x.neg())
