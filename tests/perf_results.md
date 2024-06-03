@@ -64,3 +64,14 @@ Python: [1 calls of 10 runs fizzbuzzing up to 2000000]
 Rust vector: [1 calls of 10 runs fizzbuzzing a list of numbers up to 2000000]
 [9.551074810999125]
 ```
+
+## Passing a slice (as a representative of a range) vs a list:
+
+Rust: [3 calls of 10 runs fizzbuzzing up to 1000000]
+[13.941677560000244, 12.671054376998654, 12.669853160998173]
+Rust vector: [3 calls of 10 runs fizzbuzzing a list of numbers up to 1000000]
+[5.104824486003054, 4.96210950999739, 4.903727466000419]
+Rust vector, with python list overhead: [3 calls of 10 runs creating and fizzbuzzing a list of numbers up to 1000000]
+[5.363066075999086, 5.316481181002018, 5.361383773997659]
+Rust range: [3 calls of 10 runs fizzbuzzing a range of numbers up to 1000000]
+[3.8294942710017494, 3.8227306799999496, 3.800879727001302]
