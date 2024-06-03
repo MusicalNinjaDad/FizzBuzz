@@ -47,3 +47,7 @@ def test_slice_no_step():
 
 def test_slice_negative_step():
     assert fizzbuzz(slice(15,0,-3)) == "fizzbuzz, fizz, fizz, fizz, fizz"
+
+def test_slice_zero_step():
+    with pytest.raises(ValueError, match="step cannot be zero"):
+        fizzbuzz(slice(1,16,0))
