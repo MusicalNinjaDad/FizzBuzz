@@ -66,6 +66,7 @@ The [relevant section of the pyo3 book](https://pyo3.rs/latest/rust-from-python)
       path = "rust/fizzbuzzo3/Cargo.toml"
       binding = "PyO3"
       features = ["pyo3/extension-module"] # IMPORTANT!!!
+      args = ["--release"] # 4-7x performance loss if you forget this
     ...
     ```
 
@@ -74,10 +75,15 @@ The [relevant section of the pyo3 book](https://pyo3.rs/latest/rust-from-python)
 
     Background is available by combining the [pyo3 FAQ](https://pyo3.rs/latest/faq#i-cant-run-cargo-test-or-i-cant-build-in-a-cargo-workspace-im-having-linker-issues-like-symbol-not-found-or-undefined-reference-to-_pyexc_systemerror) and [manylinux specification](https://github.com/pypa/manylinux)
 
-    ??? python "**`./pyproject.toml`** - full source"
-        ```toml
-        --8<-- "./pyproject.toml"
-        ```
+!!! warning "Missing out on 4-7x performance gains"
+    Add `args = ["--release"]` to `./pyproject.toml` to ensure that your rust code is built with the right optimisations.
+
+    The default release profile is well documented in [The Cargo Book](https://doc.rust-lang.org/cargo/reference/profiles.html#release). I found a 4-7x performance boost when I enabled this!
+
+??? python "**`./pyproject.toml`** - full source"
+    ```toml
+    --8<-- "./pyproject.toml"
+    ```
 
 ## Python virtual environment & build
 
@@ -204,6 +210,99 @@ Assuming part of the reason you are doing this is to provide a performance over 
 
     !!! tip "Check it makes sense"
         Adding parallel processing doesn't always make sense as it adds overhead ramping and managing a threadpool. You will want to do some benchmarking to find the sweet-spot. Benchmarking and performance testing is a topic for itself, so I'll add a dedicated section ...
+
+!!! pyo3 "Even more speed by passing a range (and implementing IntoPy and FromPyObject traits)"
+    The world obviously _needs_ the most performant fizzbuzz available! In an attempt to squeeze out even more speed I tried completely avoiding the need to build and pass a `list` and instead (ab)used a python `slice` to provide `start`, `stop`, and optional `step` values. This gave another 1.5x speed boost. Surprisingly most of that comes from passing the list to rust, not creating it or processing it:
+
+    !!! python "Timeit results"
+        ```text
+        Rust: [3 calls of 10 runs fizzbuzzing up to 1000000]
+        [13.941677560000244, 12.671054376998654, 12.669853160998173]
+        Rust vector: [3 calls of 10 runs fizzbuzzing a list of numbers up to 1000000]
+        [5.104824486003054, 4.96210950999739, 4.903727466000419]
+        Rust vector, with python list overhead: [3 calls of 10 runs creating and fizzbuzzing a list of numbers up to 1000000]
+        [5.363066075999086, 5.316481181002018, 5.361383773997659]
+        Rust range: [3 calls of 10 runs fizzbuzzing a range of numbers up to 1000000]
+        [3.8294942710017494, 3.8227306799999496, 3.800879727001302]
+        ```
+
+    !!! rust "Criterion bench results"
+        ```text
+        multifizzbuzz_trait_from_vec_as_answer
+                            time:   [62.035 ms 63.960 ms 65.921 ms]
+        Found 1 outliers among 100 measurements (1.00%)
+          1 (1.00%) high mild
+
+        multifizzbuzz_trait_from_range_as_answer
+                                time:   [60.295 ms 62.228 ms 64.228 ms]
+        Found 1 outliers among 100 measurements (1.00%)
+          1 (1.00%) high mild
+        ```
+        
+    !!! rust "Excursion to follow ..."
+        This change was quite in depth, so expect an excursion later on the changes to the core `rust/fizzbuzz/src/lib.rs`...
+
+    !!! pyo3 "On the pyo3 side this involved the following in **`rust/fizzbuzzo3/src/lib.rs`**:"
+
+        1. Creating a `struct MySlice` to hold the start, stop and step values which:
+            1. Can be created from a python `slice`:
+                ```rust
+                #[derive(FromPyObject)]
+                struct MySlice {
+                    start: isize,
+                    stop: isize,
+                    step: Option<isize>,
+                }
+                ```
+            1. Can be converted into a pyo3 `PySlice`:
+                ```rust
+                impl IntoPy<Py<PyAny>> for MySlice {
+                    fn into_py(self, py: Python<'_>) -> Py<PyAny> {
+                        PySlice::new_bound(py, self.start, self.stop, self.step.unwrap_or(1)).into_py(py)
+                    }
+                }
+                ```
+            Note: There is [no rust standard type which pyo3 maps to a slice](https://pyo3.rs/latest/conversions/tables).
+        1. Parsing the slice to provide equivalent logic to python for negative steps:
+            ```rust
+            fn py_fizzbuzz(num: FizzBuzzable) -> PyResult<String> {
+                match num {
+                    ...
+                    FizzBuzzable::Slice(s) => match s.step {
+                        None => Ok((s.start..s.stop).fizzbuzz().into()),
+                        Some(1) => Ok((s.start..s.stop).fizzbuzz().into()),
+                        Some(step) => match step {
+                            1.. => Ok((s.start..s.stop)
+                                .into_par_iter()
+                                .step_by(step.try_into().unwrap())
+                                .fizzbuzz()
+                                .into()),
+
+                            //  ```python
+                            //  >>> foo[1:5:0]
+                            //  Traceback (most recent call last):
+                            //    File "<stdin>", line 1, in <module>
+                            //  ValueError: slice step cannot be zero
+                            //  ```
+                            0 => Err(PyValueError::new_err("step cannot be zero")),
+
+                            //  ```python
+                            //  >>> foo=[0,1,2,3,4,5,6]
+                            //  >>> foo[6:0:-2]
+                            //  [6, 4, 2]
+                            //  ```
+                            // Rust doesn't accept step < 0 or stop < start so need some trickery
+                            ..=-1 => Ok((s.start.neg()..s.stop.neg())
+                                .into_par_iter()
+                                .step_by(step.neg().try_into().unwrap())
+                                .map(|x| x.neg())
+                                .fizzbuzz()
+                                .into()),
+                        },
+                    },
+                ...
+            ```
+        1. Quite a bit of extra testing ...
 
 ??? pyo3 "**`rust/fizzbuzzo3/src/lib.rs`** - full source"
     ```rust

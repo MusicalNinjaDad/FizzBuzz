@@ -4,6 +4,7 @@ on:
   push:
     paths: 
     - "**.py"
+    - "rust/fizzbuzzo3/src/*.rs"
     - "pyproject.toml"
     - ".github/workflows/python.yml"
   pull_request:

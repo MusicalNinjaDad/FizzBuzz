@@ -44,6 +44,7 @@
     path = "rust/fizzbuzzo3/Cargo.toml"
     binding = "PyO3"
     features = ["pyo3/extension-module"] # IMPORTANT!!!
+    args = ["--release"] # 4-7x performance loss if you forget this
 
 [tool.cibuildwheel]
     skip = [
@@ -86,11 +87,12 @@
 # ===========================
 
 [project.optional-dependencies]
+    stubs = ["pyo3-stubgen"]
     lint = ["ruff"]
     test = ["pytest", "pytest-doctest-mkdocstrings"]
     cov = ["fizzbuzz[test]", "pytest-cov"]
-    doc = ["black", "mkdocs", "mkdocstrings[python]", "mkdocs-material"]
-    dev = ["fizzbuzz[lint,test,cov,doc]"]
+    doc = ["black", "mkdocs", "mkdocstrings[python]", "mkdocs-material", "fizzbuzz[stubs]"]
+    dev = ["fizzbuzz[stubs,lint,test,cov,doc]"]
 
 [tool.pytest.ini_options]
     xfail_strict = true
