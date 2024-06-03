@@ -65,7 +65,7 @@ Rust vector: [1 calls of 10 runs fizzbuzzing a list of numbers up to 2000000]
 [9.551074810999125]
 ```
 
-## Passing a slice (as a representative of a range) vs a list:
+## Passing a slice (as a representative of a range) vs a list
 
 Rust: [3 calls of 10 runs fizzbuzzing up to 1000000]
 [13.941677560000244, 12.671054376998654, 12.669853160998173]
