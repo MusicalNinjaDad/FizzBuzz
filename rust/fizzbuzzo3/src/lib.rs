@@ -18,11 +18,13 @@ struct MySlice {
 
 impl IntoPy<Py<PyAny>> for MySlice {
     fn into_py(self, py: Python<'_>) -> Py<PyAny> {
-        PySlice::new_bound(py, self.start, self.stop, match self.step {
-            Some(s) => s,
-            None => 1,
-        }
-        ).into_py(py)
+        PySlice::new_bound(
+            py,
+            self.start,
+            self.stop,
+            self.step.unwrap_or(1),
+        )
+        .into_py(py)
     }
 }
 
@@ -59,8 +61,7 @@ fn py_fizzbuzz(num: FizzBuzzable) -> String {
         FizzBuzzable::Int(n) => n.fizzbuzz().into(),
         FizzBuzzable::Float(n) => n.fizzbuzz().into(),
         FizzBuzzable::Vec(v) => v.fizzbuzz().into(),
-        FizzBuzzable::Slice(s) => {(s.start..s.stop).fizzbuzz().into()
-        }
+        FizzBuzzable::Slice(s) => (s.start..s.stop).fizzbuzz().into(),
     }
 }
 
@@ -110,7 +111,23 @@ mod tests {
     #[pyo3test]
     #[pyo3import(py_fizzbuzzo3: from fizzbuzzo3 import fizzbuzz)]
     fn test_fizbuzz_slice() {
-        let input = MySlice{start:1,stop:6,step: 1};
+        let input = MySlice {
+            start: 1,
+            stop: 6,
+            step: Some(1),
+        };
+        let result: String = fizzbuzz!(input);
+        assert_eq!(result, "1, 2, fizz, 4, buzz");
+    }
+
+    #[pyo3test]
+    #[pyo3import(py_fizzbuzzo3: from fizzbuzzo3 import fizzbuzz)]
+    fn test_fizbuzz_slice_no_step() {
+        let input = MySlice {
+            start: 1,
+            stop: 6,
+            step: None,
+        };
         let result: String = fizzbuzz!(input);
         assert_eq!(result, "1, 2, fizz, 4, buzz");
     }
