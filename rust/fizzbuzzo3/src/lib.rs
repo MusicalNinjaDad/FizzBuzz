@@ -19,13 +19,7 @@ struct MySlice {
 
 impl IntoPy<Py<PyAny>> for MySlice {
     fn into_py(self, py: Python<'_>) -> Py<PyAny> {
-        PySlice::new_bound(
-            py,
-            self.start,
-            self.stop,
-            self.step.unwrap_or(1),
-        )
-        .into_py(py)
+        PySlice::new_bound(py, self.start, self.stop, self.step.unwrap_or(1)).into_py(py)
     }
 }
 
@@ -64,12 +58,16 @@ fn py_fizzbuzz(num: FizzBuzzable) -> String {
         FizzBuzzable::Vec(v) => v.fizzbuzz().into(),
         FizzBuzzable::Slice(s) => match s.step {
             None => (s.start..s.stop).fizzbuzz().into(),
-            Some(1)=> (s.start..s.stop).fizzbuzz().into(),
+            Some(1) => (s.start..s.stop).fizzbuzz().into(),
             Some(step) => match step {
-            2.. => (s.start..s.stop).into_par_iter().step_by(step.try_into().unwrap()).fizzbuzz().into(),
-            _ => todo!(),
-        }
-        }
+                2.. => (s.start..s.stop)
+                    .into_par_iter()
+                    .step_by(step.try_into().unwrap())
+                    .fizzbuzz()
+                    .into(),
+                _ => todo!(),
+            },
+        },
     }
 }
 
@@ -150,5 +148,17 @@ mod tests {
         };
         let result: String = fizzbuzz!(input);
         assert_eq!(result, "1, fizz, buzz");
+    }
+
+    #[pyo3test]
+    #[pyo3import(py_fizzbuzzo3: from fizzbuzzo3 import fizzbuzz)]
+    fn test_fizbuzz_slice_backwards() {
+        let input = MySlice {
+            start: 5,
+            stop: 0,
+            step: Some(1),
+        };
+        let result: String = fizzbuzz!(input);
+        assert_eq!(result, "");
     }
 }
