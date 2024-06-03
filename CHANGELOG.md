@@ -5,6 +5,10 @@
 - Allow a `slice` to be passed to `fizzbuzzo3.fizzbuzz` - this provides a further 1.5x speed increase over passing a list with the same elements.
 - Build rust with `--release` optimisations - another 4-7x speed increase.
 
+## Rust 3.0.1
+
+- Additional test case validating use case for stepped range, no code changes required.
+
 ## Rust 3.0.0
 
 - **BREAKING CHANGE**: MultiFizzBuzz will consume the input.
