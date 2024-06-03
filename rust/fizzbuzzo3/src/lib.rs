@@ -73,7 +73,7 @@ fn py_fizzbuzz(num: FizzBuzzable) -> PyResult<String> {
         FizzBuzzable::Vec(v) => Ok(v.fizzbuzz().into()),
         FizzBuzzable::Slice(s) => match s.step {
             // Can only be tested from python: Cannot create a PySlice with no step in rust.
-            None => Ok((s.start..s.stop).fizzbuzz().into()), // GCOVR_EXCL_LINE
+            None => Ok((s.start..s.stop).fizzbuzz().into()), // GRCOV_EXCL_LINE
 
             Some(1) => Ok((s.start..s.stop).fizzbuzz().into()),
 

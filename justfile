@@ -59,25 +59,25 @@ cov:
   RUSTFLAGS="-Cinstrument-coverage" cargo build
   RUSTFLAGS="-Cinstrument-coverage" LLVM_PROFILE_FILE="tests-%p-%m.profraw" cargo test
   -mkdir rustcov
-  grcov . -s . --binary-path ./target/debug/ -t html,lcov --branch --ignore-not-existing --output-path ./rustcov
+  grcov . -s . --binary-path ./target/debug/ -t html,lcov --branch --ignore-not-existing --excl-line GRCOV_EXCL_LINE --output-path ./rustcov
   pytest --cov --cov-report html:pycov --cov-report term
 
-# serve rust coverage results on localhost:8000 (doesn't run coverage analysis)
+# serve rust coverage results on localhost:8002 (doesn't run coverage analysis)
 rust-cov:
-  python -m http.server -d ./rustcov/html
+  python -m http.server -d ./rustcov/html 8002
 
-# serve python coverage results on localhost:8000 (doesn't run coverage analysis)
+# serve python coverage results on localhost:8003 (doesn't run coverage analysis)
 py-cov:
-  python -m http.server -d ./pycov
+  python -m http.server -d ./pycov 8003
 
 # serve python docs on localhost:8000
 py-docs:
   mkdocs serve
 
-#build and serve rust API docs on localhost:8000
+#build and serve rust API docs on localhost:8001
 rust-docs:
   cargo doc
-  python -m http.server -d target/doc
+  python -m http.server -d target/doc 8001
 
 # build and test a wheel (a suitable venv must already by active!)
 test-wheel: clean
