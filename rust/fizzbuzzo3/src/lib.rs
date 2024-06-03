@@ -1,5 +1,6 @@
 use fizzbuzz::{FizzBuzz, MultiFizzBuzz};
 use pyo3::{prelude::*, types::PySlice};
+use rayon::iter::{IndexedParallelIterator, IntoParallelIterator};
 
 #[derive(FromPyObject)]
 enum FizzBuzzable {
@@ -61,7 +62,14 @@ fn py_fizzbuzz(num: FizzBuzzable) -> String {
         FizzBuzzable::Int(n) => n.fizzbuzz().into(),
         FizzBuzzable::Float(n) => n.fizzbuzz().into(),
         FizzBuzzable::Vec(v) => v.fizzbuzz().into(),
-        FizzBuzzable::Slice(s) => (s.start..s.stop).fizzbuzz().into(),
+        FizzBuzzable::Slice(s) => match s.step {
+            None => (s.start..s.stop).fizzbuzz().into(),
+            Some(1)=> (s.start..s.stop).fizzbuzz().into(),
+            Some(step) => match step {
+            2.. => (s.start..s.stop).into_par_iter().step_by(step.try_into().unwrap()).fizzbuzz().into(),
+            _ => todo!(),
+        }
+        }
     }
 }
 
@@ -130,5 +138,17 @@ mod tests {
         };
         let result: String = fizzbuzz!(input);
         assert_eq!(result, "1, 2, fizz, 4, buzz");
+    }
+
+    #[pyo3test]
+    #[pyo3import(py_fizzbuzzo3: from fizzbuzzo3 import fizzbuzz)]
+    fn test_fizbuzz_slice_step() {
+        let input = MySlice {
+            start: 1,
+            stop: 6,
+            step: Some(2),
+        };
+        let result: String = fizzbuzz!(input);
+        assert_eq!(result, "1, fizz, buzz");
     }
 }
