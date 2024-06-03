@@ -67,7 +67,7 @@ fn py_fizzbuzz(num: FizzBuzzable) -> PyResult<String> {
                     .step_by(step.try_into().unwrap())
                     .fizzbuzz()
                     .into()),
-                0 => todo!(), // Err(PyValueError::new_err("step cannot be zero"))
+                0 => Err(PyValueError::new_err("step cannot be zero")),
                 _ => Ok((s.start.neg()..s.stop.neg())
                     .into_par_iter()
                     .step_by(step.neg().try_into().unwrap())
@@ -206,9 +206,12 @@ mod tests {
         assert_eq!(result, "fizz, 4, 2");
     }
     #[pyo3test]
+    #[allow(unused_macros)]
+    #[pyo3import(py_fizzbuzzo3: from fizzbuzzo3 import fizzbuzz)]
     fn test_fizbuzz_slice_zero_step() {
+        let slice: MySlice = py.eval_bound("slice(1,2,0)", None, None).unwrap().extract().unwrap();
         with_py_raises!(PyValueError, {
-        py.eval_bound("slice(1,2,0)", None, None).unwrap().extract::<MySlice>()
+            fizzbuzz.call1((slice,))
         });
     }
 }
