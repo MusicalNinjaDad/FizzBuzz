@@ -60,12 +60,18 @@ fn py_fizzbuzz(num: FizzBuzzable) -> String {
             None => (s.start..s.stop).fizzbuzz().into(),
             Some(1) => (s.start..s.stop).fizzbuzz().into(),
             Some(step) => match step {
-                2.. => (s.start..s.stop)
+                1.. => (s.start..s.stop)
                     .into_par_iter()
                     .step_by(step.try_into().unwrap())
                     .fizzbuzz()
                     .into(),
-                _ => todo!(),
+                0 => todo!(),
+                _ => (s.stop + 1..s.start + 1)
+                    .into_par_iter()
+                    .step_by(step.abs().try_into().unwrap())
+                    .rev()
+                    .fizzbuzz()
+                    .into(),
             },
         },
     }
@@ -161,4 +167,29 @@ mod tests {
         let result: String = fizzbuzz!(input);
         assert_eq!(result, "");
     }
+
+    #[pyo3test]
+    #[pyo3import(py_fizzbuzzo3: from fizzbuzzo3 import fizzbuzz)]
+    fn test_fizbuzz_slice_negative_step() {
+        let input = MySlice {
+            start: 5,
+            stop: 0,
+            step: Some(-2),
+        };
+        let result: String = fizzbuzz!(input);
+        assert_eq!(result, "buzz, fizz, 1");
+    }
+
+    #[pyo3test]
+    #[pyo3import(py_fizzbuzzo3: from fizzbuzzo3 import fizzbuzz)]
+    fn test_fizbuzz_slice_negative_step_boundaries() {
+        let input = MySlice {
+            start: 5,
+            stop: 1,
+            step: Some(-1),
+        };
+        let result: String = fizzbuzz!(input);
+        assert_eq!(result, "buzz, 4, fizz, 2");
+    }
+
 }
