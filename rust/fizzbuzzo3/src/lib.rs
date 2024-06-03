@@ -192,4 +192,16 @@ mod tests {
         assert_eq!(result, "buzz, 4, fizz, 2");
     }
 
+    #[pyo3test]
+    #[pyo3import(py_fizzbuzzo3: from fizzbuzzo3 import fizzbuzz)]
+    fn test_fizbuzz_slice_negative_step_boundaries_2() {
+        let input = MySlice {
+            start: 6,
+            stop: 0,
+            step: Some(-2),
+        };
+        let result: String = fizzbuzz!(input);
+        assert_eq!(result, "fizz, 4, 2");
+    }
+
 }
