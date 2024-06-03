@@ -206,10 +206,5 @@ mod tests {
         assert_eq!(result, "fizz, 4, 2");
     }
 
-    #[test]
-    fn range_wierdness() {
-        let revrange: Vec<isize> = (-6..0).step_by(2).collect();
-        let expected: Vec<isize> = vec![-6, -4, -2];
-        assert_eq!(revrange, expected)
-    }
+
 }
