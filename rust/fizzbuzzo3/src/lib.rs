@@ -1,7 +1,7 @@
 use std::ops::Neg;
 
 use fizzbuzz::{FizzBuzz, MultiFizzBuzz};
-use pyo3::{prelude::*, types::PySlice};
+use pyo3::{exceptions::PyValueError, prelude::*, types::PySlice};
 use rayon::iter::{IndexedParallelIterator, IntoParallelIterator, ParallelIterator};
 
 #[derive(FromPyObject)]
@@ -53,27 +53,27 @@ impl IntoPy<Py<PyAny>> for MySlice {
 ///     ```
 #[pyfunction]
 #[pyo3(name = "fizzbuzz", text_signature = "(n)")]
-fn py_fizzbuzz(num: FizzBuzzable) -> String {
+fn py_fizzbuzz(num: FizzBuzzable) -> PyResult<String> {
     match num {
-        FizzBuzzable::Int(n) => n.fizzbuzz().into(),
-        FizzBuzzable::Float(n) => n.fizzbuzz().into(),
-        FizzBuzzable::Vec(v) => v.fizzbuzz().into(),
+        FizzBuzzable::Int(n) => Ok(n.fizzbuzz().into()),
+        FizzBuzzable::Float(n) => Ok(n.fizzbuzz().into()),
+        FizzBuzzable::Vec(v) => Ok(v.fizzbuzz().into()),
         FizzBuzzable::Slice(s) => match s.step {
-            None => (s.start..s.stop).fizzbuzz().into(),
-            Some(1) => (s.start..s.stop).fizzbuzz().into(),
+            None => Ok((s.start..s.stop).fizzbuzz().into()),
+            Some(1) => Ok((s.start..s.stop).fizzbuzz().into()),
             Some(step) => match step {
-                1.. => (s.start..s.stop)
+                1.. => Ok((s.start..s.stop)
                     .into_par_iter()
                     .step_by(step.try_into().unwrap())
                     .fizzbuzz()
-                    .into(),
-                0 => todo!(),
-                _ => (s.start.neg()..s.stop.neg())
+                    .into()),
+                0 => todo!(), // Err(PyValueError::new_err("step cannot be zero"))
+                _ => Ok((s.start.neg()..s.stop.neg())
                     .into_par_iter()
                     .step_by(step.neg().try_into().unwrap())
                     .map(|x| x.neg())
                     .fizzbuzz()
-                    .into(),
+                    .into()),
             },
         },
     }
