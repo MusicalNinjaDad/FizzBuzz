@@ -71,7 +71,7 @@ fn py_fizzbuzz(num: FizzBuzzable) -> String {
                 _ => (s.start.neg()..s.stop.neg())
                     .into_par_iter()
                     .step_by(step.neg().try_into().unwrap())
-                    .map(|x| {x.neg()})
+                    .map(|x| x.neg())
                     .fizzbuzz()
                     .into(),
             },
@@ -209,8 +209,7 @@ mod tests {
     #[test]
     fn range_wierdness() {
         let revrange: Vec<isize> = (-6..0).step_by(2).collect();
-        let expected: Vec<isize> = vec![-6,-4,-2];
+        let expected: Vec<isize> = vec![-6, -4, -2];
         assert_eq!(revrange, expected)
     }
-
 }
