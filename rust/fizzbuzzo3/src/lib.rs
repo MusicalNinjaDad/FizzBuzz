@@ -88,7 +88,7 @@ fn py_fizzbuzzo3(module: &Bound<'_, PyModule>) -> PyResult<()> {
 
 #[cfg(test)]
 mod tests {
-    use pyo3::exceptions::PyTypeError;
+    use pyo3::exceptions::{PyTypeError, PyValueError};
     use pyo3_testing::{pyo3test, with_py_raises};
 
     use super::*;
@@ -205,6 +205,10 @@ mod tests {
         let result: String = fizzbuzz!(input);
         assert_eq!(result, "fizz, 4, 2");
     }
-
-
+    #[pyo3test]
+    fn test_fizbuzz_slice_zero_step() {
+        with_py_raises!(PyValueError, {
+        py.eval_bound("slice(1,2,0)", None, None).unwrap().extract::<MySlice>()
+        });
+    }
 }
