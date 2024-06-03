@@ -25,16 +25,17 @@ impl IntoPy<Py<PyAny>> for MySlice {
     }
 }
 
-/// Returns the correct fizzbuzz answer for any number or list of numbers.
+/// Returns the correct fizzbuzz answer for any number or list/range of numbers.
 ///
 /// This is an optimised algorithm compiled in rust. Large lists will utilise multiple CPU cores for processing.
+/// Passing a slice, to represent a range, is fastest.
 ///
 /// Arguments:
 ///     n: the number(s) to fizzbuzz
 ///
 /// Returns:
 ///     A `str` with the correct fizzbuzz answer(s).
-///     In the case of a list of inputs the answers will be separated by `, `
+///     In the case of a list or range of inputs the answers will be separated by `, `
 ///
 /// Examples:
 ///     a single `int`:
@@ -51,6 +52,18 @@ impl IntoPy<Py<PyAny>> for MySlice {
 ///     >>> fizzbuzz([1,3])
 ///     '1, fizz'
 ///     ```
+///     a `slice` representing a range:
+///     ```
+///     from fizzbuzz.fizzbuzzo3 import fizzbuzz
+///     >>> fizzbuzz(slice(1,4,2))
+///     '1, fizz'
+///     >>> fizzbuzz(slice(1,4))
+///     '1, 2, fizz'
+///     >>> fizzbuzz(slice(4,1,-1))
+///     '4, fizz, 2'
+///     ```
+///     Note: Slices are inclusive on the left, exclusive on the right and can contain an optional step.
+///     Negative steps require start > stop.
 #[pyfunction]
 #[pyo3(name = "fizzbuzz", text_signature = "(n)")]
 fn py_fizzbuzz(num: FizzBuzzable) -> PyResult<String> {

@@ -87,11 +87,12 @@
 # ===========================
 
 [project.optional-dependencies]
+    stubs = ["pyo3-stubgen"]
     lint = ["ruff"]
     test = ["pytest", "pytest-doctest-mkdocstrings"]
     cov = ["fizzbuzz[test]", "pytest-cov"]
-    doc = ["black", "mkdocs", "mkdocstrings[python]", "mkdocs-material"]
-    dev = ["fizzbuzz[lint,test,cov,doc]"]
+    doc = ["black", "mkdocs", "mkdocstrings[python]", "mkdocs-material", "fizzbuzz[stubs]"]
+    dev = ["fizzbuzz[stubs,lint,test,cov,doc]"]
 
 [tool.pytest.ini_options]
     xfail_strict = true
