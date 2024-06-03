@@ -144,7 +144,7 @@ mod test {
 
     #[test]
     fn big_vector_is_well_ordered() {
-        let input: Vec<_> = (1..BIG_VECTOR + 1).collect();
+        let input: Vec<_> = (1..BIG_VECTOR + 2).collect();
         let output: Vec<_> = input.clone().fizzbuzz().into();
         let mut expected: Vec<String> = vec![];
         for i in input.iter() {
