@@ -1,5 +1,9 @@
 # FizzBuzz Changelog
 
+## Python 2.1.0
+
+- Allow a `slice` to be passed to `fizzbuzzo3.fizzbuzz` - this provides a further 1.5x speed increase over passing a list with the same elements.
+
 ## Rust 3.0.0
 
 - **BREAKING CHANGE**: MultiFizzBuzz will consume the input.
