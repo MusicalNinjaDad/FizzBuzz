@@ -66,7 +66,7 @@ The [relevant section of the pyo3 book](https://pyo3.rs/latest/rust-from-python)
       path = "rust/fizzbuzzo3/Cargo.toml"
       binding = "PyO3"
       features = ["pyo3/extension-module"] # IMPORTANT!!!
-      debug = false # Adds `--release` to `pip install -e .` builds - needed for perf testing
+      debug = false # Adds `--release` to `pip install -e .` builds, necessary for performance testing
     ...
     ```
 
@@ -76,7 +76,7 @@ The [relevant section of the pyo3 book](https://pyo3.rs/latest/rust-from-python)
     Background is available by combining the [pyo3 FAQ](https://pyo3.rs/latest/faq#i-cant-run-cargo-test-or-i-cant-build-in-a-cargo-workspace-im-having-linker-issues-like-symbol-not-found-or-undefined-reference-to-_pyexc_systemerror) and [manylinux specification](https://github.com/pypa/manylinux)
 
 !!! warning "Missing out on 4-7x performance gains"
-    If you are going to be doing performance benchmarking or want speed during tests; add `debug = false` to `./pyproject.toml` to ensure that your rust code is built with the right optimisations even when installing in editable mode via `pip install -e .`. Otherwise only your `install` and `wheel` builds will get the optimisations.
+    For performance benchmarking or faster tests, add `debug = false` to `./pyproject.toml`. This ensures your Rust code is built with the right optimisations even when installing in editable mode via `pip install -e .`. Without this, only `install` and `wheel` builds will be optimised.
 
     The default release profile is well documented in [The Cargo Book](https://doc.rust-lang.org/cargo/reference/profiles.html#release). I found a 4-7x performance boost when I enabled this!
 
