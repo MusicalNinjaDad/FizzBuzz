@@ -1,6 +1,8 @@
+use std::ops::Neg;
+
 use fizzbuzz::{FizzBuzz, MultiFizzBuzz};
 use pyo3::{prelude::*, types::PySlice};
-use rayon::iter::{IndexedParallelIterator, IntoParallelIterator};
+use rayon::iter::{IndexedParallelIterator, IntoParallelIterator, ParallelIterator};
 
 #[derive(FromPyObject)]
 enum FizzBuzzable {
@@ -66,10 +68,10 @@ fn py_fizzbuzz(num: FizzBuzzable) -> String {
                     .fizzbuzz()
                     .into(),
                 0 => todo!(),
-                _ => (s.stop + 1..s.start + 1)
+                _ => (s.start.neg()..s.stop.neg())
                     .into_par_iter()
-                    .step_by(step.abs().try_into().unwrap())
-                    .rev()
+                    .step_by(step.neg().try_into().unwrap())
+                    .map(|x| {x.neg()})
                     .fizzbuzz()
                     .into(),
             },
@@ -202,6 +204,13 @@ mod tests {
         };
         let result: String = fizzbuzz!(input);
         assert_eq!(result, "fizz, 4, 2");
+    }
+
+    #[test]
+    fn range_wierdness() {
+        let revrange: Vec<isize> = (-6..0).step_by(2).collect();
+        let expected: Vec<isize> = vec![-6,-4,-2];
+        assert_eq!(revrange, expected)
     }
 
 }
