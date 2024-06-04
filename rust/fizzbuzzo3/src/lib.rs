@@ -1,7 +1,7 @@
 use std::ops::Neg;
 
 use fizzbuzz::{FizzBuzz, FizzBuzzAnswer, MultiFizzBuzz};
-use pyo3::{exceptions::PyValueError, prelude::*, types::PySlice};
+use pyo3::{exceptions::PyValueError, prelude::*, types::{PyList, PySlice, PyString}};
 use rayon::iter::{IndexedParallelIterator, IntoParallelIterator, ParallelIterator};
 
 #[derive(FromPyObject)]
@@ -32,6 +32,15 @@ struct FizzBuzzReturn {
 impl From<FizzBuzzAnswer> for FizzBuzzReturn {
     fn from(value: FizzBuzzAnswer) -> Self {
         FizzBuzzReturn { answer: value }
+    }
+}
+
+impl IntoPy<Py<PyAny>> for FizzBuzzReturn {
+    fn into_py(self, py: Python<'_>) -> Py<PyAny> {
+        match self.answer {
+            FizzBuzzAnswer::One(string) => PyString::new_bound(py, &string).into_py(py),
+            FizzBuzzAnswer::Many(list) => PyList::new_bound(py, list).into_py(py)
+        }
     }
 }
 
