@@ -53,8 +53,8 @@ impl IntoPy<Py<PyAny>> for FizzBuzzReturn {
 ///     n: the number(s) to fizzbuzz
 ///
 /// Returns:
-///     A `str` with the correct fizzbuzz answer(s).
-///     In the case of a list or range of inputs the answers will be separated by `, `
+///     In the case of a sinlge number: a `str` with the correct fizzbuzz answer.
+///     In the case of a list or range of inputs: a `list` of `str` with the correct fizzbuzz answers.
 ///
 /// Examples:
 ///     a single `int`:
@@ -69,20 +69,22 @@ impl IntoPy<Py<PyAny>> for FizzBuzzReturn {
 ///     ```
 ///     from fizzbuzz.fizzbuzzo3 import fizzbuzz
 ///     >>> fizzbuzz([1,3])
-///     '1, fizz'
+///     ['1', 'fizz']
 ///     ```
 ///     a `slice` representing a range:
 ///     ```
 ///     from fizzbuzz.fizzbuzzo3 import fizzbuzz
 ///     >>> fizzbuzz(slice(1,4,2))
-///     '1, fizz'
+///     ['1', 'fizz']
 ///     >>> fizzbuzz(slice(1,4))
-///     '1, 2, fizz'
+///     ['1', '2', 'fizz']
 ///     >>> fizzbuzz(slice(4,1,-1))
-///     '4, fizz, 2'
+///     ['4', 'fizz', '2']
+///     >>> fizzbuzz(slice(1,5,-1))
+///     []
 ///     ```
 ///     Note: Slices are inclusive on the left, exclusive on the right and can contain an optional step.
-///     Negative steps require start > stop.
+///     Negative steps require start > stop, positive stop > start or else will return an empty list.
 #[pyfunction]
 #[pyo3(name = "fizzbuzz", text_signature = "(n)")]
 fn py_fizzbuzz(num: FizzBuzzable) -> PyResult<FizzBuzzReturn> {
