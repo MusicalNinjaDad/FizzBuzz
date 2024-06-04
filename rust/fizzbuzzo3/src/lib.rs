@@ -25,6 +25,16 @@ impl IntoPy<Py<PyAny>> for MySlice {
     }
 }
 
+struct FizzBuzzReturn {
+    answer: FizzBuzzAnswer
+}
+
+impl From<FizzBuzzAnswer> for FizzBuzzReturn {
+    fn from(value: FizzBuzzAnswer) -> Self {
+        FizzBuzzReturn { answer: value }
+    }
+}
+
 /// Returns the correct fizzbuzz answer for any number or list/range of numbers.
 ///
 /// This is an optimised algorithm compiled in rust. Large lists will utilise multiple CPU cores for processing.
@@ -66,7 +76,7 @@ impl IntoPy<Py<PyAny>> for MySlice {
 ///     Negative steps require start > stop.
 #[pyfunction]
 #[pyo3(name = "fizzbuzz", text_signature = "(n)")]
-fn py_fizzbuzz(num: FizzBuzzable) -> PyResult<String> {
+fn py_fizzbuzz(num: FizzBuzzable) -> PyResult<FizzBuzzReturn> {
     match num {
         FizzBuzzable::Int(n) => Ok(n.fizzbuzz().into()),
         FizzBuzzable::Float(n) => Ok(n.fizzbuzz().into()),
