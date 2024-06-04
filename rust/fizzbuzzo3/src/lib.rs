@@ -1,7 +1,11 @@
 use std::ops::Neg;
 
 use fizzbuzz::{FizzBuzz, FizzBuzzAnswer, MultiFizzBuzz};
-use pyo3::{exceptions::PyValueError, prelude::*, types::{PyList, PySlice, PyString}};
+use pyo3::{
+    exceptions::PyValueError,
+    prelude::*,
+    types::{PyList, PySlice, PyString},
+};
 use rayon::iter::{IndexedParallelIterator, IntoParallelIterator, ParallelIterator};
 
 #[derive(FromPyObject)]
@@ -26,7 +30,7 @@ impl IntoPy<Py<PyAny>> for MySlice {
 }
 
 struct FizzBuzzReturn {
-    answer: FizzBuzzAnswer
+    answer: FizzBuzzAnswer,
 }
 
 impl From<FizzBuzzAnswer> for FizzBuzzReturn {
@@ -39,7 +43,7 @@ impl IntoPy<Py<PyAny>> for FizzBuzzReturn {
     fn into_py(self, py: Python<'_>) -> Py<PyAny> {
         match self.answer {
             FizzBuzzAnswer::One(string) => PyString::new_bound(py, &string).into_py(py),
-            FizzBuzzAnswer::Many(list) => PyList::new_bound(py, list).into_py(py)
+            FizzBuzzAnswer::Many(list) => PyList::new_bound(py, list).into_py(py),
         }
     }
 }
@@ -166,7 +170,7 @@ mod tests {
             "1".to_string(),
             "2".to_string(),
             "fizz".to_string(),
-            "4".to_string(), 
+            "4".to_string(),
             "buzz".to_string(),
         ];
         let result: Vec<String> = fizzbuzz!(input);
@@ -192,7 +196,7 @@ mod tests {
             "1".to_string(),
             "2".to_string(),
             "fizz".to_string(),
-            "4".to_string(), 
+            "4".to_string(),
             "buzz".to_string(),
         ];
         let result: Vec<String> = fizzbuzz!(input);
@@ -211,7 +215,7 @@ mod tests {
             "1".to_string(),
             "2".to_string(),
             "fizz".to_string(),
-            "4".to_string(), 
+            "4".to_string(),
             "buzz".to_string(),
         ];
         let result: Vec<String> = fizzbuzz!(input);
@@ -226,11 +230,7 @@ mod tests {
             stop: 6,
             step: Some(2),
         };
-        let expected = vec![
-            "1".to_string(),
-            "fizz".to_string(),
-            "buzz".to_string(),
-        ];
+        let expected = vec!["1".to_string(), "fizz".to_string(), "buzz".to_string()];
         let result: Vec<String> = fizzbuzz!(input);
         assert_eq!(result, expected);
     }
@@ -256,13 +256,7 @@ mod tests {
             stop: 0,
             step: Some(-2),
         };
-        let expected = vec![
-            "buzz".to_string(),
-        
-            "fizz".to_string(),
-            "1".to_string(),
-            
-        ];
+        let expected = vec!["buzz".to_string(), "fizz".to_string(), "1".to_string()];
         let result: Vec<String> = fizzbuzz!(input);
         assert_eq!(result, expected);
     }
@@ -280,7 +274,6 @@ mod tests {
             "4".to_string(),
             "fizz".to_string(),
             "2".to_string(),
-            
         ];
         let result: Vec<String> = fizzbuzz!(input);
         assert_eq!(result, expected);
@@ -294,14 +287,8 @@ mod tests {
             stop: 0,
             step: Some(-2),
         };
-        
-        let expected = vec![
-            
-        "fizz".to_string(),
-            "4".to_string(),
-            "2".to_string(),
-            
-        ];
+
+        let expected = vec!["fizz".to_string(), "4".to_string(), "2".to_string()];
         let result: Vec<String> = fizzbuzz!(input);
         assert_eq!(result, expected);
     }
