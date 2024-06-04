@@ -1,6 +1,6 @@
 use std::ops::Neg;
 
-use fizzbuzz::{FizzBuzz, MultiFizzBuzz};
+use fizzbuzz::{FizzBuzz, FizzBuzzAnswer, MultiFizzBuzz};
 use pyo3::{exceptions::PyValueError, prelude::*, types::PySlice};
 use rayon::iter::{IndexedParallelIterator, IntoParallelIterator, ParallelIterator};
 
@@ -141,8 +141,15 @@ mod tests {
     #[pyo3import(py_fizzbuzzo3: from fizzbuzzo3 import fizzbuzz)]
     fn test_fizzbuzz_vec() {
         let input = vec![1, 2, 3, 4, 5];
-        let result: String = fizzbuzz!(input);
-        assert_eq!(result, "1, 2, fizz, 4, buzz");
+        let expected = vec![
+            "1".to_string(),
+            "2".to_string(),
+            "fizz".to_string(),
+            "4".to_string(), 
+            "buzz".to_string(),
+        ];
+        let result: Vec<String> = fizzbuzz!(input);
+        assert_eq!(result, expected);
     }
 
     #[pyo3test]
