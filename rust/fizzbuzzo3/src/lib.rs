@@ -186,8 +186,15 @@ mod tests {
             stop: 6,
             step: Some(1),
         };
-        let result: String = fizzbuzz!(input);
-        assert_eq!(result, "1, 2, fizz, 4, buzz");
+        let expected = vec![
+            "1".to_string(),
+            "2".to_string(),
+            "fizz".to_string(),
+            "4".to_string(), 
+            "buzz".to_string(),
+        ];
+        let result: Vec<String> = fizzbuzz!(input);
+        assert_eq!(result, expected);
     }
 
     #[pyo3test]
@@ -198,8 +205,15 @@ mod tests {
             stop: 6,
             step: None,
         };
-        let result: String = fizzbuzz!(input);
-        assert_eq!(result, "1, 2, fizz, 4, buzz");
+        let expected = vec![
+            "1".to_string(),
+            "2".to_string(),
+            "fizz".to_string(),
+            "4".to_string(), 
+            "buzz".to_string(),
+        ];
+        let result: Vec<String> = fizzbuzz!(input);
+        assert_eq!(result, expected);
     }
 
     #[pyo3test]
@@ -210,8 +224,13 @@ mod tests {
             stop: 6,
             step: Some(2),
         };
-        let result: String = fizzbuzz!(input);
-        assert_eq!(result, "1, fizz, buzz");
+        let expected = vec![
+            "1".to_string(),
+            "fizz".to_string(),
+            "buzz".to_string(),
+        ];
+        let result: Vec<String> = fizzbuzz!(input);
+        assert_eq!(result, expected);
     }
 
     #[pyo3test]
@@ -222,8 +241,8 @@ mod tests {
             stop: 0,
             step: Some(1),
         };
-        let result: String = fizzbuzz!(input);
-        assert_eq!(result, "");
+        let result: Vec<> = fizzbuzz!(input);
+        assert_eq!(result, vec![]);
     }
 
     #[pyo3test]
@@ -234,8 +253,15 @@ mod tests {
             stop: 0,
             step: Some(-2),
         };
-        let result: String = fizzbuzz!(input);
-        assert_eq!(result, "buzz, fizz, 1");
+        let expected = vec![
+            "buzz".to_string(),
+        
+            "fizz".to_string(),
+            "1".to_string(),
+            
+        ];
+        let result: Vec<String> = fizzbuzz!(input);
+        assert_eq!(result, expected);
     }
 
     #[pyo3test]
@@ -246,8 +272,15 @@ mod tests {
             stop: 1,
             step: Some(-1),
         };
-        let result: String = fizzbuzz!(input);
-        assert_eq!(result, "buzz, 4, fizz, 2");
+        let expected = vec![
+            "buzz".to_string(),
+            "4".to_string(),
+            "fizz".to_string(),
+            "2".to_string(),
+            
+        ];
+        let result: Vec<String> = fizzbuzz!(input);
+        assert_eq!(result, expected);
     }
 
     #[pyo3test]
@@ -258,8 +291,16 @@ mod tests {
             stop: 0,
             step: Some(-2),
         };
-        let result: String = fizzbuzz!(input);
-        assert_eq!(result, "fizz, 4, 2");
+        
+        let expected = vec![
+            
+        "fizz".to_string(),
+            "4".to_string(),
+            "2".to_string(),
+            
+        ];
+        let result: Vec<String> = fizzbuzz!(input);
+        assert_eq!(result, expected);
     }
     #[pyo3test]
     #[allow(unused_macros)]
