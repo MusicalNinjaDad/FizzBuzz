@@ -10,7 +10,17 @@ Usage:
     ```
 """
 
-def fizzbuzz(n: int | list[int] | slice) -> str:
+from typing import overload
+
+@overload
+def fizzbuzz(n: int) -> str:
+    ...
+
+@overload
+def fizzbuzz(n: list[int] | slice) -> list[str]:
+    ...
+
+def fizzbuzz(n):
     """
     Returns the correct fizzbuzz answer for any number or list/range of numbers.
 
