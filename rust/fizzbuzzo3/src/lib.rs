@@ -241,8 +241,9 @@ mod tests {
             stop: 0,
             step: Some(1),
         };
-        let result: Vec<> = fizzbuzz!(input);
-        assert_eq!(result, vec![]);
+        let result: Vec<String> = fizzbuzz!(input);
+        let expected: Vec<String> = vec![];
+        assert_eq!(result, expected);
     }
 
     #[pyo3test]
