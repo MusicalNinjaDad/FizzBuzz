@@ -92,3 +92,52 @@ Rust vector, with python list overhead: [1 calls of 10 runs creating and fizzbuz
 Rust range: [1 calls of 10 runs fizzbuzzing a range of numbers up to 1000000]
 [0.5420241989995702]
 ```
+
+## Comparing return types (-> str | list[str] vs. -> str)
+
+```text
+(.venv) pyo3@6195c4a7706f:/workspaces/FizzBuzz$ echo "No LTO, Union"
+No LTO, Union
+(.venv) pyo3@6195c4a7706f:/workspaces/FizzBuzz$ /workspaces/FizzBuzz/.venv/bin/python /workspaces/FizzBuzz/tests/perftest.py
+Rust: [1 calls of 10 runs fizzbuzzing up to 1000000]
+[2.7247621990100015]
+Rust vector: [1 calls of 10 runs fizzbuzzing a list of numbers up to 1000000]
+[1.4409539260086603]
+Rust vector, with python list overhead: [1 calls of 10 runs creating and fizzbuzzing a list of numbers up to 1000000]
+[1.748141026997473]
+Rust range: [1 calls of 10 runs fizzbuzzing a range of numbers up to 1000000]
+[1.140464444004465]
+(.venv) pyo3@6195c4a7706f:/workspaces/FizzBuzz$ echo "thin LTO, Union"
+thin LTO, Union
+(.venv) pyo3@6195c4a7706f:/workspaces/FizzBuzz$ /workspaces/FizzBuzz/.venv/bin/python /workspaces/FizzBuzz/tests/perftest.py
+Rust: [1 calls of 10 runs fizzbuzzing up to 1000000]
+[2.573878561001038]
+Rust vector: [1 calls of 10 runs fizzbuzzing a list of numbers up to 1000000]
+[1.5258527039986802]
+Rust vector, with python list overhead: [1 calls of 10 runs creating and fizzbuzzing a list of numbers up to 1000000]
+[1.7503311760083307]
+Rust range: [1 calls of 10 runs fizzbuzzing a range of numbers up to 1000000]
+[1.1543225019995589]
+(.venv) pyo3@6195c4a7706f:/workspaces/FizzBuzz$ echo "fat LTO, Union"
+fat LTO, Union
+(.venv) pyo3@6195c4a7706f:/workspaces/FizzBuzz$ /workspaces/FizzBuzz/.venv/bin/python /workspaces/FizzBuzz/tests/perftest.py
+Rust: [1 calls of 10 runs fizzbuzzing up to 1000000]
+[2.659256437997101]
+Rust vector: [1 calls of 10 runs fizzbuzzing a list of numbers up to 1000000]
+[1.4467686470015906]
+Rust vector, with python list overhead: [1 calls of 10 runs creating and fizzbuzzing a list of numbers up to 1000000]
+[1.6921475639974233]
+Rust range: [1 calls of 10 runs fizzbuzzing a range of numbers up to 1000000]
+[1.1023815070075216]
+(.venv) pyo3@6195c4a7706f:/workspaces/FizzBuzz$ echo "no LTO, String"
+no LTO, String
+(.venv) pyo3@6195c4a7706f:/workspaces/FizzBuzz$ /workspaces/FizzBuzz/.venv/bin/python /workspaces/FizzBuzz/tests/perftest.py
+Rust: [1 calls of 10 runs fizzbuzzing up to 1000000]
+[2.6100861899903975]
+Rust vector: [1 calls of 10 runs fizzbuzzing a list of numbers up to 1000000]
+[0.8597368839982664]
+Rust vector, with python list overhead: [1 calls of 10 runs creating and fizzbuzzing a list of numbers up to 1000000]
+[1.1903306849999353]
+Rust range: [1 calls of 10 runs fizzbuzzing a range of numbers up to 1000000]
+[0.6246530729986262]
+```
