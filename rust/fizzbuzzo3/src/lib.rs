@@ -4,7 +4,7 @@ use fizzbuzz::{FizzBuzz, FizzBuzzAnswer, MultiFizzBuzz};
 use pyo3::{
     exceptions::PyValueError,
     prelude::*,
-    types::{PyList, PySlice, PyString},
+    types::PySlice,
 };
 use rayon::iter::{IndexedParallelIterator, IntoParallelIterator, ParallelIterator};
 
