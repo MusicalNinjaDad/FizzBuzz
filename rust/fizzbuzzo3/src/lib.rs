@@ -42,8 +42,8 @@ impl From<FizzBuzzAnswer> for FizzBuzzReturn {
 impl IntoPy<Py<PyAny>> for FizzBuzzReturn {
     fn into_py(self, py: Python<'_>) -> Py<PyAny> {
         match self.answer {
-            FizzBuzzAnswer::One(string) => PyString::new_bound(py, &string).into_py(py),
-            FizzBuzzAnswer::Many(list) => PyList::new_bound(py, list).into_py(py),
+            FizzBuzzAnswer::One(string) => string.into_py(py),
+            FizzBuzzAnswer::Many(list) => list.into_py(py),
         }
     }
 }
