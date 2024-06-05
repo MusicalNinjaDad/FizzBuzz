@@ -18,10 +18,10 @@ def main():
     fbo3times = fbo3timer.repeat(repeat=REPEAT, number=NUMBER)
     print(fbo3times)
     
-    # print(f"Python: [{REPEAT} calls of {NUMBER} runs fizzbuzzing up to {FIZZBUZZES}]")
-    # fbpytimer = timeit.Timer(stmt="[fbpy(i) for i in range(1,FIZZBUZZES)]", globals=globals())
-    # fbpytimes = fbpytimer.repeat(repeat=REPEAT, number=NUMBER)
-    # print(fbpytimes)
+    print(f"Python: [{REPEAT} calls of {NUMBER} runs fizzbuzzing up to {FIZZBUZZES}]")
+    fbpytimer = timeit.Timer(stmt="[fbpy(i) for i in range(1,FIZZBUZZES)]", globals=globals())
+    fbpytimes = fbpytimer.repeat(repeat=REPEAT, number=NUMBER)
+    print(fbpytimes)
     
     print(f"Rust vector: [{REPEAT} calls of {NUMBER} runs fizzbuzzing a list of numbers up to {FIZZBUZZES}]")
     fbo3vectimer = timeit.Timer(stmt="[fbo3(LISTOFNUMBERS)]", globals=globals())

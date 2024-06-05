@@ -10,17 +10,7 @@ Usage:
     ```
 """
 
-from typing import overload
-
-@overload
-def fizzbuzz(n: int) -> str:
-    ...
-
-@overload
-def fizzbuzz(n: list[int] | slice) -> list[str]:
-    ...
-
-def fizzbuzz(n):
+def fizzbuzz(n: int | list[int] | slice) -> str:
     """
     Returns the correct fizzbuzz answer for any number or list/range of numbers.
 
@@ -31,8 +21,8 @@ def fizzbuzz(n):
         n: the number(s) to fizzbuzz
 
     Returns:
-        In the case of a sinlge number: a `str` with the correct fizzbuzz answer.
-        In the case of a list or range of inputs: a `list` of `str` with the correct fizzbuzz answers.
+        A `str` with the correct fizzbuzz answer(s).
+        In the case of a list or range of inputs the answers will be separated by `, `
 
     Examples:
         a single `int`:
@@ -47,20 +37,18 @@ def fizzbuzz(n):
         ```
         from fizzbuzz.fizzbuzzo3 import fizzbuzz
         >>> fizzbuzz([1,3])
-        ['1', 'fizz']
+        '1, fizz'
         ```
         a `slice` representing a range:
         ```
         from fizzbuzz.fizzbuzzo3 import fizzbuzz
         >>> fizzbuzz(slice(1,4,2))
-        ['1', 'fizz']
+        '1, fizz'
         >>> fizzbuzz(slice(1,4))
-        ['1', '2', 'fizz']
+        '1, 2, fizz'
         >>> fizzbuzz(slice(4,1,-1))
-        ['4', 'fizz', '2']
-        >>> fizzbuzz(slice(1,5,-1))
-        []
+        '4, fizz, 2'
         ```
         Note: Slices are inclusive on the left, exclusive on the right and can contain an optional step.
-        Negative steps require start > stop, positive stop > start or else will return an empty list.
+        Negative steps require start > stop.
     """

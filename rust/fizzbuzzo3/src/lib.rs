@@ -1,11 +1,7 @@
 use std::ops::Neg;
 
-use fizzbuzz::{FizzBuzz, FizzBuzzAnswer, MultiFizzBuzz};
-use pyo3::{
-    exceptions::PyValueError,
-    prelude::*,
-    types::PySlice,
-};
+use fizzbuzz::{FizzBuzz, MultiFizzBuzz};
+use pyo3::{exceptions::PyValueError, prelude::*, types::PySlice};
 use rayon::iter::{IndexedParallelIterator, IntoParallelIterator, ParallelIterator};
 
 #[derive(FromPyObject)]
@@ -29,23 +25,6 @@ impl IntoPy<Py<PyAny>> for MySlice {
     }
 }
 
-struct FizzBuzzReturn(FizzBuzzAnswer);
-
-impl From<FizzBuzzAnswer> for FizzBuzzReturn {
-    fn from(value: FizzBuzzAnswer) -> Self {
-        FizzBuzzReturn(value)
-    }
-}
-
-impl IntoPy<Py<PyAny>> for FizzBuzzReturn {
-    fn into_py(self, py: Python<'_>) -> Py<PyAny> {
-        match self.0 {
-            FizzBuzzAnswer::One(string) => string.into_py(py),
-            FizzBuzzAnswer::Many(list) => list.into_py(py),
-        }
-    }
-}
-
 /// Returns the correct fizzbuzz answer for any number or list/range of numbers.
 ///
 /// This is an optimised algorithm compiled in rust. Large lists will utilise multiple CPU cores for processing.
@@ -55,8 +34,8 @@ impl IntoPy<Py<PyAny>> for FizzBuzzReturn {
 ///     n: the number(s) to fizzbuzz
 ///
 /// Returns:
-///     In the case of a sinlge number: a `str` with the correct fizzbuzz answer.
-///     In the case of a list or range of inputs: a `list` of `str` with the correct fizzbuzz answers.
+///     A `str` with the correct fizzbuzz answer(s).
+///     In the case of a list or range of inputs the answers will be separated by `, `
 ///
 /// Examples:
 ///     a single `int`:
@@ -71,25 +50,23 @@ impl IntoPy<Py<PyAny>> for FizzBuzzReturn {
 ///     ```
 ///     from fizzbuzz.fizzbuzzo3 import fizzbuzz
 ///     >>> fizzbuzz([1,3])
-///     ['1', 'fizz']
+///     '1, fizz'
 ///     ```
 ///     a `slice` representing a range:
 ///     ```
 ///     from fizzbuzz.fizzbuzzo3 import fizzbuzz
 ///     >>> fizzbuzz(slice(1,4,2))
-///     ['1', 'fizz']
+///     '1, fizz'
 ///     >>> fizzbuzz(slice(1,4))
-///     ['1', '2', 'fizz']
+///     '1, 2, fizz'
 ///     >>> fizzbuzz(slice(4,1,-1))
-///     ['4', 'fizz', '2']
-///     >>> fizzbuzz(slice(1,5,-1))
-///     []
+///     '4, fizz, 2'
 ///     ```
 ///     Note: Slices are inclusive on the left, exclusive on the right and can contain an optional step.
-///     Negative steps require start > stop, positive stop > start or else will return an empty list.
+///     Negative steps require start > stop.
 #[pyfunction]
 #[pyo3(name = "fizzbuzz", text_signature = "(n)")]
-fn py_fizzbuzz(num: FizzBuzzable) -> PyResult<FizzBuzzReturn> {
+fn py_fizzbuzz(num: FizzBuzzable) -> PyResult<String> {
     match num {
         FizzBuzzable::Int(n) => Ok(n.fizzbuzz().into()),
         FizzBuzzable::Float(n) => Ok(n.fizzbuzz().into()),
@@ -164,15 +141,8 @@ mod tests {
     #[pyo3import(py_fizzbuzzo3: from fizzbuzzo3 import fizzbuzz)]
     fn test_fizzbuzz_vec() {
         let input = vec![1, 2, 3, 4, 5];
-        let expected = vec![
-            "1".to_string(),
-            "2".to_string(),
-            "fizz".to_string(),
-            "4".to_string(),
-            "buzz".to_string(),
-        ];
-        let result: Vec<String> = fizzbuzz!(input);
-        assert_eq!(result, expected);
+        let result: String = fizzbuzz!(input);
+        assert_eq!(result, "1, 2, fizz, 4, buzz");
     }
 
     #[pyo3test]
@@ -190,15 +160,8 @@ mod tests {
             stop: 6,
             step: Some(1),
         };
-        let expected = vec![
-            "1".to_string(),
-            "2".to_string(),
-            "fizz".to_string(),
-            "4".to_string(),
-            "buzz".to_string(),
-        ];
-        let result: Vec<String> = fizzbuzz!(input);
-        assert_eq!(result, expected);
+        let result: String = fizzbuzz!(input);
+        assert_eq!(result, "1, 2, fizz, 4, buzz");
     }
 
     #[pyo3test]
@@ -209,15 +172,8 @@ mod tests {
             stop: 6,
             step: None,
         };
-        let expected = vec![
-            "1".to_string(),
-            "2".to_string(),
-            "fizz".to_string(),
-            "4".to_string(),
-            "buzz".to_string(),
-        ];
-        let result: Vec<String> = fizzbuzz!(input);
-        assert_eq!(result, expected);
+        let result: String = fizzbuzz!(input);
+        assert_eq!(result, "1, 2, fizz, 4, buzz");
     }
 
     #[pyo3test]
@@ -228,9 +184,8 @@ mod tests {
             stop: 6,
             step: Some(2),
         };
-        let expected = vec!["1".to_string(), "fizz".to_string(), "buzz".to_string()];
-        let result: Vec<String> = fizzbuzz!(input);
-        assert_eq!(result, expected);
+        let result: String = fizzbuzz!(input);
+        assert_eq!(result, "1, fizz, buzz");
     }
 
     #[pyo3test]
@@ -241,9 +196,8 @@ mod tests {
             stop: 0,
             step: Some(1),
         };
-        let result: Vec<String> = fizzbuzz!(input);
-        let expected: Vec<String> = vec![];
-        assert_eq!(result, expected);
+        let result: String = fizzbuzz!(input);
+        assert_eq!(result, "");
     }
 
     #[pyo3test]
@@ -254,9 +208,8 @@ mod tests {
             stop: 0,
             step: Some(-2),
         };
-        let expected = vec!["buzz".to_string(), "fizz".to_string(), "1".to_string()];
-        let result: Vec<String> = fizzbuzz!(input);
-        assert_eq!(result, expected);
+        let result: String = fizzbuzz!(input);
+        assert_eq!(result, "buzz, fizz, 1");
     }
 
     #[pyo3test]
@@ -267,14 +220,8 @@ mod tests {
             stop: 1,
             step: Some(-1),
         };
-        let expected = vec![
-            "buzz".to_string(),
-            "4".to_string(),
-            "fizz".to_string(),
-            "2".to_string(),
-        ];
-        let result: Vec<String> = fizzbuzz!(input);
-        assert_eq!(result, expected);
+        let result: String = fizzbuzz!(input);
+        assert_eq!(result, "buzz, 4, fizz, 2");
     }
 
     #[pyo3test]
@@ -285,10 +232,8 @@ mod tests {
             stop: 0,
             step: Some(-2),
         };
-
-        let expected = vec!["fizz".to_string(), "4".to_string(), "2".to_string()];
-        let result: Vec<String> = fizzbuzz!(input);
-        assert_eq!(result, expected);
+        let result: String = fizzbuzz!(input);
+        assert_eq!(result, "fizz, 4, 2");
     }
     #[pyo3test]
     #[allow(unused_macros)]
