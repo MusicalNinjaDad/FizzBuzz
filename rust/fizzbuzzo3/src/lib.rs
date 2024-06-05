@@ -29,19 +29,17 @@ impl IntoPy<Py<PyAny>> for MySlice {
     }
 }
 
-struct FizzBuzzReturn {
-    answer: FizzBuzzAnswer,
-}
+struct FizzBuzzReturn(FizzBuzzAnswer);
 
 impl From<FizzBuzzAnswer> for FizzBuzzReturn {
     fn from(value: FizzBuzzAnswer) -> Self {
-        FizzBuzzReturn { answer: value }
+        FizzBuzzReturn(value)
     }
 }
 
 impl IntoPy<Py<PyAny>> for FizzBuzzReturn {
     fn into_py(self, py: Python<'_>) -> Py<PyAny> {
-        match self.answer {
+        match self.0 {
             FizzBuzzAnswer::One(string) => string.into_py(py),
             FizzBuzzAnswer::Many(list) => list.into_py(py),
         }
