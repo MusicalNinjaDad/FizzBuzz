@@ -7,7 +7,7 @@ from fizzbuzz.fizzbuzzpy import fizzbuzz as fbpy
 
 REPEAT = 1
 NUMBER = 10
-FIZZBUZZES = 10_000_000
+FIZZBUZZES = 1_000_000
 LISTOFNUMBERS = list(range(1, FIZZBUZZES))
 
 

@@ -11,16 +11,22 @@ def test_lazy():
     assert fizzbuzz(6) == "fizz"
     assert fizzbuzz(15) == "fizzbuzz"
 
+
 def test_float():
     assert fizzbuzz(1.0) == "1"
     assert fizzbuzz(3.0) == "fizz"
 
+
 def test_list():
-    assert fizzbuzz([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15]) == "1, 2, fizz, 4, buzz, fizz, 7, 8, fizz, buzz, fizzbuzz"
+    assert fizzbuzz(
+        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15],
+    ) == "1, 2, fizz, 4, buzz, fizz, 7, 8, fizz, buzz, fizzbuzz".split(", ")
+
 
 def test_string():
     with pytest.raises(TypeError):
         fizzbuzz("1")
+
 
 def test_1_to_100():
     results = [fizzbuzz(i) for i in range(1, 101)]
@@ -39,16 +45,24 @@ def test_1_to_100():
     all_numbers_correct = all(r == str(i + 1) for i, r in enumerate(results) if r not in ("fizz", "buzz", "fizzbuzz"))
     assert all_numbers_correct
 
+
 def test_slice():
-     assert fizzbuzz(slice(1,16,1)) == "1, 2, fizz, 4, buzz, fizz, 7, 8, fizz, buzz, 11, fizz, 13, 14, fizzbuzz"
+    assert fizzbuzz(
+        slice(1, 16, 1),
+        ) == "1, 2, fizz, 4, buzz, fizz, 7, 8, fizz, buzz, 11, fizz, 13, 14, fizzbuzz".split(", ")
+
 
 # This case is REALLY IMPORTANT as it cannot be tested via rust unit tests...
 def test_slice_no_step():
-     assert fizzbuzz(slice(1,16)) == "1, 2, fizz, 4, buzz, fizz, 7, 8, fizz, buzz, 11, fizz, 13, 14, fizzbuzz"
+    assert fizzbuzz(
+        slice(1, 16),
+        ) == "1, 2, fizz, 4, buzz, fizz, 7, 8, fizz, buzz, 11, fizz, 13, 14, fizzbuzz".split(", ")
+
 
 def test_slice_negative_step():
-    assert fizzbuzz(slice(15,0,-3)) == "fizzbuzz, fizz, fizz, fizz, fizz"
+    assert fizzbuzz(slice(15, 0, -3)) == "fizzbuzz, fizz, fizz, fizz, fizz".split(", ")
+
 
 def test_slice_zero_step():
     with pytest.raises(ValueError, match="step cannot be zero"):
-        fizzbuzz(slice(1,16,0))
+        fizzbuzz(slice(1, 16, 0))
