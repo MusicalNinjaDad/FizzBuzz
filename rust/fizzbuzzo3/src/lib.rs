@@ -66,7 +66,7 @@ impl IntoPy<Py<PyAny>> for MySlice {
 ///     Negative steps require start > stop, positive steps require stop > start; or else will return an empty list.
 #[pyfunction]
 #[pyo3(name = "fizzbuzz", text_signature = "(n)")]
-fn py_fizzbuzz(num: FizzBuzzable) -> PyResult<Vec<String>> {
+fn py_fizzbuzz(num: FizzBuzzable) -> PyResult<String> {
     match num {
         FizzBuzzable::Int(n) => Ok(n.fizzbuzz().into()),
         FizzBuzzable::Float(n) => Ok(n.fizzbuzz().into()),
