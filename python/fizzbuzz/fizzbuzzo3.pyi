@@ -50,5 +50,5 @@ def fizzbuzz(n: int | list[int] | slice) -> str:
         '4, fizz, 2'
         ```
         Note: Slices are inclusive on the left, exclusive on the right and can contain an optional step.
-        ///     Negative steps require start > stop, positive steps require stop > start; or else will return an empty list.
+        Negative steps require start > stop, positive steps require stop > start; other combinations return `[]`.
     """
