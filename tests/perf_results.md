@@ -93,7 +93,7 @@ Rust range: [1 calls of 10 runs fizzbuzzing a range of numbers up to 1000000]
 [0.5420241989995702]
 ```
 
-## Comparing return types (-> str | list[str] vs. -> str)
+## Comparing return types (`-> str | list[str]` vs. `-> str`)
 
 ```text
 (.venv) pyo3@6195c4a7706f:/workspaces/FizzBuzz$ echo "No LTO, Union"
@@ -140,4 +140,47 @@ Rust vector, with python list overhead: [1 calls of 10 runs creating and fizzbuz
 [1.1903306849999353]
 Rust range: [1 calls of 10 runs fizzbuzzing a range of numbers up to 1000000]
 [0.6246530729986262]
+```
+
+## Comparing return types in general (1..10_000_000)
+
+`Str`ings are 2x faster than `list`s created from `Vec<String>`
+
+### `-> str`
+
+```text
+Rust: [1 calls of 10 runs fizzbuzzing up to 10000000]
+[27.814233318000333]
+Rust vector: [1 calls of 10 runs fizzbuzzing a list of numbers up to 10000000]
+[7.261143727999297]
+Rust vector, with python list overhead: [1 calls of 10 runs creating and fizzbuzzing a list of numbers up to 10000000]
+[10.321640708003542]
+Rust range: [1 calls of 10 runs fizzbuzzing a range of numbers up to 10000000]
+[4.721871253001154]
+```
+
+### `-> str | list[str]`
+
+```text
+Rust: [1 calls of 10 runs fizzbuzzing up to 10000000]
+[25.37807360100851]
+Rust vector: [1 calls of 10 runs fizzbuzzing a list of numbers up to 10000000]
+[12.790041114989435]
+Rust vector, with python list overhead: [1 calls of 10 runs creating and fizzbuzzing a list of numbers up to 10000000]
+[16.75132880899764]
+Rust range: [1 calls of 10 runs fizzbuzzing a range of numbers up to 10000000]
+[9.89638055099931]
+```
+
+### `-> list[str]`
+
+```text
+Rust: [1 calls of 10 runs fizzbuzzing up to 10000000]
+[47.682113279995974]
+Rust vector: [1 calls of 10 runs fizzbuzzing a list of numbers up to 10000000]
+[12.776051424996695]
+Rust vector, with python list overhead: [1 calls of 10 runs creating and fizzbuzzing a list of numbers up to 10000000]
+[16.503915808003512]
+Rust range: [1 calls of 10 runs fizzbuzzing a range of numbers up to 10000000]
+[9.859676376989228]
 ```
