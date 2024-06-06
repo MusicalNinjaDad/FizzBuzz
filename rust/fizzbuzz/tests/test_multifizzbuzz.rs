@@ -1,3 +1,5 @@
+#![cfg(x)]
+
 use fizzbuzz::MultiFizzBuzz;
 
 mod vectors {

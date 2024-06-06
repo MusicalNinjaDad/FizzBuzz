@@ -570,3 +570,86 @@ multifizzbuzz_trait     time:   [56.362 ms 57.859 ms 59.375 ms]
                         change: [+590.60% +617.47% +644.82%] (p = 0.00 < 0.05)
                         Performance has regressed.
 ```
+
+## Switching to static Cow
+
+```text
+     Running benches/bench_fizzbuzz.rs (target/release/deps/bench_fizzbuzz-2663fda578b6ea26)
+Gnuplot not found, using plotters backend
+Benchmarking vec_iter: Warming up for 3.0000 s
+Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 8.4s, or reduce sample count to 50.
+vec_iter                time:   [80.584 ms 82.063 ms 83.705 ms]
+                        change: [-4.6983% -1.9428% +0.7953%] (p = 0.19 > 0.05)
+                        No change in performance detected.
+Found 9 outliers among 100 measurements (9.00%)
+  6 (6.00%) high mild
+  3 (3.00%) high severe
+
+vec_pariter             time:   [56.315 ms 57.821 ms 59.357 ms]
+                        change: [-5.8404% -2.4611% +1.1119%] (p = 0.18 > 0.05)
+                        No change in performance detected.
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+
+multifizzbuzz_trait     time:   [43.466 ms 44.692 ms 45.949 ms]
+                        change: [-27.996% -25.200% -22.244%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+
+multifizzbuzz_trait_as_string
+                        time:   [53.799 ms 55.400 ms 57.030 ms]
+                        change: [-11.115% -7.8360% -4.5341%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+
+multifizzbuzz_trait_from_vec_as_answer
+                        time:   [41.851 ms 43.389 ms 44.938 ms]
+                        change: [-26.894% -23.699% -20.349%] (p = 0.00 < 0.05)
+                        Performance has improved.
+
+multifizzbuzz_trait_from_range_as_answer
+                        time:   [43.257 ms 44.830 ms 46.505 ms]
+                        change: [-23.233% -19.874% -16.221%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 6 outliers among 100 measurements (6.00%)
+  4 (4.00%) high mild
+  2 (2.00%) high severe
+
+     Running benches/bench_sizes.rs (target/release/deps/bench_sizes-f51040c11ca30db3)
+Gnuplot not found, using plotters backend
+20                      time:   [834.50 ns 854.19 ns 877.63 ns]
+                        change: [-28.854% -26.416% -23.758%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 5 outliers among 100 measurements (5.00%)
+  5 (5.00%) high mild
+
+200_000                 time:   [10.224 ms 10.411 ms 10.618 ms]
+                        change: [-49.384% -47.551% -45.638%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 12 outliers among 100 measurements (12.00%)
+  11 (11.00%) high mild
+  1 (1.00%) high severe
+
+300_000                 time:   [15.309 ms 15.592 ms 15.901 ms]
+                        change: [-44.999% -43.536% -41.988%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 9 outliers among 100 measurements (9.00%)
+  4 (4.00%) high mild
+  5 (5.00%) high severe
+
+1_000_000               time:   [39.580 ms 40.862 ms 42.196 ms]
+                        change: [-33.525% -30.475% -27.118%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+
+Benchmarking 10_000_000: Warming up for 3.0000 s
+Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 26.5s, or reduce sample count to 10.
+10_000_000              time:   [242.49 ms 246.69 ms 250.73 ms]
+                        change: [-33.151% -31.683% -30.155%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) low mild
+```

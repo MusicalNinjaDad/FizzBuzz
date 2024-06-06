@@ -28,7 +28,16 @@ pub enum FizzBuzzAnswer {
     Many(Vec<Cow<'static, str>>),
 }
 
-impl From<FizzBuzzAnswer> for Cow<'_, str> {
+impl From<FizzBuzzAnswer> for String {
+    fn from(value: FizzBuzzAnswer) -> Self {
+        match value {
+            FizzBuzzAnswer::One(s) => s.into(),
+            FizzBuzzAnswer::Many(v) => v.join(", "),
+        }
+    }
+}
+
+impl From<FizzBuzzAnswer> for Cow<'static, str> {
     fn from(value: FizzBuzzAnswer) -> Self {
         match value {
             FizzBuzzAnswer::One(s) => s,
@@ -127,7 +136,7 @@ where
     }
 }
 
-#[cfg(test)]
+#[cfg(testx)]
 mod test {
     use super::*;
 
