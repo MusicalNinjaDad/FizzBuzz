@@ -33,6 +33,8 @@ macro_rules! test_this {
 
 /// Test all compatible standard types
 mod standard_types {
+    use fizzbuzz::FizzBuzzAnswer;
+
     use super::*;
 
     test_this! {
@@ -52,18 +54,33 @@ mod standard_types {
         test_usize: usize
     }
 
-    // #[test]
-    // fn test_negative() {
-    //     assert_eq!((-1_i8).fizzbuzz(), "-1");
-    //     assert_eq!((-3_i8).fizzbuzz(), "fizz");
-    //     assert_eq!((-5_i8).fizzbuzz(), "buzz");
-    //     assert_eq!((-15_i8).fizzbuzz(), "fizzbuzz");
-    // }
+    #[test]
+    fn test_negative() {
+        assert_eq!(
+            <FizzBuzzAnswer as Into<String>>::into((-1_i8).fizzbuzz()),
+            "-1".to_string()
+        );
+        assert_eq!(
+            <FizzBuzzAnswer as Into<String>>::into((-3_i8).fizzbuzz()),
+            "fizz".to_string()
+        );
+        assert_eq!(
+            <FizzBuzzAnswer as Into<String>>::into((-5_i8).fizzbuzz()),
+            "buzz".to_string()
+        );
+        assert_eq!(
+            <FizzBuzzAnswer as Into<String>>::into((-15_i8).fizzbuzz()),
+            "fizzbuzz".to_string()
+        );
+    }
 
-    // #[test]
-    // fn test_not_whole_number() {
-    //     assert_eq!(3.2_f32.fizzbuzz(), "3.2");
-    // }
+    #[test]
+    fn test_not_whole_number() {
+        assert_eq!(
+            <FizzBuzzAnswer as Into<String>>::into((3.2_f32).fizzbuzz()),
+            "3.2".to_string()
+        );
+    }
 }
 
 /// Create a custom type based on i16, add the minimum set of non-derivable
