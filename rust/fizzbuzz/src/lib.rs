@@ -39,6 +39,13 @@ impl From<FizzBuzzAnswer> for Cow<'static, str> {
     }
 }
 
+impl From<FizzBuzzAnswer> for String {
+    fn from(value: FizzBuzzAnswer) -> Self {
+        let moo: Cow<str> = value.into();
+        moo.into()
+    }
+}
+
 /// Used to obtain the correct fizzbuzz answer for a given number
 ///
 /// ### Required:
