@@ -352,7 +352,7 @@ Python also often provides single functions which can receive multiple significa
 !!! pyo3 "`Union` type returns: `#!python def fizzbuzz(n: int | list[int]) -> str | list[str]`"
     If you would like to provide different return types for different cases:
 
-    1. Implement an `enum` or a wrapper `struct` around an existing `enum` that holds the different types.
+    1. Implement an `enum`, or a wrapper `struct` around an existing `enum`, that holds the different types.
     1. Provide one or more conversion `From` traits to convert from the return of your core rust functions.
     1. Provide a conversion `IntoPy` trait to convert to the relevant PyO3 types.
     1. Use this new type as the return of your wrapped function.
