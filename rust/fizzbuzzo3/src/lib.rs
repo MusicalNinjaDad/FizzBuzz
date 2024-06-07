@@ -1,11 +1,7 @@
 use std::ops::Neg;
 
 use fizzbuzz::{FizzBuzz, FizzBuzzAnswer, MultiFizzBuzz};
-use pyo3::{
-    exceptions::PyValueError,
-    prelude::*,
-    types::PySlice,
-};
+use pyo3::{exceptions::PyValueError, prelude::*, types::PySlice};
 use rayon::iter::{IndexedParallelIterator, IntoParallelIterator, ParallelIterator};
 
 #[derive(FromPyObject)]
