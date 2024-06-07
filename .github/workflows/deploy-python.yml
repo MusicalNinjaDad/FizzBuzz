@@ -53,7 +53,7 @@ jobs:
         with:
           platforms: all
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.18.1
+        uses: musicalninjadad/cibuildwheel@MusicalNinjaDad/issue1850
         env:
           CIBW_BUILD: ${{ matrix.target }}
         # with:
