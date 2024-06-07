@@ -349,8 +349,72 @@ Python also often provides single functions which can receive multiple significa
         --8<-- "rust/fizzbuzzo3/src/lib.rs"
         ```
 
-!!! warning "`Union` type returns"
-    If you want to create something like: `#!python def fizzbuzz(n: int | list[int]) -> str | list[str]:` [Issue pyo3/#1637](https://github.com/PyO3/pyo3/issues/1637) suggests you may be able to do something with the `IntoPy` trait but I haven't tried (yet)
+!!! pyo3 "`Union` type returns: `#!python def fizzbuzz(n: int | list[int]) -> str | list[str]`"
+    If you would like to provide different return types for different cases:
+
+    1. Implement an `enum` or a wrapper `struct` around an existing `enum` that holds the different types.
+    1. Provide one or more conversion `From` traits to convert from the return of your core rust functions.
+    1. Provide a conversion `IntoPy` trait to convert to the relevant PyO3 types.
+    1. Use this new type as the return of your wrapped function.
+        
+        In **`/rust/fizzbuzzo3/src/lib.rs`**:
+        ```rust
+        ...
+        struct FizzBuzzReturn(FizzBuzzAnswer);
+
+        impl From<FizzBuzzAnswer> for FizzBuzzReturn {
+            fn from(value: FizzBuzzAnswer) -> Self {
+                FizzBuzzReturn(value)
+            }
+        }
+
+        impl IntoPy<Py<PyAny>> for FizzBuzzReturn {
+            fn into_py(self, py: Python<'_>) -> Py<PyAny> {
+                match self.0 {
+                    FizzBuzzAnswer::One(string) => string.into_py(py),
+                    FizzBuzzAnswer::Many(list) => list.into_py(py),
+                }
+            }
+        }
+        ...
+        #[pyfunction]
+        #[pyo3(name = "fizzbuzz", text_signature = "(n)")]
+        fn py_fizzbuzz(num: FizzBuzzable) -> PyResult<FizzBuzzReturn> {
+            ...
+        ```
+
+        Thanks to the comments in [Issue pyo3/#1637](https://github.com/PyO3/pyo3/issues/1637) for pointers on how to get this working.
+
+    1. Add `@overload` hints for your IDE (see [IDE type & doc hinting](#ide-type-doc-hinting)), so that it understands the relationships between input and output types:
+
+        In **`/python/fizzbuzz/fizzbuzzo3.pyi`**:
+        ```python
+        ...
+        from typing import overload
+
+        @overload
+        def fizzbuzz(n: int) -> str:
+            ...
+
+        @overload
+        def fizzbuzz(n: list[int] | slice) -> list[str]:
+            ...
+
+        def fizzbuzz(n):
+            """
+            Returns the correct fizzbuzz answer for any number or list/range of numbers.
+            ...
+        ```
+
+    ??? pyo3 "**`rust/fizzbuzzo3/src/lib.rs`** - full source"
+        ```rust
+        --8<-- "rust/fizzbuzzo3/src/lib.rs"
+        ```
+
+    ??? python "**`python/fizzbuzz/fizzbuzzo3.pyi`** - full source"
+        ```python
+        --8<-- "python/fizzbuzz/fizzbuzzo3.pyi"
+        ```
 
 ## IDE type & doc hinting
 
