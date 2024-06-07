@@ -25,7 +25,7 @@ pub enum FizzBuzzAnswer {
     Fizz,
     Buzz,
     Fizzbuzz,
-    Number(Cow<'static, str>)
+    Number(Cow<'static, str>),
 }
 
 impl From<FizzBuzzAnswer> for Cow<'static, str> {
@@ -108,9 +108,9 @@ where
         let par_iter = self.into_par_iter();
         if par_iter.len() < BIG_VECTOR {
             par_iter
-                    .with_min_len(BIG_VECTOR) //Don't parallelise when small
-                    .map(|n| n.fizzbuzz().into())
-                    .collect()
+                .with_min_len(BIG_VECTOR) //Don't parallelise when small
+                .map(|n| n.fizzbuzz().into())
+                .collect()
         } else {
             par_iter.map(|n| n.fizzbuzz().into()).collect()
         }
