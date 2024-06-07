@@ -1,6 +1,4 @@
 #![allow(dead_code)]
-use std::borrow::Cow;
-
 use criterion::{criterion_group, criterion_main, Criterion};
 use fizzbuzz::{self, FizzBuzz, MultiFizzBuzz};
 use rayon::prelude::*;
@@ -47,7 +45,7 @@ fn vec_pariter() {
 #[inline]
 fn multifizzbuzz_trait() {
     let inputs: Vec<_> = (1..TEST_SIZE).collect();
-    let _: Vec<Cow<'static, str>> = inputs.fizzbuzz().into();
+    let _: Vec<String> = inputs.fizzbuzz().into();
 }
 
 #[inline]

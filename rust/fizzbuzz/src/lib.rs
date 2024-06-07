@@ -13,8 +13,6 @@
 //! assert_eq!(three, "fizz".to_string());
 //! ```
 
-use std::borrow::Cow;
-
 use rayon::prelude::*;
 static BIG_VECTOR: usize = 300_000; // Size from which parallelisation makes sense
 
@@ -23,31 +21,21 @@ static BIG_VECTOR: usize = 300_000; // Size from which parallelisation makes sen
 /// ::From() etc.
 pub enum FizzBuzzAnswer {
     /// Stores a single FizzBuzz value
-    One(Cow<'static, str>),
+    One(String),
     /// Stores a series of FizzBuzz values
-    Many(Vec<Cow<'static, str>>),
+    Many(Vec<String>),
 }
 
 impl From<FizzBuzzAnswer> for String {
     fn from(value: FizzBuzzAnswer) -> Self {
         match value {
-            FizzBuzzAnswer::One(s) => s.into(),
+            FizzBuzzAnswer::One(s) => s,
             FizzBuzzAnswer::Many(v) => v.join(", "),
         }
     }
 }
 
-impl From<FizzBuzzAnswer> for Cow<'static, str> {
-    fn from(value: FizzBuzzAnswer) -> Self {
-        match value {
-            FizzBuzzAnswer::One(s) => s,
-            FizzBuzzAnswer::Many(v) => v.join(", ").into(),
-        }
-    }
-}
-
-impl From<FizzBuzzAnswer> for Vec<Cow<'static, str>>
-{
+impl From<FizzBuzzAnswer> for Vec<String> {
     fn from(value: FizzBuzzAnswer) -> Self {
         match value {
             FizzBuzzAnswer::One(s) => vec![s],
@@ -88,21 +76,21 @@ where
     fn fizzbuzz(&self) -> FizzBuzzAnswer {
         let three = match <Num>::try_from(3_u8) {
             Ok(three) => three,
-            Err(_) => return FizzBuzzAnswer::One(self.to_string().into()),
+            Err(_) => return FizzBuzzAnswer::One(self.to_string()),
         };
         let five = match <Num>::try_from(5_u8) {
             Ok(five) => five,
-            Err(_) => return FizzBuzzAnswer::One(self.to_string().into()),
+            Err(_) => return FizzBuzzAnswer::One(self.to_string()),
         };
         let zero = match <Num>::try_from(0_u8) {
             Ok(zero) => zero,
-            Err(_) => return FizzBuzzAnswer::One(self.to_string().into()),
+            Err(_) => return FizzBuzzAnswer::One(self.to_string()),
         };
         match (self % three == zero, self % five == zero) {
-            (true, true) => FizzBuzzAnswer::One("fizzbuzz".into()),
-            (true, false) => FizzBuzzAnswer::One("fizz".into()),
-            (false, true) => FizzBuzzAnswer::One("buzz".into()),
-            _ => FizzBuzzAnswer::One(self.to_string().into()),
+            (true, true) => FizzBuzzAnswer::One("fizzbuzz".to_string()),
+            (true, false) => FizzBuzzAnswer::One("fizz".to_string()),
+            (false, true) => FizzBuzzAnswer::One("buzz".to_string()),
+            _ => FizzBuzzAnswer::One(self.to_string()),
         }
     }
 }
@@ -136,7 +124,7 @@ where
     }
 }
 
-#[cfg(testx)]
+#[cfg(test)]
 mod test {
     use super::*;
 
