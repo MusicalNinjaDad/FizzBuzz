@@ -32,7 +32,7 @@ macro_rules! test_this {
 }
 
 /// Test all compatible standard types
-mod standard_types {
+mod standard_types_as_strings {
     use fizzbuzz::FizzBuzzAnswer;
 
     use super::*;
@@ -85,7 +85,7 @@ mod standard_types {
 
 /// Create a custom type based on i16, add the minimum set of non-derivable
 /// traits, impl_fizzbuzz! and test ...
-mod custom_types {
+mod custom_types_as_strings {
     use std::{fmt::Display, ops::Rem};
 
     use super::*;
