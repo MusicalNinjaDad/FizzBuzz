@@ -6,11 +6,12 @@
 //!
 //! ```
 //! use fizzbuzz::FizzBuzz;
+//! use std::borrow::Cow;
 //!
-//! let one: String = 1.fizzbuzz().into();
-//! let three: String = 3.fizzbuzz().into();
-//! assert_eq!(one, "1".to_string());
-//! assert_eq!(three, "fizz".to_string());
+//! let one: Cow<str> = 1.fizzbuzz().into();
+//! let three: Cow<str> = 3.fizzbuzz().into();
+//! assert_eq!(&one, "1");
+//! assert_eq!(&three, "fizz");
 //! ```
 
 use std::borrow::Cow;
