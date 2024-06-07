@@ -1,4 +1,4 @@
-use std::ops::Neg;
+use std::{borrow::Cow, ops::Neg};
 
 use fizzbuzz::{FizzBuzz, FizzBuzzAnswer, MultiFizzBuzz};
 use pyo3::{exceptions::PyValueError, prelude::*, types::PySlice};
@@ -26,19 +26,34 @@ impl IntoPy<Py<PyAny>> for MySlice {
 }
 
 /// A wrapper struct for FizzBuzzAnswer to provide a custom implementation of `IntoPy`.
-struct FizzBuzzReturn(FizzBuzzAnswer);
+enum FizzBuzzReturn {
+    One(FizzBuzzAnswer),
+    Many(Vec<FizzBuzzAnswer>),
+}
 
 impl From<FizzBuzzAnswer> for FizzBuzzReturn {
     fn from(value: FizzBuzzAnswer) -> Self {
-        FizzBuzzReturn(value)
+        FizzBuzzReturn::One(value)
+    }
+}
+
+impl From<Vec<FizzBuzzAnswer>> for FizzBuzzReturn {
+    fn from(value: Vec<FizzBuzzAnswer>) -> Self {
+        FizzBuzzReturn::Many(value)
     }
 }
 
 impl IntoPy<Py<PyAny>> for FizzBuzzReturn {
     fn into_py(self, py: Python<'_>) -> Py<PyAny> {
-        match self.0 {
-            FizzBuzzAnswer::One(string) => string.into_py(py),
-            FizzBuzzAnswer::Many(list) => list.into_py(py),
+        match self {
+            FizzBuzzReturn::One(answer) => {
+                <FizzBuzzAnswer as Into<Cow<str>>>::into(answer).into_py(py)
+            }
+            FizzBuzzReturn::Many(answers) => answers
+                .into_iter()
+                .map(|answer| answer.into())
+                .collect::<Vec<Cow<str>>>()
+                .into_py(py),
         }
     }
 }
