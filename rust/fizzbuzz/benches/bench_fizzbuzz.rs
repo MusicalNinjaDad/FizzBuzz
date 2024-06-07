@@ -1,4 +1,6 @@
 #![allow(dead_code)]
+use std::borrow::Cow;
+
 use criterion::{criterion_group, criterion_main, Criterion};
 use fizzbuzz::{self, FizzBuzz, MultiFizzBuzz};
 use rayon::prelude::*;
@@ -43,15 +45,15 @@ fn vec_pariter() {
 }
 
 #[inline]
-fn multifizzbuzz_trait() {
+fn multifizzbuzz_trait_as_vec_string() {
     let inputs: Vec<_> = (1..TEST_SIZE).collect();
-    let _: Vec<String> = inputs.fizzbuzz().into();
+    let _: Vec<String> = inputs.fizzbuzz().into_iter().map(|f| {f.into()}).collect();
 }
 
 #[inline]
-fn multifizzbuzz_trait_as_string() {
+fn multifizzbuzz_trait_as_vec_cow() {
     let inputs: Vec<_> = (1..TEST_SIZE).collect();
-    let _: String = inputs.fizzbuzz().into();
+    let _: Vec<Cow<str>> = inputs.fizzbuzz().into_iter().map(|f| {f.into()}).collect();
 }
 
 #[inline]
@@ -74,9 +76,9 @@ fn criterion_benchmark(c: &mut Criterion) {
     c.bench_function("vec_iter", |b| b.iter(|| vec_iter()));
     // c.bench_function("vec_intoiter", |b| b.iter(|| vec_intoiter()));
     c.bench_function("vec_pariter", |b| b.iter(|| vec_pariter()));
-    c.bench_function("multifizzbuzz_trait", |b| b.iter(|| multifizzbuzz_trait()));
-    c.bench_function("multifizzbuzz_trait_as_string", |b| {
-        b.iter(|| multifizzbuzz_trait_as_string())
+    c.bench_function("multifizzbuzz_trait_as_vec_string", |b| b.iter(|| multifizzbuzz_trait_as_vec_string()));
+    c.bench_function("multifizzbuzz_trait_as_vec_cow", |b| {
+        b.iter(|| multifizzbuzz_trait_as_vec_cow())
     });
     c.bench_function("multifizzbuzz_trait_from_vec_as_answer", |b| {
         b.iter(|| multifizzbuzz_trait_from_vec_as_answer())

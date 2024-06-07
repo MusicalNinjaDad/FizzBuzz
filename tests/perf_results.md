@@ -184,3 +184,33 @@ Rust vector, with python list overhead: [1 calls of 10 runs creating and fizzbuz
 Rust range: [1 calls of 10 runs fizzbuzzing a range of numbers up to 10000000]
 [9.859676376989228]
 ```
+
+## Using `Cow<str>` to avoid memory allocations
+
+Is no faster:
+
+### Cow
+
+```text
+Rust: [1 calls of 10 runs fizzbuzzing up to 1000000]
+[1.9146641360021022]
+Rust vector: [1 calls of 10 runs fizzbuzzing a list of numbers up to 1000000]
+[1.0816771969984984]
+Rust vector, with python list overhead: [1 calls of 10 runs creating and fizzbuzzing a list of numbers up to 1000000]
+[1.141931141999521]
+Rust range: [1 calls of 10 runs fizzbuzzing a range of numbers up to 1000000]
+[0.7313544280004862]
+```
+
+### No Cow
+
+```text
+Rust: [1 calls of 10 runs fizzbuzzing up to 1000000]
+[1.9076293110010738]
+Rust vector: [1 calls of 10 runs fizzbuzzing a list of numbers up to 1000000]
+[0.913994423000986]
+Rust vector, with python list overhead: [1 calls of 10 runs creating and fizzbuzzing a list of numbers up to 1000000]
+[1.1336928130003798]
+Rust range: [1 calls of 10 runs fizzbuzzing a range of numbers up to 1000000]
+[0.739404623000155]
+```
