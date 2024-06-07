@@ -13,33 +13,27 @@
 //! assert_eq!(three, "fizz".to_string());
 //! ```
 
+use std::borrow::Cow;
+
 use rayon::prelude::*;
 static BIG_VECTOR: usize = 300_000; // Size from which parallelisation makes sense
 
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
-/// Provides conversion to `String` and `Vec<String>` via `.into()`,
-/// ::From() etc.
+/// Provides conversion to `Cow<&str>` via `.into()` / `::From()`
 pub enum FizzBuzzAnswer {
-    /// Stores a single FizzBuzz value
-    One(String),
-    /// Stores a series of FizzBuzz values
-    Many(Vec<String>),
+    Fizz,
+    Buzz,
+    Fizzbuzz,
+    Number(Cow<'static, str>)
 }
 
-impl From<FizzBuzzAnswer> for String {
-    fn from(value: FizzBuzzAnswer) -> Self {
-        match value {
-            FizzBuzzAnswer::One(s) => s,
-            FizzBuzzAnswer::Many(v) => v.join(", "),
-        }
-    }
-}
-
-impl From<FizzBuzzAnswer> for Vec<String> {
-    fn from(value: FizzBuzzAnswer) -> Self {
-        match value {
-            FizzBuzzAnswer::One(s) => vec![s],
-            FizzBuzzAnswer::Many(v) => v,
+impl From<FizzBuzzAnswer> for Cow<'static, str> {
+    fn from(answer: FizzBuzzAnswer) -> Self {
+        match answer {
+            FizzBuzzAnswer::Fizz => "fizz".into(),
+            FizzBuzzAnswer::Buzz => "buzz".into(),
+            FizzBuzzAnswer::Fizzbuzz => "fizzbuzz".into(),
+            FizzBuzzAnswer::Number(n) => n,
         }
     }
 }
@@ -76,21 +70,21 @@ where
     fn fizzbuzz(&self) -> FizzBuzzAnswer {
         let three = match <Num>::try_from(3_u8) {
             Ok(three) => three,
-            Err(_) => return FizzBuzzAnswer::One(self.to_string()),
+            Err(_) => return FizzBuzzAnswer::Number(self.to_string().into()),
         };
         let five = match <Num>::try_from(5_u8) {
             Ok(five) => five,
-            Err(_) => return FizzBuzzAnswer::One(self.to_string()),
+            Err(_) => return FizzBuzzAnswer::Number(self.to_string().into()),
         };
         let zero = match <Num>::try_from(0_u8) {
             Ok(zero) => zero,
-            Err(_) => return FizzBuzzAnswer::One(self.to_string()),
+            Err(_) => return FizzBuzzAnswer::Number(self.to_string().into()),
         };
         match (self % three == zero, self % five == zero) {
-            (true, true) => FizzBuzzAnswer::One("fizzbuzz".to_string()),
-            (true, false) => FizzBuzzAnswer::One("fizz".to_string()),
-            (false, true) => FizzBuzzAnswer::One("buzz".to_string()),
-            _ => FizzBuzzAnswer::One(self.to_string()),
+            (true, true) => FizzBuzzAnswer::Fizzbuzz,
+            (true, false) => FizzBuzzAnswer::Fizz,
+            (false, true) => FizzBuzzAnswer::Buzz,
+            _ => FizzBuzzAnswer::Number(self.to_string().into()),
         }
     }
 }
@@ -100,7 +94,7 @@ where
 /// ### Required:
 /// - fn fizzbuzz(self) -> FizzBuzzAnswer
 pub trait MultiFizzBuzz {
-    fn fizzbuzz(self) -> FizzBuzzAnswer;
+    fn fizzbuzz(self) -> Vec<FizzBuzzAnswer>;
 }
 
 impl<Iterable, Num> MultiFizzBuzz for Iterable
@@ -109,17 +103,15 @@ where
     <Iterable as IntoParallelIterator>::Iter: IndexedParallelIterator,
     Num: FizzBuzz,
 {
-    fn fizzbuzz(self) -> FizzBuzzAnswer {
+    fn fizzbuzz(self) -> Vec<FizzBuzzAnswer> {
         let par_iter = self.into_par_iter();
         if par_iter.len() < BIG_VECTOR {
-            FizzBuzzAnswer::Many(
-                par_iter
+            par_iter
                     .with_min_len(BIG_VECTOR) //Don't parallelise when small
                     .map(|n| n.fizzbuzz().into())
-                    .collect(),
-            )
+                    .collect()
         } else {
-            FizzBuzzAnswer::Many(par_iter.map(|n| n.fizzbuzz().into()).collect())
+            par_iter.map(|n| n.fizzbuzz().into()).collect()
         }
     }
 }
@@ -128,25 +120,26 @@ where
 mod test {
     use super::*;
 
-    #[test]
-    fn vec_to_string() {
-        let input = FizzBuzzAnswer::Many(vec![
-            "1".to_string(),
-            "2".to_string(),
-            "fizz".to_string(),
-            "4".to_string(),
-            "buzz".to_string(),
-        ]);
-        let output: String = input.into();
-        let expected = "1, 2, fizz, 4, buzz".to_string();
-        assert_eq!(output, expected)
-    }
+    // // Unused functionality??
+    // #[test]
+    // fn vec_to_string() {
+    //     let input = FizzBuzzAnswer::Many(vec![
+    //         "1".to_string(),
+    //         "2".to_string(),
+    //         "fizz".to_string(),
+    //         "4".to_string(),
+    //         "buzz".to_string(),
+    //     ]);
+    //     let output: String = input.into();
+    //     let expected = "1, 2, fizz, 4, buzz".to_string();
+    //     assert_eq!(output, expected)
+    // }
 
     #[test]
     fn big_vector_is_well_ordered() {
         let input: Vec<_> = (1..BIG_VECTOR + 2).collect();
         let output: Vec<_> = input.clone().fizzbuzz().into();
-        let mut expected: Vec<String> = vec![];
+        let mut expected: Vec<FizzBuzzAnswer> = vec![];
         for i in input.iter() {
             expected.push(i.fizzbuzz().into())
         }
@@ -156,11 +149,11 @@ mod test {
     #[test]
     fn fizzbuzz_range() {
         let input = 1..20;
-        let mut expected: Vec<String> = vec![];
+        let mut expected: Vec<FizzBuzzAnswer> = vec![];
         for i in 1..20 {
             expected.push(i.fizzbuzz().into())
         }
-        let output: Vec<String> = input.fizzbuzz().into();
+        let output: Vec<FizzBuzzAnswer> = input.fizzbuzz().into();
         assert_eq!(output, expected)
     }
 }
