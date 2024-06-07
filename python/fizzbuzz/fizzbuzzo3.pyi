@@ -31,7 +31,7 @@ def fizzbuzz(n):
         n: the number(s) to fizzbuzz
 
     Returns:
-        In the case of a sinlge number: a `str` with the correct fizzbuzz answer.
+        In the case of a single number: a `str` with the correct fizzbuzz answer.
         In the case of a list or range of inputs: a `list` of `str` with the correct fizzbuzz answers.
 
     Examples:
@@ -63,4 +63,5 @@ def fizzbuzz(n):
         ```
         Note: Slices are inclusive on the left, exclusive on the right and can contain an optional step.
         Negative steps require start > stop, positive steps require stop > start; other combinations return `[]`.
+        A step of zero is invalid and will raise a `ValueError`.
     """

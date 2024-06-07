@@ -354,7 +354,7 @@ Python also often provides single functions which can receive multiple significa
 
     1. Implement an `enum`, or a wrapper `struct` around an existing `enum`, that holds the different types.
     1. Provide one or more conversion `From` traits to convert from the return of your core rust functions.
-    1. Provide a conversion `IntoPy` trait to convert to the relevant PyO3 types.
+    1. Provide a conversion [`IntoPy` trait](https://docs.rs/pyo3/latest/pyo3/conversion/trait.IntoPy.html) to convert to the relevant PyO3 types.
     1. Use this new type as the return of your wrapped function.
         
         In **`/rust/fizzbuzzo3/src/lib.rs`**:

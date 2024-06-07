@@ -25,6 +25,7 @@ impl IntoPy<Py<PyAny>> for MySlice {
     }
 }
 
+/// A wrapper struct for FizzBuzzAnswer to provide a custom implementation of `IntoPy`.
 struct FizzBuzzReturn(FizzBuzzAnswer);
 
 impl From<FizzBuzzAnswer> for FizzBuzzReturn {
@@ -51,7 +52,7 @@ impl IntoPy<Py<PyAny>> for FizzBuzzReturn {
 ///     n: the number(s) to fizzbuzz
 ///
 /// Returns:
-///     In the case of a sinlge number: a `str` with the correct fizzbuzz answer.
+///     In the case of a single number: a `str` with the correct fizzbuzz answer.
 ///     In the case of a list or range of inputs: a `list` of `str` with the correct fizzbuzz answers.
 ///
 /// Examples:
@@ -82,7 +83,9 @@ impl IntoPy<Py<PyAny>> for FizzBuzzReturn {
 ///     []
 ///     ```
 ///     Note: Slices are inclusive on the left, exclusive on the right and can contain an optional step.
+///     Note: Slices are inclusive on the left, exclusive on the right and can contain an optional step.
 ///     Negative steps require start > stop, positive steps require stop > start; other combinations return `[]`.
+///     A step of zero is invalid and will raise a `ValueError`.
 #[pyfunction]
 #[pyo3(name = "fizzbuzz", text_signature = "(n)")]
 fn py_fizzbuzz(num: FizzBuzzable) -> PyResult<FizzBuzzReturn> {
