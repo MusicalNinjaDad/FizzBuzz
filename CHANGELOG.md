@@ -1,7 +1,8 @@
 # FizzBuzz Changelog
 
-## Python 2.1.0
+## Python 3.0.0
 
+- Return `list[str]` when passed a `list` or `slice`, continue to return `str`when passed a single `int`.
 - Allow a `slice` to be passed to `fizzbuzzo3.fizzbuzz` - this provides a further 1.5x speed increase over passing a list with the same elements.
 - Build rust with `--release` optimisations - another 4-7x speed increase.
 
