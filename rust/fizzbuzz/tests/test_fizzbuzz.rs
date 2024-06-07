@@ -1,3 +1,4 @@
+#![cfg(test)]
 use fizzbuzz::FizzBuzz;
 use googletest::prelude::*;
 
@@ -32,7 +33,7 @@ macro_rules! test_this {
 }
 
 /// Test all compatible standard types
-mod standard_types_as_strings {
+mod standard_types_up_to_127_as_strings {
     use fizzbuzz::FizzBuzzAnswer;
 
     use super::*;
@@ -112,5 +113,39 @@ mod custom_types_as_strings {
 
     test_this! {
         my_int16: Myint
+    }
+}
+
+mod ints_as_cows {
+    use std::borrow::Cow;
+
+    use super::*;
+
+    #[test]
+    fn number() {
+        let expected: Cow<str> = "2".into();
+        let answer: Cow<str> = 2.fizzbuzz().into();
+        assert_eq!(answer, expected)
+    }
+
+    #[test]
+    fn fizz() {
+        let expected: Cow<str> = "fizz".into();
+        let answer: Cow<str> = 3.fizzbuzz().into();
+        assert_eq!(answer, expected)
+    }
+
+    #[test]
+    fn buzz() {
+        let expected: Cow<str> = "buzz".into();
+        let answer: Cow<str> = 5.fizzbuzz().into();
+        assert_eq!(answer, expected)
+    }
+
+    #[test]
+    fn fizzbuzz() {
+        let expected: Cow<str> = "fizzbuzz".into();
+        let answer: Cow<str> = 15.fizzbuzz().into();
+        assert_eq!(answer, expected)
     }
 }
