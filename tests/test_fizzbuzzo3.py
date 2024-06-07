@@ -12,6 +12,10 @@ def test_lazy():
     assert fizzbuzz(15) == "fizzbuzz"
 
 
+def test_fizzbuzz_empty_list():
+    assert fizzbuzz([]) == []
+
+
 def test_float():
     assert fizzbuzz(1.0) == "1"
     assert fizzbuzz(3.0) == "fizz"
