@@ -1,7 +1,4 @@
-use fizzbuzz::FizzBuzzAnswer;
 use fizzbuzz::MultiFizzBuzz;
-
-use std::borrow::Cow;
 
 mod vectors {
 
@@ -10,11 +7,7 @@ mod vectors {
     #[test]
     fn test_small_vec() {
         let input = vec![1, 2, 3, 4, 5];
-        let answer: Vec<String> = input
-            .fizzbuzz()
-            .into_iter()
-            .map(|f| <FizzBuzzAnswer as Into<Cow<str>>>::into(f).into())
-            .collect();
+        let answer: Vec<String> = input.fizzbuzz().into_iter().map(|f| f.into()).collect();
         let expected = vec![
             "1".to_string(),
             "2".to_string(),
@@ -36,7 +29,7 @@ mod ranges {
         let answer: Vec<String> = (1..=5_i16)
             .fizzbuzz()
             .into_iter()
-            .map(|f| <FizzBuzzAnswer as Into<Cow<str>>>::into(f).into())
+            .map(|f| f.into())
             .collect();
         let expected = vec![
             "1".to_string(),
@@ -51,11 +44,7 @@ mod ranges {
     #[test]
     fn test_range_with_step() {
         let input = (0..16).into_par_iter().step_by(3);
-        let answer: Vec<String> = input
-            .fizzbuzz()
-            .into_iter()
-            .map(|f| <FizzBuzzAnswer as Into<Cow<str>>>::into(f).into())
-            .collect();
+        let answer: Vec<String> = input.fizzbuzz().into_iter().map(|f| f.into()).collect();
         let expected = vec![
             "fizzbuzz".to_string(), // 0
             "fizz".to_string(),     // 3
