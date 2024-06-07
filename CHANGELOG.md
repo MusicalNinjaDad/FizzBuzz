@@ -1,5 +1,9 @@
 # FizzBuzz Changelog
 
+## Rust 4.0.0
+
+- **BREAKING CHANGE**: new return types: ...
+
 ## Python 3.0.0
 
 - Return `list[str]` when passed a `list` or `slice`, continue to return `str`when passed a single `int`.
