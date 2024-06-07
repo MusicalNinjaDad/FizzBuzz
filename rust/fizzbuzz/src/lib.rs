@@ -109,10 +109,10 @@ where
         if par_iter.len() < BIG_VECTOR {
             par_iter
                 .with_min_len(BIG_VECTOR) //Don't parallelise when small
-                .map(|n| n.fizzbuzz().into())
+                .map(|n| n.fizzbuzz())
                 .collect()
         } else {
-            par_iter.map(|n| n.fizzbuzz().into()).collect()
+            par_iter.map(|n| n.fizzbuzz()).collect()
         }
     }
 }
