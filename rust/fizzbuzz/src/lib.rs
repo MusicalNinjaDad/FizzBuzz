@@ -113,13 +113,14 @@ where
 {
     fn fizzbuzz(self) -> impl IndexedParallelIterator {
         let par_iter = self.into_par_iter();
-        // if par_iter.len() < BIG_VECTOR {
-            par_iter
-                .with_min_len(BIG_VECTOR) //Don't parallelise when small
-                .map(|n| n.fizzbuzz())
-        // } else {
-        //     par_iter.map(|n| n.fizzbuzz())
-        // }
+        let min_len = if par_iter.len() < BIG_VECTOR {
+            BIG_VECTOR //Don't parallelise when small
+        } else {
+            1
+        };
+        par_iter
+            .with_min_len(min_len) 
+            .map(|n| n.fizzbuzz())
     }
 }
 
