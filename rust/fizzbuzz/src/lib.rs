@@ -102,7 +102,9 @@ where
 /// ### Required:
 /// - fn fizzbuzz(self) -> FizzBuzzAnswer
 pub trait MultiFizzBuzz {
-    fn fizzbuzz<Rtn>(self) -> impl IndexedParallelIterator<Item=Rtn> where Rtn: From<FizzBuzzAnswer> + Send;
+    fn fizzbuzz<Rtn>(self) -> impl IndexedParallelIterator<Item = Rtn>
+    where
+        Rtn: From<FizzBuzzAnswer> + Send;
 }
 
 impl<Iterable, Num> MultiFizzBuzz for Iterable
@@ -111,16 +113,17 @@ where
     <Iterable as IntoParallelIterator>::Iter: IndexedParallelIterator,
     Num: FizzBuzz,
 {
-    fn fizzbuzz<Rtn>(self) -> impl IndexedParallelIterator<Item=Rtn> where Rtn: From<FizzBuzzAnswer> + Send {
+    fn fizzbuzz<Rtn>(self) -> impl IndexedParallelIterator<Item = Rtn>
+    where
+        Rtn: From<FizzBuzzAnswer> + Send,
+    {
         let par_iter = self.into_par_iter();
         let min_len = if par_iter.len() < BIG_VECTOR {
             BIG_VECTOR //Don't parallelise when small
         } else {
             1
         };
-        par_iter
-            .with_min_len(min_len) 
-            .map(|n| n.fizzbuzz().into())
+        par_iter.with_min_len(min_len).map(|n| n.fizzbuzz().into())
     }
 }
 

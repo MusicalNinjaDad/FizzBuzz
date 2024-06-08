@@ -27,9 +27,7 @@ mod ranges {
 
     #[test]
     fn test_small_range() {
-        let answer: Vec<String> = (1..=5_i16)
-            .fizzbuzz()
-            .collect();
+        let answer: Vec<String> = (1..=5_i16).fizzbuzz().collect();
         let expected = vec![
             "1".to_string(),
             "2".to_string(),

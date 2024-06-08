@@ -59,13 +59,13 @@ fn multifizzbuzz_trait_as_vec_cow() {
 #[inline]
 fn multifizzbuzz_trait_from_vec_as_answer() {
     let inputs: Vec<_> = (1..TEST_SIZE).collect();
-    let _:Vec<FizzBuzzAnswer> = inputs.fizzbuzz().collect();
+    let _: Vec<FizzBuzzAnswer> = inputs.fizzbuzz().collect();
 }
 
 #[inline]
 fn multifizzbuzz_trait_from_range_as_answer() {
     let inputs = 1..TEST_SIZE;
-    let _:Vec<FizzBuzzAnswer> = inputs.fizzbuzz().collect();
+    let _: Vec<FizzBuzzAnswer> = inputs.fizzbuzz().collect();
 }
 
 fn criterion_benchmark(c: &mut Criterion) {
@@ -76,7 +76,9 @@ fn criterion_benchmark(c: &mut Criterion) {
     c.bench_function("vec_iter", |b| b.iter(|| vec_iter()));
     // c.bench_function("vec_intoiter", |b| b.iter(|| vec_intoiter()));
     c.bench_function("vec_pariter", |b| b.iter(|| vec_pariter()));
-    c.bench_function("multifizzbuzz_trait_as_vec_string", |b| b.iter(|| multifizzbuzz_trait_as_vec_string()));
+    c.bench_function("multifizzbuzz_trait_as_vec_string", |b| {
+        b.iter(|| multifizzbuzz_trait_as_vec_string())
+    });
     c.bench_function("multifizzbuzz_trait_as_vec_cow", |b| {
         b.iter(|| multifizzbuzz_trait_as_vec_cow())
     });
