@@ -1,4 +1,4 @@
-use std::{borrow::Cow, ops::Neg};
+use std::ops::Neg;
 
 use fizzbuzz::{FizzBuzz, FizzBuzzAnswer, MultiFizzBuzz};
 use pyo3::{exceptions::PyValueError, prelude::*, types::PySlice};
@@ -27,33 +27,20 @@ impl IntoPy<Py<PyAny>> for MySlice {
 
 /// A wrapper struct for FizzBuzzAnswer to provide a custom implementation of `IntoPy`.
 enum FizzBuzzReturn {
-    One(FizzBuzzAnswer),
-    Many(Vec<FizzBuzzAnswer>),
+    One(String),
+    Many(Vec<String>),
 }
 
 impl From<FizzBuzzAnswer> for FizzBuzzReturn {
     fn from(value: FizzBuzzAnswer) -> Self {
-        FizzBuzzReturn::One(value)
-    }
-}
-
-impl From<Vec<FizzBuzzAnswer>> for FizzBuzzReturn {
-    fn from(value: Vec<FizzBuzzAnswer>) -> Self {
-        FizzBuzzReturn::Many(value)
-    }
-}
+      FizzBuzzReturn::One(value.into())  
+    }}
 
 impl IntoPy<Py<PyAny>> for FizzBuzzReturn {
     fn into_py(self, py: Python<'_>) -> Py<PyAny> {
         match self {
-            FizzBuzzReturn::One(answer) => {
-                <FizzBuzzAnswer as Into<Cow<str>>>::into(answer).into_py(py)
-            }
-            FizzBuzzReturn::Many(answers) => answers
-                .into_iter()
-                .map(|answer| answer.into())
-                .collect::<Vec<Cow<str>>>()
-                .into_py(py),
+            FizzBuzzReturn::One(answer) => answer.into_py(py),
+            FizzBuzzReturn::Many(answers) => answers.into_py(py),
         }
     }
 }
@@ -107,19 +94,19 @@ fn py_fizzbuzz(num: FizzBuzzable) -> PyResult<FizzBuzzReturn> {
     match num {
         FizzBuzzable::Int(n) => Ok(n.fizzbuzz().into()),
         FizzBuzzable::Float(n) => Ok(n.fizzbuzz().into()),
-        FizzBuzzable::Vec(v) => Ok(v.fizzbuzz().into()),
+        FizzBuzzable::Vec(v) => Ok(FizzBuzzReturn::Many(v.fizzbuzz().collect())),
         FizzBuzzable::Slice(s) => match s.step {
             // Can only be tested from python: Cannot create a PySlice with no step in rust.
-            None => Ok((s.start..s.stop).fizzbuzz().into()), // GRCOV_EXCL_LINE
+            None => Ok(FizzBuzzReturn::Many((s.start..s.stop).fizzbuzz().collect())), // GRCOV_EXCL_LINE
 
-            Some(1) => Ok((s.start..s.stop).fizzbuzz().into()),
+            Some(1) => Ok(FizzBuzzReturn::Many((s.start..s.stop).fizzbuzz().collect())),
 
             Some(step) => match step {
-                1.. => Ok((s.start..s.stop)
+                1.. => Ok(FizzBuzzReturn::Many((s.start..s.stop)
                     .into_par_iter()
                     .step_by(step.try_into().unwrap())
                     .fizzbuzz()
-                    .into()),
+                    .collect())),
 
                 //  ```python
                 //  >>> foo[1:5:0]
@@ -135,12 +122,12 @@ fn py_fizzbuzz(num: FizzBuzzable) -> PyResult<FizzBuzzReturn> {
                 //  [6, 4, 2]
                 //  ```
                 // Rust doesn't accept step < 0 or stop < start so need some trickery
-                ..=-1 => Ok((s.start.neg()..s.stop.neg())
+                ..=-1 => Ok(FizzBuzzReturn::Many((s.start.neg()..s.stop.neg())
                     .into_par_iter()
                     .step_by(step.neg().try_into().unwrap())
                     .map(|x| x.neg())
                     .fizzbuzz()
-                    .into()),
+                    .collect())),
             },
         },
     }
