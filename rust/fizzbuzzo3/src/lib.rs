@@ -1,4 +1,4 @@
-use std::ops::Neg;
+use std::{borrow::Cow, ops::Neg};
 
 use fizzbuzz::{FizzBuzz, FizzBuzzAnswer, MultiFizzBuzz};
 use pyo3::{exceptions::PyValueError, prelude::*, types::PySlice};
@@ -28,7 +28,7 @@ impl IntoPy<Py<PyAny>> for MySlice {
 /// A wrapper struct for FizzBuzzAnswer to provide a custom implementation of `IntoPy`.
 enum FizzBuzzReturn {
     One(String),
-    Many(Vec<String>),
+    Many(Vec<Cow<'static, str>>),
 }
 
 impl From<FizzBuzzAnswer> for FizzBuzzReturn {
