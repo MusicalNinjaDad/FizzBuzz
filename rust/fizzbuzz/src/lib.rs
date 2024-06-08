@@ -102,7 +102,7 @@ where
 /// ### Required:
 /// - fn fizzbuzz(self) -> FizzBuzzAnswer
 pub trait MultiFizzBuzz {
-    fn fizzbuzz(self) -> impl IndexedParallelIterator;
+    fn fizzbuzz(self) -> impl IndexedParallelIterator<Item = FizzBuzzAnswer>;
 }
 
 impl<Iterable, Num> MultiFizzBuzz for Iterable
@@ -111,7 +111,7 @@ where
     <Iterable as IntoParallelIterator>::Iter: IndexedParallelIterator,
     Num: FizzBuzz,
 {
-    fn fizzbuzz(self) -> impl IndexedParallelIterator {
+    fn fizzbuzz(self) -> impl IndexedParallelIterator<Item = FizzBuzzAnswer> {
         let par_iter = self.into_par_iter();
         let min_len = if par_iter.len() < BIG_VECTOR {
             BIG_VECTOR //Don't parallelise when small
@@ -126,6 +126,7 @@ where
 
 #[cfg(test)]
 mod test {
+
     use super::*;
 
     // // Unused functionality??
@@ -146,10 +147,10 @@ mod test {
     #[test]
     fn big_vector_is_well_ordered() {
         let input: Vec<_> = (1..BIG_VECTOR + 2).collect();
-        let output: Vec<_> = input.clone().fizzbuzz().into();
+        let output: Vec<FizzBuzzAnswer> = input.clone().fizzbuzz().collect();
         let mut expected: Vec<FizzBuzzAnswer> = vec![];
         for i in input.iter() {
-            expected.push(i.fizzbuzz().into())
+            expected.push(i.fizzbuzz())
         }
         assert_eq!(output, expected);
     }
@@ -161,7 +162,7 @@ mod test {
         for i in 1..20 {
             expected.push(i.fizzbuzz().into())
         }
-        let output: Vec<FizzBuzzAnswer> = input.fizzbuzz().into();
+        let output: Vec<FizzBuzzAnswer> = input.fizzbuzz().collect();
         assert_eq!(output, expected)
     }
 }
