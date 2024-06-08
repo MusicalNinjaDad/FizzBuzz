@@ -25,7 +25,7 @@ pub enum FizzBuzzAnswer {
     Fizz,
     Buzz,
     Fizzbuzz,
-    Number(Cow<'static, str>),
+    Number(String),
 }
 
 impl From<FizzBuzzAnswer> for Cow<'static, str> {
@@ -34,15 +34,19 @@ impl From<FizzBuzzAnswer> for Cow<'static, str> {
             FizzBuzzAnswer::Fizz => "fizz".into(),
             FizzBuzzAnswer::Buzz => "buzz".into(),
             FizzBuzzAnswer::Fizzbuzz => "fizzbuzz".into(),
-            FizzBuzzAnswer::Number(n) => n,
+            FizzBuzzAnswer::Number(n) => n.into(),
         }
     }
 }
 
 impl From<FizzBuzzAnswer> for String {
-    fn from(value: FizzBuzzAnswer) -> Self {
-        let moo: Cow<str> = value.into();
-        moo.into()
+    fn from(answer: FizzBuzzAnswer) -> Self {
+        match answer {
+            FizzBuzzAnswer::Fizz => "fizz".into(),
+            FizzBuzzAnswer::Buzz => "buzz".into(),
+            FizzBuzzAnswer::Fizzbuzz => "fizzbuzz".into(),
+            FizzBuzzAnswer::Number(n) => n.into(),
+        }
     }
 }
 
