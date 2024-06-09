@@ -32,7 +32,7 @@ use rayon::prelude::*;
 static BIG_VECTOR: usize = 300_000; // Size from which parallelisation makes sense
 
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
-/// Represents a valid answer to fizzbuzz and provides conversion to `String`and `Cow<&str>` via `.into()`
+/// Represents a valid answer to fizzbuzz and provides conversion to `String` and `Cow<&str>` via `.into()`
 pub enum FizzBuzzAnswer {
     Fizz,
     Buzz,
