@@ -1,4 +1,5 @@
 use fizzbuzz::MultiFizzBuzz;
+use rayon::iter::ParallelIterator;
 
 mod vectors {
 
@@ -7,7 +8,7 @@ mod vectors {
     #[test]
     fn test_small_vec() {
         let input = vec![1, 2, 3, 4, 5];
-        let answer: Vec<String> = input.fizzbuzz().into();
+        let answer: Vec<String> = input.fizzbuzz().collect();
         let expected = vec![
             "1".to_string(),
             "2".to_string(),
@@ -16,6 +17,14 @@ mod vectors {
             "buzz".to_string(),
         ];
         assert_eq!(answer, expected)
+    }
+
+    #[test]
+    fn test_empty_vector() {
+        let input: Vec<i32> = vec![];
+        let answer: Vec<String> = input.fizzbuzz().collect();
+        let expected: Vec<String> = vec![];
+        assert_eq!(answer, expected);
     }
 }
 
@@ -26,7 +35,7 @@ mod ranges {
 
     #[test]
     fn test_small_range() {
-        let answer: Vec<String> = (1..=5_i16).fizzbuzz().into();
+        let answer: Vec<String> = (1..=5_i16).fizzbuzz().collect();
         let expected = vec![
             "1".to_string(),
             "2".to_string(),
@@ -40,7 +49,7 @@ mod ranges {
     #[test]
     fn test_range_with_step() {
         let input = (0..16).into_par_iter().step_by(3);
-        let answer: Vec<String> = input.fizzbuzz().into();
+        let answer: Vec<String> = input.fizzbuzz().collect();
         let expected = vec![
             "fizzbuzz".to_string(), // 0
             "fizz".to_string(),     // 3

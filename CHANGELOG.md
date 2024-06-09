@@ -1,5 +1,13 @@
 # FizzBuzz Changelog
 
+## Rust 4.0.0 & Python 3.0.1
+
+- **BREAKING CHANGES - Rust**: new return types for significant performance improvements:
+  - `MultiFizzBuzz` now lazily returns a rayon IndexedParallelIterator
+  - `FizzBuzz` returns a `FizzBuzzAnswer` which can be converted into a `String` or `Cow<str>`
+  - `FizzBuzzAnswer` now represents the valid answers to FizzBuzz, not `One(String)`or `Many(Vec>String>)`
+- Python implementation updated to work with rust v4.0.0 which brings slight performance improvements (approx 10-20%)
+
 ## Python 3.0.0
 
 - Return `list[str]` when passed a `list` or `slice`, continue to return `str`when passed a single `int`.

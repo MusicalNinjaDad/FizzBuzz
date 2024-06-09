@@ -1,3 +1,4 @@
+#![cfg(test)]
 use fizzbuzz::FizzBuzz;
 use googletest::prelude::*;
 
@@ -32,7 +33,9 @@ macro_rules! test_this {
 }
 
 /// Test all compatible standard types
-mod standard_types {
+mod standard_types_up_to_127_as_strings {
+    use fizzbuzz::FizzBuzzAnswer;
+
     use super::*;
 
     test_this! {
@@ -52,23 +55,38 @@ mod standard_types {
         test_usize: usize
     }
 
-    // #[test]
-    // fn test_negative() {
-    //     assert_eq!((-1_i8).fizzbuzz(), "-1");
-    //     assert_eq!((-3_i8).fizzbuzz(), "fizz");
-    //     assert_eq!((-5_i8).fizzbuzz(), "buzz");
-    //     assert_eq!((-15_i8).fizzbuzz(), "fizzbuzz");
-    // }
+    #[test]
+    fn test_negative() {
+        assert_eq!(
+            <FizzBuzzAnswer as Into<String>>::into((-1_i8).fizzbuzz()),
+            "-1".to_string()
+        );
+        assert_eq!(
+            <FizzBuzzAnswer as Into<String>>::into((-3_i8).fizzbuzz()),
+            "fizz".to_string()
+        );
+        assert_eq!(
+            <FizzBuzzAnswer as Into<String>>::into((-5_i8).fizzbuzz()),
+            "buzz".to_string()
+        );
+        assert_eq!(
+            <FizzBuzzAnswer as Into<String>>::into((-15_i8).fizzbuzz()),
+            "fizzbuzz".to_string()
+        );
+    }
 
-    // #[test]
-    // fn test_not_whole_number() {
-    //     assert_eq!(3.2_f32.fizzbuzz(), "3.2");
-    // }
+    #[test]
+    fn test_not_whole_number() {
+        assert_eq!(
+            <FizzBuzzAnswer as Into<String>>::into((3.2_f32).fizzbuzz()),
+            "3.2".to_string()
+        );
+    }
 }
 
 /// Create a custom type based on i16, add the minimum set of non-derivable
 /// traits, impl_fizzbuzz! and test ...
-mod custom_types {
+mod custom_types_as_strings {
     use std::{fmt::Display, ops::Rem};
 
     use super::*;
@@ -95,5 +113,39 @@ mod custom_types {
 
     test_this! {
         my_int16: Myint
+    }
+}
+
+mod ints_as_cows {
+    use std::borrow::Cow;
+
+    use super::*;
+
+    #[test]
+    fn number() {
+        let expected: Cow<str> = "2".into();
+        let answer: Cow<str> = 2.fizzbuzz().into();
+        assert_eq!(answer, expected)
+    }
+
+    #[test]
+    fn fizz() {
+        let expected: Cow<str> = "fizz".into();
+        let answer: Cow<str> = 3.fizzbuzz().into();
+        assert_eq!(answer, expected)
+    }
+
+    #[test]
+    fn buzz() {
+        let expected: Cow<str> = "buzz".into();
+        let answer: Cow<str> = 5.fizzbuzz().into();
+        assert_eq!(answer, expected)
+    }
+
+    #[test]
+    fn fizzbuzz() {
+        let expected: Cow<str> = "fizzbuzz".into();
+        let answer: Cow<str> = 15.fizzbuzz().into();
+        assert_eq!(answer, expected)
     }
 }
