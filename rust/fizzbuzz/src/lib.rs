@@ -159,21 +159,6 @@ mod test {
 
     use super::*;
 
-    // // Unused functionality??
-    // #[test]
-    // fn vec_to_string() {
-    //     let input = FizzBuzzAnswer::Many(vec![
-    //         "1".to_string(),
-    //         "2".to_string(),
-    //         "fizz".to_string(),
-    //         "4".to_string(),
-    //         "buzz".to_string(),
-    //     ]);
-    //     let output: String = input.into();
-    //     let expected = "1, 2, fizz, 4, buzz".to_string();
-    //     assert_eq!(output, expected)
-    // }
-
     #[test]
     fn big_vector_is_well_ordered() {
         let input: Vec<_> = (1..BIG_VECTOR + 2).collect();
