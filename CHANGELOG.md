@@ -1,8 +1,9 @@
 # FizzBuzz Changelog
 
-## Rust 4.0.0
+## Rust 4.0.0 & Python 3.0.1
 
-- **BREAKING CHANGE**: new return types: ...
+- **BREAKING CHANGE - Rust**: new return types: MultiFizzBuzz now lazily returns a rayon IndexedParallelIterator
+- Python implementation updated to work with rust v4.0.0
 
 ## Python 3.0.0
 
