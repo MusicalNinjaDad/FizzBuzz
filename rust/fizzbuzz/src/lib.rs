@@ -2,17 +2,29 @@
 //! constructed from `0`,`3`,`5` and support the `%` operator.
 //!
 //!
-//! ## Example usage:
+//! ## Example usage for single item:
 //!
 //! ```
 //! use fizzbuzz::FizzBuzz;
 //! use std::borrow::Cow;
 //!
 //! let one: Cow<str> = 1.fizzbuzz().into();
-//! let three: Cow<str> = 3.fizzbuzz().into();
+//! let three: String = 3.fizzbuzz().into();
 //! assert_eq!(&one, "1");
-//! assert_eq!(&three, "fizz");
+//! assert_eq!(three, "fizz");
 //! ```
+//! 
+//! ## Example usage for multiple items:
+//!
+//! ```
+//! use fizzbuzz::MultiFizzBuzz;
+//! use rayon::iter::ParallelIterator; // required for `.collect()`
+//!
+//! let one_to_five = vec![1,2,3,4,5];
+//! let fizzbuzzed: Vec<String> = one_to_five.fizzbuzz().collect();
+//! assert_eq!(fizzbuzzed, vec!["1", "2", "fizz", "4", "buzz"]);
+//! ```
+
 
 use std::borrow::Cow;
 
@@ -20,7 +32,7 @@ use rayon::prelude::*;
 static BIG_VECTOR: usize = 300_000; // Size from which parallelisation makes sense
 
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
-/// Provides conversion to `Cow<&str>` via `.into()` / `::From()`
+/// Represents a valid answer to fizzbuzz and provides conversion to `String`and `Cow<&str>` via `.into()`
 pub enum FizzBuzzAnswer {
     Fizz,
     Buzz,
@@ -101,16 +113,27 @@ where
     }
 }
 
-/// Used to obtain the correct `FizzBuzzAnswer` for a `Vec` of numbers
-///
-/// ### Required:
-/// - fn fizzbuzz(self) -> FizzBuzzAnswer
+/// Used to obtain the correct `FizzBuzzAnswer` for a multiple fizzbuzz-able numbers
 pub trait MultiFizzBuzz {
+    /// Returns an iterator which provides the FizzBuzz values for the elements of the implementing type.
+    /// 
+    /// Note:
+    /// - This function **consumes** the input
+    /// - The returned iterator is a `rayon::iter::IndexedParallelIterator`
+    /// - The Items in the returned iterator will be converted to a requested type
+    /// (e.g. `FizzBuzzAnswer`, `String`, `Cow<str>`)
     fn fizzbuzz<Rtn>(self) -> impl IndexedParallelIterator<Item = Rtn>
     where
         Rtn: From<FizzBuzzAnswer> + Send;
 }
 
+/// Implements the MultiFizzBuzz trait for any type which can be easily converted into a
+/// `rayon::iter::IndexedParallelIterator` over Items which implement `fizzbuzz::FizzBuzz`
+/// 
+/// Note:
+/// - The returned iterator is _lazy_ - no calculations are performed until you use it
+/// - Collecting this iterator requires that `rayon::iter::ParallelIterator` is in scope
+/// - This implementation will decide whether it is worth the overhead of spawning multiple parallel threads
 impl<Iterable, Num> MultiFizzBuzz for Iterable
 where
     Iterable: rayon::iter::IntoParallelIterator<Item = Num>,
