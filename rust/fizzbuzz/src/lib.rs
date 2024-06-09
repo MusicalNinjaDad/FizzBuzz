@@ -18,7 +18,7 @@
 //!
 //! ```
 //! use fizzbuzz::MultiFizzBuzz;
-//! use rayon::iter::ParallelIterator; // required for `.collect()`
+//! use rayon::iter::ParallelIterator; // required to `.collect()` the results
 //!
 //! let one_to_five = vec![1,2,3,4,5];
 //! let fizzbuzzed: Vec<String> = one_to_five.fizzbuzz().collect();
