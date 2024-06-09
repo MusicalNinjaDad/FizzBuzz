@@ -56,7 +56,7 @@ impl From<FizzBuzzAnswer> for String {
             FizzBuzzAnswer::Fizz => "fizz".into(),
             FizzBuzzAnswer::Buzz => "buzz".into(),
             FizzBuzzAnswer::Fizzbuzz => "fizzbuzz".into(),
-            FizzBuzzAnswer::Number(n) => n.into(),
+            FizzBuzzAnswer::Number(n) => n,
         }
     }
 }
@@ -93,21 +93,21 @@ where
     fn fizzbuzz(&self) -> FizzBuzzAnswer {
         let three = match <Num>::try_from(3_u8) {
             Ok(three) => three,
-            Err(_) => return FizzBuzzAnswer::Number(self.to_string().into()),
+            Err(_) => return FizzBuzzAnswer::Number(self.to_string()),
         };
         let five = match <Num>::try_from(5_u8) {
             Ok(five) => five,
-            Err(_) => return FizzBuzzAnswer::Number(self.to_string().into()),
+            Err(_) => return FizzBuzzAnswer::Number(self.to_string()),
         };
         let zero = match <Num>::try_from(0_u8) {
             Ok(zero) => zero,
-            Err(_) => return FizzBuzzAnswer::Number(self.to_string().into()),
+            Err(_) => return FizzBuzzAnswer::Number(self.to_string()),
         };
         match (self % three == zero, self % five == zero) {
             (true, true) => FizzBuzzAnswer::Fizzbuzz,
             (true, false) => FizzBuzzAnswer::Fizz,
             (false, true) => FizzBuzzAnswer::Buzz,
-            _ => FizzBuzzAnswer::Number(self.to_string().into()),
+            _ => FizzBuzzAnswer::Number(self.to_string()),
         }
     }
 }
