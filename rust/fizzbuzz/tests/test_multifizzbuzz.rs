@@ -18,6 +18,14 @@ mod vectors {
         ];
         assert_eq!(answer, expected)
     }
+
+    #[test]
+    fn test_empty_vector() {
+        let input: Vec<i32> = vec![];
+        let answer: Vec<String> = input.fizzbuzz().collect();
+        let expected: Vec<String> = vec![];
+        assert_eq!(answer, expected);
+    }
 }
 
 mod ranges {
