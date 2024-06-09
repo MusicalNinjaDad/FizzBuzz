@@ -33,8 +33,9 @@ enum FizzBuzzReturn {
 
 impl From<FizzBuzzAnswer> for FizzBuzzReturn {
     fn from(value: FizzBuzzAnswer) -> Self {
-      FizzBuzzReturn::One(value.into())  
-    }}
+        FizzBuzzReturn::One(value.into())
+    }
+}
 
 impl IntoPy<Py<PyAny>> for FizzBuzzReturn {
     fn into_py(self, py: Python<'_>) -> Py<PyAny> {
@@ -102,11 +103,13 @@ fn py_fizzbuzz(num: FizzBuzzable) -> PyResult<FizzBuzzReturn> {
             Some(1) => Ok(FizzBuzzReturn::Many((s.start..s.stop).fizzbuzz().collect())),
 
             Some(step) => match step {
-                1.. => Ok(FizzBuzzReturn::Many((s.start..s.stop)
-                    .into_par_iter()
-                    .step_by(step.try_into().unwrap())
-                    .fizzbuzz()
-                    .collect())),
+                1.. => Ok(FizzBuzzReturn::Many(
+                    (s.start..s.stop)
+                        .into_par_iter()
+                        .step_by(step.try_into().unwrap())
+                        .fizzbuzz()
+                        .collect(),
+                )),
 
                 //  ```python
                 //  >>> foo[1:5:0]
@@ -122,12 +125,14 @@ fn py_fizzbuzz(num: FizzBuzzable) -> PyResult<FizzBuzzReturn> {
                 //  [6, 4, 2]
                 //  ```
                 // Rust doesn't accept step < 0 or stop < start so need some trickery
-                ..=-1 => Ok(FizzBuzzReturn::Many((s.start.neg()..s.stop.neg())
-                    .into_par_iter()
-                    .step_by(step.neg().try_into().unwrap())
-                    .map(|x| x.neg())
-                    .fizzbuzz()
-                    .collect())),
+                ..=-1 => Ok(FizzBuzzReturn::Many(
+                    (s.start.neg()..s.stop.neg())
+                        .into_par_iter()
+                        .step_by(step.neg().try_into().unwrap())
+                        .map(|x| x.neg())
+                        .fizzbuzz()
+                        .collect(),
+                )),
             },
         },
     }

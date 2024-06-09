@@ -13,7 +13,7 @@
 //! assert_eq!(&one, "1");
 //! assert_eq!(three, "fizz");
 //! ```
-//! 
+//!
 //! ## Example usage for multiple items:
 //!
 //! ```
@@ -24,7 +24,6 @@
 //! let fizzbuzzed: Vec<String> = one_to_five.fizzbuzz().collect();
 //! assert_eq!(fizzbuzzed, vec!["1", "2", "fizz", "4", "buzz"]);
 //! ```
-
 
 use std::borrow::Cow;
 
@@ -116,7 +115,7 @@ where
 /// Used to obtain the correct `FizzBuzzAnswer` for a multiple fizzbuzz-able numbers
 pub trait MultiFizzBuzz {
     /// Returns an iterator which provides the FizzBuzz values for the elements of the implementing type.
-    /// 
+    ///
     /// Note:
     /// - This function **consumes** the input
     /// - The returned iterator is a `rayon::iter::IndexedParallelIterator`
@@ -129,7 +128,7 @@ pub trait MultiFizzBuzz {
 
 /// Implements the MultiFizzBuzz trait for any type which can be easily converted into a
 /// `rayon::iter::IndexedParallelIterator` over Items which implement `fizzbuzz::FizzBuzz`
-/// 
+///
 /// Note:
 /// - The returned iterator is _lazy_ - no calculations are performed until you use it
 /// - Collecting this iterator requires that `rayon::iter::ParallelIterator` is in scope
