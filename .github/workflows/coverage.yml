@@ -26,7 +26,7 @@ jobs:
         run: |
           pytest --cov
       - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
           use_oidc: true
           flags: python
@@ -61,7 +61,7 @@ jobs:
           pwd
           ls -al
       - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
           use_oidc: true
           flags: ${{ matrix.package }}
