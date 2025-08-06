@@ -82,7 +82,7 @@ jobs:
     needs: [python-checks, rust-checks, wheels, sdist]
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/download-artifact@v4
+    - uses: actions/download-artifact@v5
       with:
         pattern: cibw-*
         path: dist
