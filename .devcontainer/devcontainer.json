@@ -5,6 +5,8 @@
             "extensions": [
                 // rust
                 "rust-lang.rust-analyzer",
+                "andrewbrey.rust-test-highlight",
+                "fill-labs.dependi",
                 "vadimcn.vscode-lldb",
                 // python
                 "ms-python.python",
