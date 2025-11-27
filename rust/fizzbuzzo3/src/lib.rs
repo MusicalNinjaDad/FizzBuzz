@@ -1,7 +1,7 @@
 use std::{borrow::Cow, ops::Neg};
 
 use fizzbuzz::{FizzBuzz, FizzBuzzAnswer, MultiFizzBuzz};
-use pyo3::{exceptions::PyValueError, prelude::*, types::PySlice};
+use pyo3::{exceptions::PyValueError, prelude::*, types::{PySlice, PyString}};
 use rayon::iter::{IndexedParallelIterator, IntoParallelIterator, ParallelIterator};
 
 #[derive(FromPyObject)]
@@ -28,7 +28,7 @@ impl IntoPy<Py<PyAny>> for MySlice {
 /// A wrapper struct for FizzBuzzAnswer to provide a custom implementation of `IntoPy`.
 enum FizzBuzzReturn {
     One(String),
-    Many(Vec<Cow<'static, str>>),
+    Many(Vec<Py<PyString>>),
 }
 
 impl From<FizzBuzzAnswer> for FizzBuzzReturn {
@@ -41,7 +41,7 @@ impl IntoPy<Py<PyAny>> for FizzBuzzReturn {
     fn into_py(self, py: Python<'_>) -> Py<PyAny> {
         match self {
             FizzBuzzReturn::One(answer) => answer.into_py(py),
-            FizzBuzzReturn::Many(answers) => answers.into_py(py),
+            FizzBuzzReturn::Many(answers) => answers.iter().map(|pystring| {pystring.to_object(py)}),
         }
     }
 }
@@ -91,23 +91,24 @@ impl IntoPy<Py<PyAny>> for FizzBuzzReturn {
 ///     A step of zero is invalid and will raise a `ValueError`.
 #[pyfunction]
 #[pyo3(name = "fizzbuzz", text_signature = "(n)")]
-fn py_fizzbuzz(num: FizzBuzzable) -> PyResult<FizzBuzzReturn> {
+fn py_fizzbuzz(py: Python, num: FizzBuzzable) -> PyResult<FizzBuzzReturn> {
+    let to_PyString = |f: String| {PyString::new_bound(py, &f).unbind()};
     match num {
         FizzBuzzable::Int(n) => Ok(n.fizzbuzz().into()),
         FizzBuzzable::Float(n) => Ok(n.fizzbuzz().into()),
-        FizzBuzzable::Vec(v) => Ok(FizzBuzzReturn::Many(v.fizzbuzz().collect())),
+        FizzBuzzable::Vec(v) => Ok(FizzBuzzReturn::Many(v.fizzbuzz().map(&to_PyString).collect())),
         FizzBuzzable::Slice(s) => match s.step {
             // Can only be tested from python: Cannot create a PySlice with no step in rust.
-            None => Ok(FizzBuzzReturn::Many((s.start..s.stop).fizzbuzz().collect())), // GRCOV_EXCL_LINE
+            None => Ok(FizzBuzzReturn::Many((s.start..s.stop).fizzbuzz().map(|f: String| {PyString::new_bound(py, &f).unbind()}).collect())), // GRCOV_EXCL_LINE
 
-            Some(1) => Ok(FizzBuzzReturn::Many((s.start..s.stop).fizzbuzz().collect())),
+            Some(1) => Ok(FizzBuzzReturn::Many((s.start..s.stop).fizzbuzz().map(|f: String| {PyString::new_bound(py, &f).unbind()}).collect())),
 
             Some(step) => match step {
                 1.. => Ok(FizzBuzzReturn::Many(
                     (s.start..s.stop)
                         .into_par_iter()
                         .step_by(step.try_into().unwrap())
-                        .fizzbuzz()
+                        .fizzbuzz().map(|f: String| {PyString::new_bound(py, &f).unbind()})
                         .collect(),
                 )),
 
@@ -130,7 +131,7 @@ fn py_fizzbuzz(num: FizzBuzzable) -> PyResult<FizzBuzzReturn> {
                         .into_par_iter()
                         .step_by(step.neg().try_into().unwrap())
                         .map(|x| x.neg())
-                        .fizzbuzz()
+                        .fizzbuzz().map(|f: String| {PyString::new_bound(py, &f).unbind()})
                         .collect(),
                 )),
             },
