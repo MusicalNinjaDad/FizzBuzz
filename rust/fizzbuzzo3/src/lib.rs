@@ -19,9 +19,12 @@ struct MySlice {
     step: Option<isize>,
 }
 
-impl IntoPy<Py<PyAny>> for MySlice {
-    fn into_py(self, py: Python<'_>) -> Py<PyAny> {
-        PySlice::new_bound(py, self.start, self.stop, self.step.unwrap_or(1)).into_py(py)
+impl<'py> IntoPyObject<'py> for MySlice {
+    type Target = PySlice;
+    type Output = Bound<'py, Self::Target>;
+    type Error = std::convert::Infallible;
+    fn into_pyobject(self, py: Python<'py>) -> Result<Self::Output, Self::Error> {
+        Ok(PySlice::new(py, self.start, self.stop, self.step.unwrap_or(1)))
     }
 }
 
