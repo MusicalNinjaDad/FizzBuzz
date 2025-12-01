@@ -24,7 +24,12 @@ impl<'py> IntoPyObject<'py> for MySlice {
     type Output = Bound<'py, Self::Target>;
     type Error = std::convert::Infallible;
     fn into_pyobject(self, py: Python<'py>) -> Result<Self::Output, Self::Error> {
-        Ok(PySlice::new(py, self.start, self.stop, self.step.unwrap_or(1)))
+        Ok(PySlice::new(
+            py,
+            self.start,
+            self.stop,
+            self.step.unwrap_or(1),
+        ))
     }
 }
 
@@ -142,7 +147,10 @@ fn py_fizzbuzzo3(module: &Bound<'_, PyModule>) -> PyResult<()> {
 
 #[cfg(test)]
 mod tests {
-    use pyo3::{exceptions::{PyTypeError, PyValueError}, ffi::c_str};
+    use pyo3::{
+        exceptions::{PyTypeError, PyValueError},
+        ffi::c_str,
+    };
     use pyo3_testing::{pyo3test, with_py_raises};
 
     use super::*;
