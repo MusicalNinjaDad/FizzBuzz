@@ -120,7 +120,7 @@ pub trait MultiFizzBuzz {
     /// - This function **consumes** the input
     /// - The returned iterator is a `rayon::iter::IndexedParallelIterator`
     /// - The Items in the returned iterator will be converted to a requested type
-    /// (e.g. `FizzBuzzAnswer`, `String`, `Cow<str>`)
+    ///   (e.g. `FizzBuzzAnswer`, `String`, `Cow<str>`)
     fn fizzbuzz<Rtn>(self) -> impl IndexedParallelIterator<Item = Rtn>
     where
         Rtn: From<FizzBuzzAnswer> + Send;
@@ -174,7 +174,7 @@ mod test {
         let input = 1..20;
         let mut expected: Vec<FizzBuzzAnswer> = vec![];
         for i in 1..20 {
-            expected.push(i.fizzbuzz().into())
+            expected.push(i.fizzbuzz())
         }
         let output: Vec<FizzBuzzAnswer> = input.fizzbuzz().collect();
         assert_eq!(output, expected)
