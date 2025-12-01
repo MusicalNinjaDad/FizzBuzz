@@ -31,11 +31,11 @@ fn range_10_000_000() {
 }
 
 fn criterion_benchmark(c: &mut Criterion) {
-    c.bench_function("20", |b| b.iter(|| range_20()));
-    c.bench_function("200_000", |b| b.iter(|| range_200_000()));
-    c.bench_function("300_000", |b| b.iter(|| range_300_000()));
-    c.bench_function("1_000_000", |b| b.iter(|| range_1_000_000()));
-    c.bench_function("10_000_000", |b| b.iter(|| range_10_000_000()));
+    c.bench_function("20", |b| b.iter(range_20));
+    c.bench_function("200_000", |b| b.iter(range_200_000));
+    c.bench_function("300_000", |b| b.iter(range_300_000));
+    c.bench_function("1_000_000", |b| b.iter(range_1_000_000));
+    c.bench_function("10_000_000", |b| b.iter(range_10_000_000));
 }
 
 criterion_group!(sizes, criterion_benchmark);

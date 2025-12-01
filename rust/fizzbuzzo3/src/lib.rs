@@ -19,13 +19,22 @@ struct MySlice {
     step: Option<isize>,
 }
 
-impl IntoPy<Py<PyAny>> for MySlice {
-    fn into_py(self, py: Python<'_>) -> Py<PyAny> {
-        PySlice::new_bound(py, self.start, self.stop, self.step.unwrap_or(1)).into_py(py)
+impl<'py> IntoPyObject<'py> for MySlice {
+    type Target = PySlice;
+    type Output = Bound<'py, Self::Target>;
+    type Error = std::convert::Infallible;
+    fn into_pyobject(self, py: Python<'py>) -> Result<Self::Output, Self::Error> {
+        Ok(PySlice::new(
+            py,
+            self.start,
+            self.stop,
+            self.step.unwrap_or(1),
+        ))
     }
 }
 
 /// A wrapper struct for FizzBuzzAnswer to provide a custom implementation of `IntoPy`.
+#[derive(IntoPyObject, IntoPyObjectRef)]
 enum FizzBuzzReturn {
     One(String),
     Many(Vec<Cow<'static, str>>),
@@ -34,15 +43,6 @@ enum FizzBuzzReturn {
 impl From<FizzBuzzAnswer> for FizzBuzzReturn {
     fn from(value: FizzBuzzAnswer) -> Self {
         FizzBuzzReturn::One(value.into())
-    }
-}
-
-impl IntoPy<Py<PyAny>> for FizzBuzzReturn {
-    fn into_py(self, py: Python<'_>) -> Py<PyAny> {
-        match self {
-            FizzBuzzReturn::One(answer) => answer.into_py(py),
-            FizzBuzzReturn::Many(answers) => answers.into_py(py),
-        }
     }
 }
 
@@ -147,7 +147,10 @@ fn py_fizzbuzzo3(module: &Bound<'_, PyModule>) -> PyResult<()> {
 
 #[cfg(test)]
 mod tests {
-    use pyo3::exceptions::{PyTypeError, PyValueError};
+    use pyo3::{
+        exceptions::{PyTypeError, PyValueError},
+        ffi::c_str,
+    };
     use pyo3_testing::{pyo3test, with_py_raises};
 
     use super::*;
@@ -301,7 +304,7 @@ mod tests {
     #[pyo3import(py_fizzbuzzo3: from fizzbuzzo3 import fizzbuzz)]
     fn test_fizzbuzz_slice_zero_step() {
         let slice: MySlice = py
-            .eval_bound("slice(1,2,0)", None, None)
+            .eval(c_str!("slice(1,2,0)"), None, None)
             .unwrap()
             .extract()
             .unwrap();

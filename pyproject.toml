@@ -113,6 +113,7 @@
     line-length = 120
     format.skip-magic-trailing-comma = false
     format.quote-style = "double"
+    extend-exclude = ["tests/perftest.py"]
 
 [tool.ruff.lint]
     select = ["ALL"]
@@ -120,7 +121,6 @@
     flake8-annotations.mypy-init-return = true
     extend-ignore = [
         "E701",   # One-line ifs are not great, one-liners with suppression are worse
-        "ANN101", # Type annotation for `self`
         "ANN202", # Return type annotation for private functions
         "ANN401", # Using Any often enough that supressing individually is pointless
         "W291",   # Double space at EOL is linebreak in md-docstring
