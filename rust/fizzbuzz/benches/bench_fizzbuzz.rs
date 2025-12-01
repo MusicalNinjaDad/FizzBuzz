@@ -73,20 +73,20 @@ fn criterion_benchmark(c: &mut Criterion) {
     // c.bench_function("for_loop_with_vec_overhead", |b| {
     //     b.iter(|| for_loop_with_vec_overhead())
     // });
-    c.bench_function("vec_iter", |b| b.iter(|| vec_iter()));
+    c.bench_function("vec_iter", |b| b.iter(vec_iter));
     // c.bench_function("vec_intoiter", |b| b.iter(|| vec_intoiter()));
-    c.bench_function("vec_pariter", |b| b.iter(|| vec_pariter()));
+    c.bench_function("vec_pariter", |b| b.iter(vec_pariter));
     c.bench_function("multifizzbuzz_trait_as_vec_string", |b| {
-        b.iter(|| multifizzbuzz_trait_as_vec_string())
+        b.iter(multifizzbuzz_trait_as_vec_string)
     });
     c.bench_function("multifizzbuzz_trait_as_vec_cow", |b| {
-        b.iter(|| multifizzbuzz_trait_as_vec_cow())
+        b.iter(multifizzbuzz_trait_as_vec_cow)
     });
     c.bench_function("multifizzbuzz_trait_from_vec_as_answer", |b| {
-        b.iter(|| multifizzbuzz_trait_from_vec_as_answer())
+        b.iter(multifizzbuzz_trait_from_vec_as_answer)
     });
     c.bench_function("multifizzbuzz_trait_from_range_as_answer", |b| {
-        b.iter(|| multifizzbuzz_trait_from_range_as_answer())
+        b.iter(multifizzbuzz_trait_from_range_as_answer)
     });
 }
 

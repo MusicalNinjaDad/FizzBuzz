@@ -1,4 +1,3 @@
-# ruff: noqa
 import timeit
 
 from fizzbuzz.fizzbuzzo3 import fizzbuzz as fbo3

@@ -24,7 +24,7 @@ macro_rules! test_this {
                     } else if threes.contains(&num) {
                         expect_that!(&result, eq("fizz"), "for {num}")
                     } else {
-                        expect_that!(result, eq(num.to_string()), "for {num}")
+                        expect_that!(result, eq(&num.to_string()), "for {num}")
                     }
                 }
             }

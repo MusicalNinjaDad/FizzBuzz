@@ -24,7 +24,7 @@ def test_float():
 def test_list():
     assert fizzbuzz(
         [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15],
-    ) == "1, 2, fizz, 4, buzz, fizz, 7, 8, fizz, buzz, fizzbuzz".split(", ")
+    ) == ["1", "2", "fizz", "4", "buzz", "fizz", "7", "8", "fizz", "buzz", "fizzbuzz"]
 
 
 def test_string():
@@ -53,18 +53,18 @@ def test_1_to_100():
 def test_slice():
     assert fizzbuzz(
         slice(1, 16, 1),
-        ) == "1, 2, fizz, 4, buzz, fizz, 7, 8, fizz, buzz, 11, fizz, 13, 14, fizzbuzz".split(", ")
+        ) == ["1", "2", "fizz", "4", "buzz", "fizz", "7", "8", "fizz", "buzz", "11", "fizz", "13", "14", "fizzbuzz"]
 
 
 # This case is REALLY IMPORTANT as it cannot be tested via rust unit tests...
 def test_slice_no_step():
     assert fizzbuzz(
         slice(1, 16),
-        ) == "1, 2, fizz, 4, buzz, fizz, 7, 8, fizz, buzz, 11, fizz, 13, 14, fizzbuzz".split(", ")
+        ) == ["1", "2", "fizz", "4", "buzz", "fizz", "7", "8", "fizz", "buzz", "11", "fizz", "13", "14", "fizzbuzz"]
 
 
 def test_slice_negative_step():
-    assert fizzbuzz(slice(15, 0, -3)) == "fizzbuzz, fizz, fizz, fizz, fizz".split(", ")
+    assert fizzbuzz(slice(15, 0, -3)) == ["fizzbuzz", "fizz", "fizz", "fizz", "fizz"]
 
 
 def test_slice_zero_step():
