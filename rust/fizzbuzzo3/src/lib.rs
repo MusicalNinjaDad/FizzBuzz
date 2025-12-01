@@ -26,6 +26,7 @@ impl IntoPy<Py<PyAny>> for MySlice {
 }
 
 /// A wrapper struct for FizzBuzzAnswer to provide a custom implementation of `IntoPy`.
+#[derive(IntoPyObject, IntoPyObjectRef)]
 enum FizzBuzzReturn {
     One(String),
     Many(Vec<Cow<'static, str>>),
@@ -34,15 +35,6 @@ enum FizzBuzzReturn {
 impl From<FizzBuzzAnswer> for FizzBuzzReturn {
     fn from(value: FizzBuzzAnswer) -> Self {
         FizzBuzzReturn::One(value.into())
-    }
-}
-
-impl IntoPy<Py<PyAny>> for FizzBuzzReturn {
-    fn into_py(self, py: Python<'_>) -> Py<PyAny> {
-        match self {
-            FizzBuzzReturn::One(answer) => answer.into_py(py),
-            FizzBuzzReturn::Many(answers) => answers.into_py(py),
-        }
     }
 }
 
